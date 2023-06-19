@@ -1,0 +1,11 @@
+FROM python:3.10.6-slim
+COPY . /spiri_move
+WORKDIR /spiri_move
+RUN apt-get update -y && apt-get update -y && apt-get install libjpeg-dev build-essential libproj-dev netcat -y &&\
+    groupadd uwsgi &&\
+    useradd -g uwsgi uwsgi &&\
+    mkdir /tmp/uwsgi && chown -R uwsgi:101 /tmp/uwsgi &&\
+    chown -R uwsgi:101 /spiri_move &&\
+    pip install pip==22.3.1 &&\
+    pip install -Ur requirements.txt &&\
+    pip install https://projects.unbit.it/downloads/uwsgi-lts.tar.gz

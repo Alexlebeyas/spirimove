@@ -1,0 +1,6 @@
+.env
+/venv
+/media/
+.DS_Store
+.idea
+__pycache__
