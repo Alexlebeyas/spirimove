@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+
+  h1 {
+    @apply text-4xl font-bold md:text-5xl lg:text-6xl;
+  }
+
+  h2 {
+    @apply text-3xl font-bold md:text-4xl lg:text-5xl;
+  }
+
+  h3 {
+    @apply text-2xl font-bold md:text-3xl lg:text-4xl;
+  }
+
+  h4 {
+    @apply text-lg font-bold lg:text-xl;
+  }
+
+  p {
+    @apply text-base font-medium lg:text-lg;
+  }
+
+  ul li {
+    @apply text-base font-medium  lg:text-lg;
+  }
+
+  a {
+    @apply inline-block text-base;
+  }
+}
