@@ -11,6 +11,7 @@ git clone git@ssh.dev.azure.com:v3/SpiriaDigital-Canada/Spiri-Move_ZoneProject/S
 ## 2. Build docker containers:
 Frist, check requirement.txt and then
 ~~~~
+cd backend
 docker-compose build
 ~~~~
 
@@ -20,17 +21,18 @@ docker-compose up
 ~~~~
 
 ## 4. Run migrations:
-Frist, open a new terminal while the project is running in the main terminal
+First, open a new terminal while the project is running in the main terminal
 ~~~~
-docker exec -it spiri_move_web_1 bash
+docker exec -it backend-web-1 bash
 python manage.py makemigrations
 python manage.py migrate
 ~~~~
 
 ## 4. Create superuser:
-It could help to access the administration interface or to connect for the tests
+It could help to access the administration interface or to connect for the tests\
+When asked for an email address, enter any valid value, but remember it as it will be useful later
 ~~~~
-docker exec -it spiri_move_web_1 bash
+docker exec -it backend-web-1 bash
 python manage.py createsuperuser
 ~~~~
 
