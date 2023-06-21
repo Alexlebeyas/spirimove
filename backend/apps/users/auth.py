@@ -24,7 +24,7 @@ def get_microsoft_info(access_token):
     return r.json()
 
 def get_user_by_email(email):
-    user = get_user_model().objects.filter(is_active=True, email=email)
+    user = get_user_model().objects.filter(email=email)
     if not user:
         return None
 
@@ -53,13 +53,12 @@ class Authentication(authentication.BaseAuthentication):
             raise WrongTokenException()
 
         if 'error' in microsoft_info:
-            raise exceptions.AuthenticationFailed('No such user')
+            raise exceptions.AuthenticationFailed(_('No such user'))
 
         user = get_user_by_email(microsoft_info['mail'] or microsoft_info['userPrincipalName'])
         if not user:
             # User not found in the system, we should create a new user
             user = get_user_model().objects.create_user(
-                                            # username=microsoft_info['displayName'],
                                             email=(microsoft_info['mail'] or microsoft_info['userPrincipalName']),
                                             phone=microsoft_info['businessPhones'],
                                             office=microsoft_info['officeLocation'],
@@ -68,9 +67,10 @@ class Authentication(authentication.BaseAuthentication):
                                             first_name=microsoft_info.get('givenName', ''),
                                             last_name=microsoft_info.get('surname', ''))
 
+        if not user.is_active:
+            raise exceptions.AuthenticationFailed(_('No such user'))
+
         user.last_login = timezone.now()
         user.save()
 
-        if not user.email:
-            return None
-        return (user, None)
+        return user, None
