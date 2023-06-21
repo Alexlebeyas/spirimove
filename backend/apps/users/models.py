@@ -68,9 +68,10 @@ class User(AbstractUser):
     """
     username = None
     email = models.EmailField(_('email address'), max_length=60, unique=True)
-    telephone = models.CharField(_('Telephone'), max_length=256, null=True, blank=True)
+    phone = models.CharField(_('Phone'), max_length=256, null=True, blank=True)
+    office = models.CharField(_('Office'), max_length=256, null=True, blank=True)
+    display_name = models.CharField(_('Display Name'), max_length=256, null=True, blank=True)
     roles = models.ManyToManyField(Role, blank=True)
-    is_deactive_date = models.DateField(null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

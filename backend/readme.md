@@ -9,7 +9,7 @@ git clone git@ssh.dev.azure.com:v3/SpiriaDigital-Canada/Spiri-Move_ZoneProject/S
 ~~~~
 
 ## 2. Build docker containers:
-Frist, check requirement.txt and then
+First, check requirement.txt and then
 ~~~~
 cd backend
 docker-compose build
