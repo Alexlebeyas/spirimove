@@ -33,6 +33,6 @@ class UpdateProfileAPIView(UpdateAPIView):
             # forcibly invalidate the prefetch cache on the instance.
             instance._prefetched_objects_cache = {}
 
-        return Response(serializer.data)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     serializer_class = UserModelUpdateSerializer
