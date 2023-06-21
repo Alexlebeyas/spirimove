@@ -1,6 +1,7 @@
 .env
 venv/
-/media/
 .DS_Store
 .idea
 __pycache__
+media/
+yarn.lock

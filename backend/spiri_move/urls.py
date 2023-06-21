@@ -65,9 +65,9 @@ urlpatterns = i18n_patterns(
     path('docs/', include_docs_urls(title='spiri_move Api')),
     path('', include("apps.contest.urls")),
     path('', include("apps.participation.urls")),
+    path('', include("apps.users.urls")),
 
     path('accounts/', include('rest_framework.urls', namespace='rest_framework')),
-    path('plain/', plain_view),
 
     path(_('admin/'), admin.site.urls),
     prefix_default_language=False,
