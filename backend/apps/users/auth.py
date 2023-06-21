@@ -35,7 +35,7 @@ class Authentication(authentication.BaseAuthentication):
 
         auth = get_authorization_header(request).split()
 
-        if not auth or auth[0].lower() != b'token':
+        if not auth or auth[0].lower() != b'bearer':
             return None
 
         if len(auth) == 1:
