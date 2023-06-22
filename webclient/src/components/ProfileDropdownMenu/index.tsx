@@ -3,7 +3,8 @@ import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import SignOutButton from '@/components/SignOutButton'
 import { classNames } from '@/stores/cssClassesStore'
-import { Notifications as BellIcon, AccountCircle as AccountCircleIcon } from "@material-ui/icons";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link } from 'react-router-dom';
 
 const ProfileDropdownMenu = () => {
@@ -17,7 +18,7 @@ const ProfileDropdownMenu = () => {
                 className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
             >
                 <span className="sr-only">View notifications</span>
-                <BellIcon className="h-6 w-6" aria-hidden="true" />
+                <NotificationsIcon className="h-6 w-6" aria-hidden="true" />
             </button>
 
 

@@ -1,6 +1,7 @@
 import { Disclosure } from '@headlessui/react'
 import ProfileDropdownMenu from '@/components/ProfileDropdownMenu';
-import { Menu as MenuIcon, Close as CloseIcon } from "@material-ui/icons";
+import CloseIcon from '@mui/icons-material/Close';
+import MenuIcon from '@mui/icons-material/Menu';
 import { useIsAuthenticated } from '@azure/msal-react';
 import SignInButton from '@/components/SignInButton';
 import { Link } from 'react-router-dom';
