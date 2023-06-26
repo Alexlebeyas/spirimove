@@ -7,7 +7,10 @@ trigger:
   branches:
     include:
     - develop
-    
+
+pr:
+  autoCancel: true
+
 resources:
 - repo: self
 

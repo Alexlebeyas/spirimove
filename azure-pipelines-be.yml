@@ -5,6 +5,9 @@ trigger:
     include:
     - develop
 
+pr:
+  autoCancel: true
+
 resources:
 - repo: self
 
@@ -26,4 +29,3 @@ stages:
         dockerComposeFile: '**/docker-compose.yml'
         action: 'Run a Docker Compose command'
         dockerComposeCommand: 'build'
-        
