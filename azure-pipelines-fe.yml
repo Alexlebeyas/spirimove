@@ -1,5 +1,5 @@
-# Node.js
-# Build a general Node.js project with npm.
+# Node.js with React
+# Build a Node.js project that uses React.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
@@ -7,7 +7,7 @@ trigger:
   branches:
     include:
     - develop
-
+    
 resources:
 - repo: self
 
