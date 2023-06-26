@@ -1,9 +1,9 @@
 # Docker
 # Build Docker-Compose
-
-pr:
+trigger:
   branches:
-  - develop
+    include:
+    - develop
 
 resources:
 - repo: self
