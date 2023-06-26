@@ -1,17 +1,13 @@
-import { useMsal } from "@azure/msal-react";
+import { useMsal } from '@azure/msal-react';
 
 const SignOutButton = () => {
   const { instance } = useMsal();
 
   const handleLogout = () => {
-    instance.logoutRedirect({ postLogoutRedirectUri: "/" });
-  }
+    instance.logoutRedirect({ postLogoutRedirectUri: '/logout' });
+  };
 
-  return (
-    <div onClick={handleLogout}>
-      Sign Out
-    </div>
-  )
-}
+  return <div onClick={handleLogout}>Sign Out</div>;
+};
 
 export default SignOutButton;
