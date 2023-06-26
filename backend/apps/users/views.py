@@ -1,6 +1,5 @@
 from rest_framework import status
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
-from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 from .serializers import UserModelSerializer, UserModelUpdateSerializer
 from .models import User

@@ -24,4 +24,4 @@ class ParticipationTypeModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ParticipationTypeModel
-        fields = ('name', 'description', 'from_date', 'to_date')
+        fields = ('id', 'name', 'description', 'from_date', 'to_date')
