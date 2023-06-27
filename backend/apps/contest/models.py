@@ -6,6 +6,7 @@ class ContestsModel(models.Model):
     class Meta:
         verbose_name = _('Contest')
         verbose_name_plural = _('Contests')
+        ordering = ['-pk']
 
     name = models.CharField(max_length=200, null=False, blank=False)
     start_date = models.DateField(null=False, blank=False)

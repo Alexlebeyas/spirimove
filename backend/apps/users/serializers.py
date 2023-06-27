@@ -6,11 +6,11 @@ class UserModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'phone', 'office', 'display_name')
+        fields = ('email', 'phone', 'office', 'display_name','profile_picture')
 
 
 class UserModelUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('office',)
+        fields = ('office','profile_picture')

@@ -1,5 +1,6 @@
 from rest_framework import status
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 from .serializers import UserModelSerializer, UserModelUpdateSerializer
 from .models import User
@@ -34,4 +35,5 @@ class UpdateProfileAPIView(UpdateAPIView):
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
+    parser_classes = (FormParser, MultiPartParser,)
     serializer_class = UserModelUpdateSerializer

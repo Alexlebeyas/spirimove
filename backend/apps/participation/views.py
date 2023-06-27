@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
-from .serializers import ParticipationModelSerializer, ParticipationTypeModelSerializer
+from .serializers import ListParticipationModelSerializer, ParticipationTypeModelSerializer, AddParticipationModelSerializer
 from .models import ParticipationModel, ParticipationTypeModel
 from django.shortcuts import get_object_or_404
 from datetime import datetime
@@ -21,7 +21,7 @@ class ListParticipationTypeAPIView(ListAPIView):
 class ListAllParticipationAPIView(ListAPIView):
     """List all database participations for active contests"""
     queryset = ParticipationModel.objects.filter(contest__is_open=True)
-    serializer_class = ParticipationModelSerializer
+    serializer_class = ListParticipationModelSerializer
 
 
 class ListMyParticipationAPIView(ListAPIView):
@@ -40,7 +40,7 @@ class ListMyParticipationAPIView(ListAPIView):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-    serializer_class = ParticipationModelSerializer
+    serializer_class = ListParticipationModelSerializer
 
 
 class CreateParticipationAPIView(CreateAPIView):
@@ -67,7 +67,7 @@ class CreateParticipationAPIView(CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     parser_classes = (FormParser, MultiPartParser,)
-    serializer_class = ParticipationModelSerializer
+    serializer_class = AddParticipationModelSerializer
 
 
 class UpdateParticipationAPIView(UpdateAPIView):
@@ -90,7 +90,7 @@ class UpdateParticipationAPIView(UpdateAPIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     queryset = ParticipationModel.objects.filter(contest__is_open=True)
-    serializer_class = ParticipationModelSerializer
+    serializer_class = AddParticipationModelSerializer
 
 
 class DeleteParticipationAPIView(DestroyAPIView):
@@ -104,4 +104,4 @@ class DeleteParticipationAPIView(DestroyAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     queryset = ParticipationModel.objects.filter(contest__is_open=True)
-    serializer_class = ParticipationModelSerializer
+    serializer_class = AddParticipationModelSerializer

@@ -10,6 +10,14 @@ class Migration(migrations.Migration):
         ('participation', '0006_rename_participationcontest_participationmodel_contest'),
     ]
 
+    def initParticipationType(apps, schema_editor):
+        type_list = ['Défis Popup', 'Henry et sa Gang']
+        ParticipationTypeModel = apps.get_model('participation', 'ParticipationTypeModel')
+        for type in type_list:
+            ParticipationTypeModel.objects.create(
+                name=type
+            )
+
     operations = [
         migrations.CreateModel(
             name='ParticipationTypeModel',
@@ -50,4 +58,5 @@ class Migration(migrations.Migration):
             name='type',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='participation.participationtypemodel'),
         ),
+        migrations.RunPython(initParticipationType),
     ]

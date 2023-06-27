@@ -1,10 +1,19 @@
-from rest_framework import serializers
-from .models import ParticipationModel, ParticipationTypeModel
 from django.utils.translation import gettext_lazy as _
-from datetime import datetime
+from rest_framework import serializers
+from apps.users.serializers import UserModelSerializer
+
+from .models import ParticipationModel, ParticipationTypeModel
 
 
-class ParticipationModelSerializer(serializers.ModelSerializer):
+class ListParticipationModelSerializer(serializers.ModelSerializer):
+    user = UserModelSerializer(many=False)
+    class Meta:
+        model = ParticipationModel
+        read_only_fields = ('user',)
+        exclude = ('points', 'is_approved', 'date_created', 'last_modified')
+
+
+class AddParticipationModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ParticipationModel
@@ -14,14 +23,15 @@ class ParticipationModelSerializer(serializers.ModelSerializer):
         """
             Check that the type of participation is active today.
         """
-        today = datetime.today().date()
-        if ('type' in data) and (data['type'].from_date <= today and data['type'].to_date >= today):
-            raise serializers.ValidationError({"type": _("The type of participation chosen is no active")})
+        if ('type' in data) and not (data['type'].from_date <= data['date'] <= data['type'].to_date):
+            raise serializers.ValidationError({"type": _("The type of participation chosen is not active on this date")})
+
+        if not (data['contest'].start_date <= data['date'] <= data['contest'].end_date and data['contest'].is_open):
+            raise serializers.ValidationError({"date": _("The date does not match this Spiri-Move")})
         return data
 
 
 class ParticipationTypeModelSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ParticipationTypeModel
         fields = ('id', 'name', 'description', 'from_date', 'to_date')

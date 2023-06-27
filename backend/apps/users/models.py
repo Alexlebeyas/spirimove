@@ -71,6 +71,7 @@ class User(AbstractUser):
     phone = models.CharField(_('Phone'), max_length=256, null=True, blank=True)
     office = models.CharField(_('Office'), max_length=256, null=True, blank=True)
     display_name = models.CharField(_('Display Name'), max_length=256, null=True, blank=True)
+    profile_picture = models.ImageField(upload_to='profile/%Y/%m/%d/', null=True, blank=True)
     roles = models.ManyToManyField(Role, blank=True)
 
     USERNAME_FIELD = 'email'
