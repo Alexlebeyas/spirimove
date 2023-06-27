@@ -24,7 +24,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm install
+    npm install --legacy-peer-deps
     npm run build
   workingDirectory: '$(build.sourcesdirectory)/webclient'
   displayName: 'npm install and build'
