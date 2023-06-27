@@ -7,11 +7,14 @@ from .models import *
 
 @admin.register(ParticipationModel)
 class ParticipationModelAdmin(admin.ModelAdmin):
-    list_display = ['user', 'contest_name', 'name', 'description', 'points', 'date', 'image_displayed', 'is_approved']
+    list_display = ['user', 'contest_name',  'description', 'type_name', 'points', 'is_to_considered_for_day', 'date', 'image_displayed', 'is_approved']
     list_filter = ('contest__name',)
 
     def contest_name(self, obj):
         return obj.contest.name
+
+    def type_name(self, obj):
+        return obj.type.name if obj.type else "/"
 
     def image_displayed(self, obj):
         return format_html(f"<img height='100px' width='100px' src='{obj.image.url}'>")
@@ -36,12 +39,18 @@ class UnApprovedParticipationAdmin(ParticipationModelAdmin):
         return self.model.objects.filter(is_approved=False)
 
     def make_active(modeladmin, request, queryset):
+        list_participation = list(queryset)[:]
         queryset.update(is_approved=True)
         messages.success(request, _("Selected Participation(s) Marked as approved Successfully !!"))
+        for participation in list_participation:
+            handleConsideredParticipation(participation)
 
     def make_inactive(modeladmin, request, queryset):
+        list_participation = list(queryset)[:]
         queryset.update(is_approved=False)
         messages.success(request, _("Selected Participation(s) Marked as not approved Successfully !!"))
+        for participation in list_participation:
+            handleConsideredParticipation(participation)
 
     admin.site.add_action(make_active, _("Approve"))
     admin.site.add_action(make_inactive, _("Disapprove"))
