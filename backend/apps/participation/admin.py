@@ -7,8 +7,11 @@ from .models import *
 
 @admin.register(ParticipationModel)
 class ParticipationModelAdmin(admin.ModelAdmin):
-    list_display = ['user', 'contest_name',  'description', 'type_name', 'points', 'is_to_considered_for_day', 'date', 'image_displayed', 'is_approved']
+    list_display = ['user', 'contest_name',  'description', 'type_name', 'points', 'is_intensive', 'date', 'image_displayed', 'is_approved', 'is_to_considered_for_day',]
     list_filter = ('contest__name',)
+
+    def has_change_permission(self, request, obj=None):
+        return obj is None
 
     def contest_name(self, obj):
         return obj.contest.name
@@ -17,7 +20,7 @@ class ParticipationModelAdmin(admin.ModelAdmin):
         return obj.type.name if obj.type else "/"
 
     def image_displayed(self, obj):
-        return format_html(f"<img height='100px' width='100px' src='{obj.image.url}'>")
+        return format_html(f"<a target='_blank' href='{obj.image.url}'><img height='100px' width='100px' src='{obj.image.url}'></a>")
 
     def has_delete_permission(self, request, obj=None):
         return False
@@ -25,12 +28,15 @@ class ParticipationModelAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return False
 
+    def has_module_permission(self, request):
+        return request.user.is_admin()
+
 
 class UnApprovedParticipation(ParticipationModel):
     class Meta:
         proxy = True
-        verbose_name = _('Participation not approved')
-        verbose_name_plural = _('Participations not approved')
+        verbose_name = _('Participation to approve')
+        verbose_name_plural = _('Participations to approve')
 
 
 @admin.register(UnApprovedParticipation)
@@ -52,6 +58,9 @@ class UnApprovedParticipationAdmin(ParticipationModelAdmin):
         for participation in list_participation:
             handleConsideredParticipation(participation)
 
+    def has_module_permission(self, request):
+        return (request.user.is_moderator() or request.user.is_admin())
+
     admin.site.add_action(make_active, _("Approve"))
     admin.site.add_action(make_inactive, _("Disapprove"))
 
@@ -59,3 +68,7 @@ class UnApprovedParticipationAdmin(ParticipationModelAdmin):
 @admin.register(ParticipationTypeModel)
 class ParticipationTypeModelAdmin(admin.ModelAdmin):
     list_display = ['name', 'description', 'date_created']
+
+    def has_module_permission(self, request):
+        return request.user.is_admin()
+

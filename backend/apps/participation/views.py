@@ -1,3 +1,4 @@
+from apps.contest.models import ContestsModel
 from datetime import datetime
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
@@ -111,16 +112,46 @@ class DeleteParticipationAPIView(DestroyAPIView):
 class ListleaderBoardAPIView(ListAPIView):
     """ Leaderboard list """
     def list(self, request, *args, **kwargs):
+        contest = get_object_or_404(ContestsModel, pk=kwargs['contest_id'])
         liste_leaderboard = ParticipationModel.objects.filter(
-            contest__pk=kwargs['contest_id'],
+            contest=contest,
             contest__is_open=True,
             is_approved=True,
             is_to_considered_for_day=True,
-        ).values('user__display_name', 'user__office', 'contest__name', ). \
+        ).values('user__display_name', 'user__profile_picture', 'user__office', 'contest__name', ). \
             order_by('user__display_name', 'contest__name'). \
             annotate(total_points=Sum('points'))
 
-        queryset = liste_leaderboard.order_by('-total_points')
+        queryset = liste_leaderboard.order_by('-total_points')[:contest.nb_element_leaderboard] \
+            if contest.nb_element_leaderboard else liste_leaderboard.order_by('-total_points')
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    serializer_class = LeaderBoardSerializer
+
+
+class ListMyOfficeleaderBoardAPIView(ListAPIView):
+    """ Leaderboard for my office """
+    def list(self, request, *args, **kwargs):
+        contest = get_object_or_404(ContestsModel, pk=kwargs['contest_id'])
+        liste_leaderboard = ParticipationModel.objects.filter(
+            contest=contest,
+            user__office=request.user.office,
+            contest__is_open=True,
+            is_approved=True,
+            is_to_considered_for_day=True,
+        ).values('user__display_name', 'user__profile_picture', 'user__office', 'contest__name', ). \
+            order_by('user__display_name', 'contest__name'). \
+            annotate(total_points=Sum('points'))
+
+        queryset = liste_leaderboard.order_by('-total_points')[:contest.nb_element_leaderboard]\
+            if contest.nb_element_leaderboard else liste_leaderboard.order_by('-total_points')
 
         page = self.paginate_queryset(queryset)
         if page is not None:

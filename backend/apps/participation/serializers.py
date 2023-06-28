@@ -10,7 +10,7 @@ class ListParticipationModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParticipationModel
         read_only_fields = ('user',)
-        exclude = ('is_to_considered_for_day', 'points', 'is_approved', 'date_created', 'last_modified')
+        exclude = ('is_to_considered_for_day', 'points', 'is_approved')
 
 
 class AddParticipationModelSerializer(serializers.ModelSerializer):
@@ -39,6 +39,7 @@ class ParticipationTypeModelSerializer(serializers.ModelSerializer):
 
 class LeaderBoardSerializer(serializers.Serializer):
     user__display_name = serializers.CharField(max_length=500)
+    user__profile_picture = serializers.CharField(max_length=500)
     user__office = serializers.CharField(max_length=200)
     contest__name = serializers.CharField(max_length=200)
     total_points = serializers.CharField(max_length=200)

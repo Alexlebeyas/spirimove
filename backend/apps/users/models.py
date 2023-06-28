@@ -3,6 +3,7 @@ from django.contrib.auth.models import Group, AbstractUser, BaseUserManager
 from django.utils.translation import gettext_lazy as _
 
 
+
 # manager for our custom model
 class UserManager(BaseUserManager):
     """Define a model manager for User model with no username field."""
@@ -79,9 +80,6 @@ class User(AbstractUser):
 
     objects = UserManager()
 
-    def __str__(self):
-        return self.email
-
     def save(self, *args, **kwargs):
         super(User, self).save(*args, **kwargs)
         self.groups.clear()
@@ -94,6 +92,9 @@ class User(AbstractUser):
             for role in self.roles.all():
                 group, created = Group.objects.get_or_create(name=role.role)
                 self.groups.add(group)
+
+    def __str__(self):
+        return self.email
 
     def is_admin(self):
         return self.groups.filter(name=Role.ADMIN).exists()

@@ -4,7 +4,8 @@ from . import views
 urlpatterns = [
     path("all/participations_type/", views.ListParticipationTypeAPIView.as_view(), name="participations_type"),
     path("all/participations/", views.ListAllParticipationAPIView.as_view(), name="all_participations_list"),
-    path("all/leaderbord/<int:contest_id>/", views.ListleaderBoardAPIView.as_view(), name="all_leaderboard_list"),
+    path("all/leaderboard/<int:contest_id>/", views.ListleaderBoardAPIView.as_view(), name="all_leaderboard_list"),
+    path("my/office/leaderboard/<int:contest_id>/", views.ListMyOfficeleaderBoardAPIView.as_view(), name="my_office_leaderboard_list"),
     path("my/participations/", views.ListMyParticipationAPIView.as_view(), name="my_participations_list"),
     path("create/participation/", views.CreateParticipationAPIView.as_view(), name="participations_create"),
     path("update/participation/<int:pk>/", views.UpdateParticipationAPIView.as_view(), name="update_participation"),

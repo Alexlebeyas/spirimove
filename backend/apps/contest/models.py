@@ -9,6 +9,7 @@ class ContestsModel(models.Model):
         ordering = ['-pk']
 
     name = models.CharField(max_length=200, null=False, blank=False)
+    nb_element_leaderboard = models.PositiveSmallIntegerField(null=True, blank=True)
     start_date = models.DateField(null=False, blank=False)
     end_date = models.DateField(null=False, blank=False)
     is_open = models.BooleanField(default=True)

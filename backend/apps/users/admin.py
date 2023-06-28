@@ -22,16 +22,26 @@ class UserAdmin(DjangoUserAdmin):
             'fields': ('email', 'password1', 'password2'),
         }),
     )
-    list_display = ['email', 'display_name', 'first_name', 'last_name', 'office', 'group_list', 'is_superuser']
+    list_display = ['email', 'display_name', 'first_name', 'last_name', 'office', 'group_list', 'role_list', 'is_superuser']
     search_fields = ('email', 'first_name', 'last_name')
     ordering = ('email', )
 
     def group_list(self, obj):
         return ' / '.join([group.name for group in obj.groups.all()])
 
+    def role_list(self, obj):
+        return ' / '.join([role.role for role in obj.roles.all()])
+
+    def has_module_permission(self, request):
+        return request.user.is_admin()
+
+
 @admin.register(Role)
 class RoleModelAdmin(admin.ModelAdmin):
     list_display = ['role', 'is_default']
+
+    def has_module_permission(self, request):
+        return False
 
 admin.site.unregister(Group)
 admin.site.unregister(TokenProxy)

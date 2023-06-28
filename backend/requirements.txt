@@ -16,3 +16,4 @@ djoser==2.0.5
 celery==5.0.5
 drf-standardized-errors==0.12.5
 Pillow==9.5.0
+djangocms-admin-style==3.2.4
