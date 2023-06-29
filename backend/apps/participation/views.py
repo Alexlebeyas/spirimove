@@ -1,6 +1,6 @@
 from apps.contest.models import ContestsModel
 from datetime import datetime, timedelta
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
@@ -120,7 +120,7 @@ class ListleaderBoardAPIView(ListAPIView):
             is_to_considered_for_day=True,
         ).values('user__display_name', 'user__profile_picture', 'user__office', 'contest__name'). \
             order_by('user__display_name', 'contest__name'). \
-            annotate(total_points=Sum('points'))
+            annotate(total_points=Sum('points'), total_days=Count('user__display_name'))
 
         queryset = list_leaderboard.order_by('-total_points')[:contest.nb_element_leaderboard] \
             if contest.nb_element_leaderboard else list_leaderboard.order_by('-total_points')
@@ -148,7 +148,7 @@ class ListMyOfficeleaderBoardAPIView(ListAPIView):
             is_to_considered_for_day=True,
         ).values('user__display_name', 'user__profile_picture', 'user__office', 'contest__name', ). \
             order_by('user__display_name', 'contest__name'). \
-            annotate(total_points=Sum('points'))
+            annotate(total_points=Sum('points'), total_days=Count('user__display_name'))
 
         queryset = liste_leaderboard.order_by('-total_points')[:contest.nb_element_leaderboard]\
             if contest.nb_element_leaderboard else liste_leaderboard.order_by('-total_points')

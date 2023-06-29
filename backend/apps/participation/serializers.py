@@ -43,3 +43,4 @@ class LeaderBoardSerializer(serializers.Serializer):
     user__office = serializers.CharField(max_length=200)
     contest__name = serializers.CharField(max_length=200)
     total_points = serializers.CharField(max_length=200)
+    total_days = serializers.CharField(max_length=200)
