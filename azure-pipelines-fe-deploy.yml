@@ -3,9 +3,6 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
-trigger:
-- develop
-
 variables:
 
   # Azure Resource Manager connection created during pipeline creation
@@ -63,7 +60,7 @@ stages:
               appType: webAppLinux
               WebAppName: $(webAppName)
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-              RuntimeStack: 'NODE|10.10'
+              RuntimeStack: 'NODE|18-lts'
               StartupCommand: 'npm run dev'
               ScriptType: 'Inline Script'
               InlineScript: |
