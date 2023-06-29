@@ -8,7 +8,7 @@ from .models import User
 
 # Create your views here.
 class MyProfileIView(ListAPIView):
-    """Diplay profile for current user"""
+    """Display profile for current user"""
     def list(self, request, *args, **kwargs):
         queryset = User.objects.filter(pk=request.user.pk)
         serializer = self.get_serializer(queryset, many=True)
@@ -37,3 +37,10 @@ class UpdateProfileAPIView(UpdateAPIView):
 
     parser_classes = (FormParser, MultiPartParser,)
     serializer_class = UserModelUpdateSerializer
+
+
+class AllOffices(ListAPIView):
+    """Diplay list of offices"""
+    def list(self, request, *args, **kwargs):
+        list_office = User.objects.exclude(office=None).values_list('office', flat=True).distinct()
+        return Response(list_office)
