@@ -15,3 +15,5 @@ const App = () => {
 };
 
 export default App;
+
+// use the loader function for react router

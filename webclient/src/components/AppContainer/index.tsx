@@ -3,8 +3,8 @@ interface Props {
 }
 export const AppContainer: React.FC<Props> = ({ children }) => {
   return (
-    <div className="bg-slate-100 pt-20">
-      <div className="mx-auto h-screen w-[90%] ">{children}</div>
+    <div className="bg-slate-100 pb-10 pt-24">
+      <div className="mx-auto min-h-[78vh] w-[90%] md:w-[500px]">{children}</div>
     </div>
   );
 };

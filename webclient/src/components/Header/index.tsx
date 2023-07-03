@@ -1,6 +1,6 @@
 import logo from '@/assets/images/logo.png';
 import { Disclosure } from '@headlessui/react';
-import ProfileDropdownMenu from '@/components/ProfileDropdownMenu';
+import { ProfileDropdownMenu } from '@/components';
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useLocation } from 'react-router-dom';
@@ -20,7 +20,7 @@ export const Header = () => {
     <Disclosure as="nav" className="fixed left-0 top-0 w-full bg-gray-800">
       {({ open }) => (
         <>
-          <div className="mx-auto w-[90%]">
+          <div className="mx-auto w-[85%]">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}

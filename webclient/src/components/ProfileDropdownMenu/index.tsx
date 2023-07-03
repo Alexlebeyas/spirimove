@@ -1,32 +1,23 @@
 import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import SignOutButton from '@/components/SignOutButton';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link } from 'react-router-dom';
 
-const ProfileDropdownMenu = () => {
+export const ProfileDropdownMenu = () => {
   const data = {
     image: '',
   };
   return (
     <>
-      <button
-        type="button"
-        className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-      >
-        <span className="sr-only">View notifications</span>
-        <NotificationsIcon className="h-6 w-6" aria-hidden="true" />
-      </button>
-
-      <Menu as="div" className="relative ml-3">
+      <Menu as="div" className="relative">
         <div>
           <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
             <span className="sr-only">Open user menu</span>
             {data.image ? (
-              <img className="h-8 w-8 rounded-full" src={data.image} alt="" />
+              <img className="rounded-md-m-md-full h-8 w-8" src={data.image} alt="" />
             ) : (
-              <AccountCircleIcon color="primary" />
+              <AccountCircleIcon color="primary" fontSize="large" />
             )}
           </Menu.Button>
         </div>
@@ -60,5 +51,3 @@ const ProfileDropdownMenu = () => {
     </>
   );
 };
-
-export default ProfileDropdownMenu;

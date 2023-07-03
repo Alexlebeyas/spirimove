@@ -1,8 +1,11 @@
 {
   "translation": {
     "Home": {
-      "Title": "Home",
-      "Message": "Welcome to the Spiri-Move home page"
+      "AddParticipation": "Add participation"
+    },
+    "NotFound": {
+      "Title": "Page not found",
+      "GoBack": "Go back"
     }
   }
 }

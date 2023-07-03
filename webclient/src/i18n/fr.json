@@ -1,8 +1,11 @@
 {
   "translation": {
     "Home": {
-      "Title": "Acceuil",
-      "Message": "Bienvenue a la page d'acceuil du Spiri-Move"
+      "AddParticipation": "Ajouter une participation"
+    },
+    "NotFound": {
+      "Title": "Page non trouvé",
+      "GoBack": "Retourner"
     }
   }
 }
