@@ -2,7 +2,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from apps.users.serializers import UserModelSerializer
 
-from .models import ParticipationModel, ParticipationTypeModel
+from .models import ParticipationModel, ParticipationTypeModel, DrawModel
 
 
 class ListParticipationModelSerializer(serializers.ModelSerializer):
@@ -44,3 +44,12 @@ class LeaderBoardSerializer(serializers.Serializer):
     contest__name = serializers.CharField(max_length=200)
     total_points = serializers.CharField(max_length=200)
     total_days = serializers.CharField(max_length=200)
+
+
+class DrawModelSerializer(serializers.ModelSerializer):
+    draw_150_for_35_days = UserModelSerializer(many=False)
+    draw_100_for_28_days = UserModelSerializer(many=False)
+    draw_50_for_21_days = UserModelSerializer(many=False)
+    class Meta:
+        model = DrawModel
+        fields = ('draw_150_for_35_days', 'draw_100_for_28_days', 'draw_50_for_21_days')

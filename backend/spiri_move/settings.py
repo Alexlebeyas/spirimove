@@ -82,7 +82,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'spiri_move.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -95,6 +94,15 @@ DATABASES = {
        'HOST': 'db',
        'PORT': '5432',
    }
+}
+
+CACHES = {
+    "default": {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        "LOCATION": "redis://redis:6379/0",
+        'TIMEOUT': 300,
+        'KEY_PREFIX': 'django-%s-' % BASE_DIR,
+    }
 }
 
 

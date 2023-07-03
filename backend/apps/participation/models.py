@@ -59,6 +59,25 @@ class ParticipationModel(models.Model):
         super().save(*args, **kwargs)
 
 
+class DrawModel(models.Model):
+    class Meta:
+        verbose_name = _('Draw')
+        verbose_name_plural = _('Draw')
+
+    contest = models.ForeignKey(ContestsModel, on_delete=models.CASCADE, null=True, blank=True)
+    draw_150_for_35_days = models.ForeignKey(User, on_delete=models.CASCADE, related_name="draw_150_for_35_days")
+    draw_100_for_28_days = models.ForeignKey(User, on_delete=models.CASCADE, related_name="draw_100_for_28_days")
+    draw_50_for_21_days = models.ForeignKey(User, on_delete=models.CASCADE, related_name="draw_50_for_21_days")
+    date_created = models.DateTimeField(editable=False, null=True, blank=True)
+    last_modified = models.DateTimeField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.date_created = timezone.now()
+        self.last_modified = timezone.now()
+        super().save(*args, **kwargs)
+
+
 def handleConsideredParticipation(participation):
     """
     In this section we choose the participation to be considered

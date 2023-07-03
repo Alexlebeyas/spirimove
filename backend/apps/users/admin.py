@@ -33,7 +33,9 @@ class UserAdmin(DjangoUserAdmin):
         return ' / '.join([role.role for role in obj.roles.all()])
 
     def has_module_permission(self, request):
-        return request.user.is_superuser or request.user.is_admin()
+        if request.user.is_authenticated:
+            return request.user.is_superuser or request.user.is_admin()
+        return False
 
 
 @admin.register(Role)

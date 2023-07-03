@@ -5,10 +5,28 @@ from django.contrib import messages
 from .models import *
 
 
+@admin.action(description=_("Mark selected participations as approved"))
+def make_active(modeladmin, request, queryset):
+    list_participation = list(queryset)[:]
+    queryset.update(is_approved=True)
+    messages.success(request, _("Selected Participation(s) Marked as approved Successfully !!"))
+    for participation in list_participation:
+        handleConsideredParticipation(participation)
+
+@admin.action(description=_("Mark selected participations as disapproved"))
+def make_inactive(modeladmin, request, queryset):
+    list_participation = list(queryset)[:]
+    queryset.update(is_approved=False)
+    messages.success(request, _("Selected Participation(s) Marked as not approved Successfully !!"))
+    for participation in list_participation:
+        handleConsideredParticipation(participation)
+
+
 @admin.register(ParticipationModel)
 class ParticipationModelAdmin(admin.ModelAdmin):
     list_display = ['user', 'contest_name',  'description', 'type_name', 'points', 'is_intensive', 'date', 'image_displayed', 'is_approved', 'is_to_considered_for_day',]
     list_filter = ('contest__name',)
+    actions = [make_active, make_inactive]
 
     def has_change_permission(self, request, obj=None):
         return obj is None
@@ -29,7 +47,9 @@ class ParticipationModelAdmin(admin.ModelAdmin):
         return False
 
     def has_module_permission(self, request):
-        return request.user.is_admin()
+        if request.user.is_authenticated:
+            return (request.user.is_moderator() or request.user.is_admin())
+        return False
 
 
 class UnApprovedParticipation(ParticipationModel):
@@ -44,25 +64,39 @@ class UnApprovedParticipationAdmin(ParticipationModelAdmin):
     def get_queryset(self, request):
         return self.model.objects.filter(is_approved=False)
 
-    def make_active(modeladmin, request, queryset):
-        list_participation = list(queryset)[:]
-        queryset.update(is_approved=True)
-        messages.success(request, _("Selected Participation(s) Marked as approved Successfully !!"))
-        for participation in list_participation:
-            handleConsideredParticipation(participation)
+    def has_module_permission(self, request):
+        if request.user.is_authenticated:
+            return (request.user.is_moderator() or request.user.is_admin())
+        return False
 
-    def make_inactive(modeladmin, request, queryset):
-        list_participation = list(queryset)[:]
-        queryset.update(is_approved=False)
-        messages.success(request, _("Selected Participation(s) Marked as not approved Successfully !!"))
-        for participation in list_participation:
-            handleConsideredParticipation(participation)
+
+@admin.register(DrawModel)
+class DrawModelAdmin(admin.ModelAdmin):
+    list_display = ['contest_name', 'draw_150_for_35_days_name', 'draw_100_for_28_days', 'draw_50_for_21_days', 'date_created']
+
+    def contest_name(self, obj):
+        return obj.contest.name
+
+    def draw_150_for_35_days_name(self, obj):
+        return f"{obj.draw_150_for_35_days.display_name} ({obj.draw_150_for_35_days.email})"
+
+    def draw_100_for_28_days(self, obj):
+        return f"{obj.draw_100_for_28.display_name} ({obj.draw_100_for_28.email})"
+
+    def draw_50_for_21_days(self, obj):
+        return f"{obj.draw_100_for_28.display_name} ({obj.draw_100_for_28.email})"
 
     def has_module_permission(self, request):
-        return (request.user.is_moderator() or request.user.is_admin())
+        return request.user.is_admin() if request.user.is_authenticated else False
 
-    admin.site.add_action(make_active, _("Approve"))
-    admin.site.add_action(make_inactive, _("Disapprove"))
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return obj is None
 
 
 @admin.register(ParticipationTypeModel)
@@ -70,5 +104,4 @@ class ParticipationTypeModelAdmin(admin.ModelAdmin):
     list_display = ['name', 'description', 'date_created']
 
     def has_module_permission(self, request):
-        return request.user.is_admin()
-
+        return request.user.is_admin() if request.user.is_authenticated else False
