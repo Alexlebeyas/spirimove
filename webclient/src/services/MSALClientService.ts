@@ -1,12 +1,12 @@
 import { PublicClientApplication } from '@azure/msal-browser';
 
-const { VITE_ACTIVE_DIRECTORY_TENANT_ID, VITE_ACTIVE_DIRECTORY_CLIENT_ID } = import.meta.env;
+const { VITE_ACTIVE_DIRECTORY_TENANT_ID, VITE_ACTIVE_DIRECTORY_CLIENT_ID, VITE_ACTIVE_DIRECTORY_REDIRECT_URI } = import.meta.env;
 
 const config = {
   auth: {
     clientId: VITE_ACTIVE_DIRECTORY_CLIENT_ID,
     authority: `https://login.microsoftonline.com/${VITE_ACTIVE_DIRECTORY_TENANT_ID}`,
-    redirectUri: 'http://localhost:3000/',
+    redirectUri: VITE_ACTIVE_DIRECTORY_REDIRECT_URI,
   },
 };
 
