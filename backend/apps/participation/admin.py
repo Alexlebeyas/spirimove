@@ -47,9 +47,7 @@ class ParticipationModelAdmin(admin.ModelAdmin):
         return False
 
     def has_module_permission(self, request):
-        if request.user.is_authenticated:
-            return (request.user.is_moderator() or request.user.is_admin())
-        return False
+        return (request.user.is_moderator() or request.user.is_admin()) if request.user.is_authenticated else False
 
 
 class UnApprovedParticipation(ParticipationModel):
@@ -65,9 +63,7 @@ class UnApprovedParticipationAdmin(ParticipationModelAdmin):
         return self.model.objects.filter(is_approved=False)
 
     def has_module_permission(self, request):
-        if request.user.is_authenticated:
-            return (request.user.is_moderator() or request.user.is_admin())
-        return False
+        return (request.user.is_moderator() or request.user.is_admin()) if request.user.is_authenticated else False
 
 
 @admin.register(DrawModel)
@@ -102,6 +98,15 @@ class DrawModelAdmin(admin.ModelAdmin):
 @admin.register(ParticipationTypeModel)
 class ParticipationTypeModelAdmin(admin.ModelAdmin):
     list_display = ['name', 'description', 'date_created']
+
+    def has_module_permission(self, request):
+        return request.user.is_admin() if request.user.is_authenticated else False
+
+
+@admin.register(LevelModel)
+class LevelModelAdmin(admin.ModelAdmin):
+    list_display = ['name', 'price', 'participation_day', 'order', 'is_active', 'date_created']
+    fields = ['name', 'price', 'participation_day', 'order', 'is_active']
 
     def has_module_permission(self, request):
         return request.user.is_admin() if request.user.is_authenticated else False

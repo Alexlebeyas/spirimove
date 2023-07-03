@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     path("all/participations_type/", views.ListParticipationTypeAPIView.as_view(), name="participations_type"),
     path("all/participations/", views.ListAllParticipationAPIView.as_view(), name="all_participations_list"),
+    path("all/level/", views.ListLevelAPIView.as_view(), name="all_level_list"),
     path("all/leaderboard/<int:contest_id>/", views.ListleaderBoardAPIView.as_view(), name="all_leaderboard_list"),
     path("all/stats/dates/<int:contest_id>/", views.ListDateForContestAPIView.as_view(), name="all_stats_dates_list"),
     path("all/stats/<int:contest_id>/", views.ListStatAPIView.as_view(), name="all_stats_list"),

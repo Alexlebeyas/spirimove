@@ -1,6 +1,6 @@
 from apps.contest.models import ContestsModel
 from datetime import datetime, timedelta
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, Q
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
 from rest_framework import status
@@ -186,19 +186,35 @@ class ListStatAPIView(ListAPIView):
     60 Seconds x 10 so 10 Min for cahce
     """
 
-    # @cache_page(60 * 10)
+    @cache_page(60 * 10)
     def list(self, request, *args, **kwargs):
         return Response(get_list_stats_date(get_object_or_404(ContestsModel, pk=kwargs['contest_id'])))
 
 
 class ListMyStatAPIView(ListAPIView):
-    """ My Stats
-    60 Seconds x 10 so 10 Min for cahce
-    """
+    """ My Stats data"""
 
-    @cache_page(60 * 10)
-    def list(self, request, *args, **kwargs):
-        return Response(get_list_stats_date(get_object_or_404(ContestsModel, pk=kwargs['contest_id']), request.user))
+    def get(self, request, *args, **kwargs):
+        contest = get_object_or_404(ContestsModel, pk=kwargs['contest_id'])
+        user_participations_data = ParticipationModel.objects.\
+            filter(contest=contest, user=request.user, is_to_considered_for_day=True, is_approved=True). \
+            exclude(Q(user__office=None) | Q(user__is_active=False)). \
+            values_list('contest__name', 'user__display_name', 'date', 'points')
+
+        list_date = list(user_participations_data.values_list('date', flat=True).distinct())
+
+        users_data_with_total_points = user_participations_data.values('contest__name', 'user__display_name').\
+            order_by('user__display_name', 'contest__name').annotate(total_points=Sum('points'))
+
+        yesterday = datetime.now() - timedelta(1)
+        streak = 0
+        while yesterday.date() in list_date:
+            streak += 1
+            yesterday = yesterday - timedelta(1)
+        user_stats = list(users_data_with_total_points)[0]
+        user_stats.setdefault('streak',streak)
+
+        return Response(user_stats)
 
 
 class ListDateForContestAPIView(ListAPIView):
@@ -207,10 +223,16 @@ class ListDateForContestAPIView(ListAPIView):
         return Response(get_list_contest_date(get_object_or_404(ContestsModel, pk=kwargs['contest_id'])))
 
 
+class ListLevelAPIView(ListAPIView):
+    """List all active level"""
+    queryset = LevelModel.objects.filter(is_active=True)
+    serializer_class = LevelModelSerializer
+
+
 def get_list_stats_date(contest, user=None):
     list_date = get_list_contest_date(contest)
     stats_for_users = ParticipationModel.objects.filter(is_to_considered_for_day=True, is_approved=True). \
-        exclude(user__office=None, user__is_active=False). \
+        exclude(Q(user__office=None) | Q(user__is_active=False)). \
         values_list('contest__name', 'user__office', 'user__display_name', 'date', 'points', 'user'). \
         order_by('user__display_name', 'contest__name', 'date'). \
         annotate(total_points=Sum('points'))
@@ -219,7 +241,6 @@ def get_list_stats_date(contest, user=None):
         stats_for_users = stats_for_users.filter(user=user)
 
     result = {}
-    final_result = []
     for element in stats_for_users:
         result.setdefault(element[2], {}).setdefault(element[3], element[5])
 
@@ -228,9 +249,7 @@ def get_list_stats_date(contest, user=None):
         result[el].update({x: 0 for x in list_date if x not in result[el]})
         # Sort by date
         result[el] = sorted(result[el].items(), key=lambda x: x[0])
-        final_result.append({'name': el, 'points': [val[1] for val in result[el]]})
-
-    return final_result
+    return result
 
 def get_list_contest_date(contest):
     return [contest.start_date + timedelta(days=x) for x in range((contest.end_date - contest.start_date).days)]

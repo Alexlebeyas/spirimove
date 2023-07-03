@@ -98,10 +98,8 @@ DATABASES = {
 
 CACHES = {
     "default": {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        "LOCATION": "redis://redis:6379/0",
-        'TIMEOUT': 300,
-        'KEY_PREFIX': 'django-%s-' % BASE_DIR,
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "unique-snowflake",
     }
 }
 

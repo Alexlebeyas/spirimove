@@ -1,8 +1,9 @@
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from apps.users.serializers import UserModelSerializer
+from apps.contest.serializers import ContestsModelSerializer
 
-from .models import ParticipationModel, ParticipationTypeModel, DrawModel
+from .models import ParticipationModel, ParticipationTypeModel, DrawModel, LevelModel
 
 
 class ListParticipationModelSerializer(serializers.ModelSerializer):
@@ -37,6 +38,13 @@ class ParticipationTypeModelSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'description', 'from_date', 'to_date')
 
 
+class LevelModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LevelModel
+        read_only_fields = ('name', 'price', 'participation_day', 'order')
+        exclude = ('is_active', 'date_created', 'last_modified')
+
+
 class LeaderBoardSerializer(serializers.Serializer):
     user__display_name = serializers.CharField(max_length=500)
     user__profile_picture = serializers.CharField(max_length=500)
@@ -47,9 +55,10 @@ class LeaderBoardSerializer(serializers.Serializer):
 
 
 class DrawModelSerializer(serializers.ModelSerializer):
-    draw_150_for_35_days = UserModelSerializer(many=False)
-    draw_100_for_28_days = UserModelSerializer(many=False)
-    draw_50_for_21_days = UserModelSerializer(many=False)
+    contest = ContestsModelSerializer(many=False)
+    winner = UserModelSerializer(many=False)
+    level = LevelModelSerializer(many=False)
+
     class Meta:
         model = DrawModel
-        fields = ('draw_150_for_35_days', 'draw_100_for_28_days', 'draw_50_for_21_days')
+        fields = ('contest', 'winner', 'level')

@@ -9,9 +9,7 @@ class ActivitiesModelAdmin(admin.ModelAdmin):
     list_display = ['name', 'start_date', 'end_date', 'is_open', 'date_created', 'last_modified', 'draw_action']
 
     def has_module_permission(self, request):
-        if request.user.is_authenticated:
-            return request.user.is_admin()
-        return True
+        return request.user.is_admin() if request.user.is_authenticated else False
 
     def draw_action(self, obj):
         return format_html(f"<a type='button' href='{reverse('admin:run_draw', args=[obj.id])}' class='addlink'> Run Drawn </a>")

@@ -59,15 +59,29 @@ class ParticipationModel(models.Model):
         super().save(*args, **kwargs)
 
 
+class LevelModel(models.Model):
+    class Meta:
+        verbose_name = _('Level')
+        verbose_name_plural = _('Levels')
+        ordering = ['order']
+
+    name = models.CharField(max_length=200, null=False, blank=False)
+    price = models.CharField(max_length=200, null=False, blank=False, default=1)
+    participation_day = models.PositiveSmallIntegerField(null=False, blank=False, default=1)
+    order = models.PositiveSmallIntegerField(null=False, blank=False, default=1)
+    is_active = models.BooleanField(default=True)
+    date_created = models.DateTimeField(editable=False, null=True, blank=True)
+    last_modified = models.DateTimeField(null=True, blank=True)
+
+
 class DrawModel(models.Model):
     class Meta:
         verbose_name = _('Draw')
         verbose_name_plural = _('Draw')
 
     contest = models.ForeignKey(ContestsModel, on_delete=models.CASCADE, null=True, blank=True)
-    draw_150_for_35_days = models.ForeignKey(User, on_delete=models.CASCADE, related_name="draw_150_for_35_days")
-    draw_100_for_28_days = models.ForeignKey(User, on_delete=models.CASCADE, related_name="draw_100_for_28_days")
-    draw_50_for_21_days = models.ForeignKey(User, on_delete=models.CASCADE, related_name="draw_50_for_21_days")
+    winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    level = models.ForeignKey(LevelModel, on_delete=models.CASCADE, null=True, blank=True)
     date_created = models.DateTimeField(editable=False, null=True, blank=True)
     last_modified = models.DateTimeField(null=True, blank=True)
 
