@@ -2,7 +2,12 @@ from django.contrib import admin, messages
 from django.urls import path, reverse
 from django.http import HttpResponseRedirect
 from django.utils.html import format_html
+from django.shortcuts import get_object_or_404
+from apps.participation.models import ParticipationModel, DrawModel, LevelModel
+from apps.users.models import User
+from django.db.models import Sum, Count
 from .models import *
+import random
 
 @admin.register(ContestsModel)
 class ActivitiesModelAdmin(admin.ModelAdmin):
@@ -12,7 +17,7 @@ class ActivitiesModelAdmin(admin.ModelAdmin):
         return request.user.is_admin() if request.user.is_authenticated else False
 
     def draw_action(self, obj):
-        return format_html(f"<a type='button' href='{reverse('admin:run_draw', args=[obj.id])}' class='addlink'> Run Drawn </a>")
+        return format_html(f"<a type='button' href='{reverse('admin:run_draw', args=[obj.id])}' > Run Drawn </a>")
 
     def get_urls(self):
         urls = super().get_urls()
@@ -22,4 +27,38 @@ class ActivitiesModelAdmin(admin.ModelAdmin):
         return my_urls + urls
 
     def run_draw_function(self, request, contest_id):
+        contest = get_object_or_404(ContestsModel, pk=contest_id)
+        list_eleent_for_draw = get_list_element_for_draw(contest)
+
+        winner_list = []
+        for level in LevelModel.objects.filter(is_active=True):
+            list_potential_winner = list_eleent_for_draw.filter(total_days__gte=level.participation_day)
+            winner = make_draw_between_list(list(list_potential_winner), winner_list)
+            if winner:
+                winner_list.append(winner)
+                DrawModel.objects.update_or_create(
+                    contest=contest,
+                    winner=User.objects.get(pk=winner['user__pk']),
+                    level=level
+                )
+
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def get_list_element_for_draw(contest):
+    list_participation = ParticipationModel.objects.filter(
+        contest=contest,
+        is_approved=True,
+        is_to_considered_for_day=True,
+    ).values('user__pk', 'user__office', 'date').distinct()
+
+    list_with_total_days = list_participation.values('user__pk', 'user__office'). \
+        order_by('user__pk', 'user__office').annotate(total_days=Count('user__pk'))
+
+    return list_with_total_days
+
+def make_draw_between_list(list_element, list_to_exclude=[]):
+    final_list = [element for element in list_element if element not in list_to_exclude]
+    if size := len(final_list):
+        return final_list[random.randrange(size)]
+    return None

@@ -68,19 +68,16 @@ class UnApprovedParticipationAdmin(ParticipationModelAdmin):
 
 @admin.register(DrawModel)
 class DrawModelAdmin(admin.ModelAdmin):
-    list_display = ['contest_name', 'draw_150_for_35_days_name', 'draw_100_for_28_days', 'draw_50_for_21_days', 'date_created']
+    list_display = ['contest_name', 'winner_name', 'level_name', 'date_created', 'last_modified']
 
     def contest_name(self, obj):
         return obj.contest.name
 
-    def draw_150_for_35_days_name(self, obj):
-        return f"{obj.draw_150_for_35_days.display_name} ({obj.draw_150_for_35_days.email})"
+    def winner_name(self, obj):
+        return f"{obj.winner.display_name} ({obj.winner.email})"
 
-    def draw_100_for_28_days(self, obj):
-        return f"{obj.draw_100_for_28.display_name} ({obj.draw_100_for_28.email})"
-
-    def draw_50_for_21_days(self, obj):
-        return f"{obj.draw_100_for_28.display_name} ({obj.draw_100_for_28.email})"
+    def level_name(self, obj):
+        return f"{obj.level.name}"
 
     def has_module_permission(self, request):
         return request.user.is_admin() if request.user.is_authenticated else False

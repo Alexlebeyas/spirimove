@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # 'rest_framework.authtoken',
     'djoser',
     'drf_standardized_errors',
+    'storages',
 
     'apps.users',
     'apps.contest',
@@ -193,3 +194,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AZURE_ACCOUNT_NAME = ""
+AZURE_ACCOUNT_KEY = ""
+AZURE_MEDIA_CONTAINER_NAME = ""
+AZURE_URL_EXPIRATION_SECS = ""

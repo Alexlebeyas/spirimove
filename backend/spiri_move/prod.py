@@ -29,8 +29,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SECURE_BROWSER_XSS_FILTER =True
+SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_SSL_REDIRECT = True
 
 LOGGING = {
     'version': 1,
@@ -50,21 +51,16 @@ LOGGING = {
     },
 }
 
+# Files Storage settings
+DEFAULT_FILE_STORAGE = 'spiri_move.azure_storage.AzureMediaStorage'
 
-COMPRESS_ENABLED = True
-COMPRESS_OFFLINE = True
-COMPRESS_CSS_HASHING_METHOD = 'content'
-COMPRESS_FILTERS = {
-    'css':[
-        'compressor.filters.css_default.CssAbsoluteFilter',
-        'compressor.filters.cssmin.rCSSMinFilter',
-    ],
-    'js':[
-        'compressor.filters.jsmin.JSMinFilter',
-    ]
-}
+MEDIA_LOCATION = "media"
 
-HTML_MINIFY = True
-JS_MINIFY = True
-KEEP_COMMENTS_ON_MINIFYING = False
-CONSERVATIVE_WHITESPACE_ON_MINIFYING = False
+AZURE_ACCOUNT_NAME = "spirimovestorage"
+AZURE_ACCOUNT_KEY = os.environ.get('AZURE_ACCOUNT_KEY')
+AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
+MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
+AZURE_OVERWRITE_FILES = False
+AZURE_MEDIA_CONTAINER_NAME = "spiri-pictures"
+AZURE_URL_EXPIRATION_SECS = 30
+
