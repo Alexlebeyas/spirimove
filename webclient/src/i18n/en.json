@@ -3,6 +3,12 @@
     "Home": {
       "AddParticipation": "Add participation"
     },
+    "Navigation": {
+      "Feed": "Feed",
+      "Leaderboard": "Leaderboard",
+      "About": "About Spiri-Move",
+      "MySpiriMove": "My Spiri-Move"
+    },
     "NotFound": {
       "Title": "Page not found",
       "GoBack": "Go back"

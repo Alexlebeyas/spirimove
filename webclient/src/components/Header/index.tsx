@@ -5,17 +5,20 @@ import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useLocation } from 'react-router-dom';
 import { useIsAuthenticated } from '@azure/msal-react';
-
-const navigation = [
-  { name: 'Feed', to: '/' },
-  { name: 'Leaderboard', to: '/leaderboard' },
-  { name: 'About', to: '/about' },
-  { name: 'My Spiri-Move', to: '/my-spiri-move' },
-];
+import { useTranslation } from 'react-i18next';
 
 export const Header = () => {
   const isAuth = useIsAuthenticated();
   const location = useLocation();
+  const { t } = useTranslation();
+
+  const navigation = [
+    { name: t('Navigation.Feed'), to: '/' },
+    { name: t('Navigation.Leaderboard'), to: '/leaderboard' },
+    { name: t('Navigation.About'), to: 'https://spoc.spiria.com/display/fun/Spiri-Move' },
+    { name: t('Navigation.MySpiriMove'), to: '/my-spiri-move' },
+  ];
+
   return (
     <Disclosure as="nav" className="fixed left-0 top-0 w-full bg-gray-800">
       {({ open }) => (

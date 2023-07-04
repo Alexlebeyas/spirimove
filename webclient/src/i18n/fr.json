@@ -3,6 +3,12 @@
     "Home": {
       "AddParticipation": "Ajouter une participation"
     },
+    "Navigation": {
+      "Feed": "Fil d'actualité",
+      "Leaderboard": "Classment",
+      "About": "Détails du Spiri-Move",
+      "MySpiriMove": "Mon Spiri-Move"
+    },
     "NotFound": {
       "Title": "Page non trouvé",
       "GoBack": "Retourner"
