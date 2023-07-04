@@ -12,6 +12,7 @@ import random
 @admin.register(ContestsModel)
 class ActivitiesModelAdmin(admin.ModelAdmin):
     list_display = ['name', 'start_date', 'end_date', 'is_open', 'date_created', 'last_modified', 'draw_action']
+    fields = ['name', 'start_date', 'end_date', 'is_open']
 
     def has_module_permission(self, request):
         return request.user.is_admin() if request.user.is_authenticated else False
@@ -36,11 +37,12 @@ class ActivitiesModelAdmin(admin.ModelAdmin):
             winner = make_draw_between_list(list(list_potential_winner), winner_list)
             if winner:
                 winner_list.append(winner)
-                DrawModel.objects.update_or_create(
+                draw_element, updated = DrawModel.objects.update_or_create(
                     contest=contest,
-                    winner=User.objects.get(pk=winner['user__pk']),
                     level=level
                 )
+                draw_element.winner = User.objects.get(pk=winner['user__pk'])
+                draw_element.save()
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 

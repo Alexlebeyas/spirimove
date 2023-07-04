@@ -66,6 +66,7 @@ class ParticipationModel(models.Model):
         self.points = 1
         if self.type:
             self.points = self.type.points
+            self.is_intensive = False
         elif self.is_intensive:
             self.points += 1
         super().save(*args, **kwargs)
