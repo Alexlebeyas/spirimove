@@ -6,25 +6,25 @@
 trigger:
   branches:
     include:
-    - develop
+      - develop
 
 pr:
   autoCancel: true
 
 resources:
-- repo: self
+  - repo: self
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '18.x'
-  displayName: 'Install Node.js'
+  - task: NodeTool@0
+    inputs:
+      versionSpec: "18.x"
+    displayName: "Install Node.js"
 
-- script: |
-    npm install --legacy-peer-deps
-    npm run build
-  workingDirectory: '$(build.sourcesdirectory)/webclient'
-  displayName: 'npm install and build'
+  - script: |
+      npm install --legacy-peer-deps --force
+      npm run build
+    workingDirectory: "$(build.sourcesdirectory)/webclient"
+    displayName: "npm install and build"

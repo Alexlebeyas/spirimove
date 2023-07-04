@@ -12,6 +12,26 @@
     "NotFound": {
       "Title": "Page not found",
       "GoBack": "Go back"
+    },
+    "Button": {
+      "Cancel": "Cancel",
+      "Submit": "Submit"
+    },
+    "Participation": {
+      "ActivityDate": "Activity Date",
+      "ActivityType": "Activity Type",
+      "ActivityDescription": "Description",
+      "HighIntensity": {
+        "Label": "High Intensity",
+        "Tooltip": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      },
+      "SelectImage": "Select Image",
+      "Title": "New Participation"
+    },
+    "ActivityType": {
+      "TypeNormal": "Normal",
+      "TypePopup": "Pop-up!",
+      "TypeGroup": "Group"
     }
   }
 }
