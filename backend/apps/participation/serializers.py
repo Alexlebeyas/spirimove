@@ -6,14 +6,6 @@ from apps.contest.serializers import ContestsModelSerializer
 from .models import ParticipationModel, ParticipationTypeModel, DrawModel, LevelModel
 
 
-class ListParticipationModelSerializer(serializers.ModelSerializer):
-    user = UserModelSerializer(many=False)
-    class Meta:
-        model = ParticipationModel
-        read_only_fields = ('user',)
-        fields = '__all__'
-
-
 class AddParticipationModelSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -24,7 +16,7 @@ class AddParticipationModelSerializer(serializers.ModelSerializer):
         """
             Check that the type of participation is active today.
         """
-        if ('type' in data) and not (data['type'].from_date <= data['date'] <= data['type'].to_date):
+        if ('type' in data and data['type'] and data['type'].from_date and data['type'].to_date) and not (data['type'].from_date <= data['date'] <= data['type'].to_date):
             raise serializers.ValidationError({"type": _("The type of participation chosen is not active on this date")})
 
         if not (data['contest'].start_date <= data['date'] <= data['contest'].end_date and data['contest'].is_open):
@@ -37,6 +29,14 @@ class ParticipationTypeModelSerializer(serializers.ModelSerializer):
         model = ParticipationTypeModel
         fields = ('id', 'name', 'description', 'from_date', 'to_date')
 
+
+class ListParticipationModelSerializer(serializers.ModelSerializer):
+    user = UserModelSerializer(many=False)
+    type = ParticipationTypeModelSerializer(many=False)
+    class Meta:
+        model = ParticipationModel
+        read_only_fields = ('user',)
+        fields = '__all__'
 
 class LevelModelSerializer(serializers.ModelSerializer):
     class Meta:

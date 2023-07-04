@@ -15,10 +15,7 @@ from .models import ParticipationModel, ParticipationTypeModel
 # Create your views here.
 class ListParticipationTypeAPIView(ListAPIView):
     """List all participation types that are active for that day"""
-    queryset = ParticipationTypeModel.objects.filter(
-        from_date__lte=datetime.today().date(),
-        to_date__gte=datetime.today().date(),
-    )
+    queryset = ParticipationTypeModel.objects.all()
     serializer_class = ParticipationTypeModelSerializer
 
 
@@ -80,6 +77,18 @@ class CreateParticipationAPIView(CreateAPIView):
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
+
+        try:
+            participation_type_from_fe = ['Normal', 'Défis Popup', 'Henry et sa Gang']
+            participation_type_name_choosen = participation_type_from_fe[int(request.data['type'])-1]
+            if participation_type_name_choosen == participation_type_from_fe[0]:
+                request.data['type'] = ""
+            else:
+                participation = ParticipationTypeModel.objects.get(name=participation_type_name_choosen)
+                request.data['type'] = participation.pk
+        except:
+            request.data['type'] = ""
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(user=request.user)
