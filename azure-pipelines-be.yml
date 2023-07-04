@@ -1,6 +1,6 @@
 # Docker
 # Build Docker-Compose
-trigger:
+trigger: 
   branches:
     include:
     - develop

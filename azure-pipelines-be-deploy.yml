@@ -77,8 +77,11 @@ stages:
             displayName: 'Use Python version'
 
           - task: AzureWebApp@1
-            displayName: 'Deploy Azure Web App : spiri-move-be'
+            displayName: 'Azure Web App Deploy: $(webAppName)'
             inputs:
               azureSubscription: $(azureServiceConnectionId)
+              deployToSlotOrASE: true
+              resourceGroupName: Backend
+              slotName: production
               appName: $(webAppName)
               package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
