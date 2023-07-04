@@ -31,14 +31,13 @@ stages:
       
     - script: |
         npm ci --legacy-peer-deps
-        npm run build
       workingDirectory: '$(build.sourcesdirectory)/webclient'
       displayName: 'Install dependencies and build app'
 
     - task: ArchiveFiles@2
       displayName: 'Package build'
       inputs:
-        rootFolderOrFile: '$(build.sourcesdirectory)/webclient/dist'
+        rootFolderOrFile: '$(build.sourcesdirectory)/webclient'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
@@ -71,4 +70,4 @@ stages:
               slotName: production
               appName: $(webAppName)
               package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
-              startUpCommand: 'pm2 serve /home/site/wwwroot --spa --no-daemon'
+              startUpCommand: 'npm run dev'
