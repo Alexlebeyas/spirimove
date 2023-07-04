@@ -1,8 +1,8 @@
 from .settings import *
 
-ALLOWED_HOSTS = ['spiri_move.spiria.com']  # TODO add allowed hosts
+ALLOWED_HOSTS = ['spiri-move-be.azurewebsites.net']
 PROJECT_PROTOCOL = 'https://'
-PROJECT_DOMAIN = ''  # TODO add production domain
+PROJECT_DOMAIN = 'spiri-move-be.azurewebsites.net'
 PROJECT_URI = "".join((PROJECT_PROTOCOL, PROJECT_DOMAIN))
 SECRET_KEY = os.environ['SECRET_KEY']
 
@@ -49,6 +49,17 @@ LOGGING = {
             'propagate': True,
         },
     },
+}
+
+DATABASES = {
+   'default': {
+       'ENGINE': 'django.db.backends.postgresql_psycopg2',
+       'NAME': os.environ['POSTGRES_DB_NAME'],
+       'USER': os.environ['POSTGRES_DB_USER'],
+       'PASSWORD': os.environ['POSTGRES_DB_PW'],
+       'HOST': os.environ['POSTGRES_DB_HOST'],
+       'PORT': os.environ['POSTGRES_DB_PORT'],
+   }
 }
 
 # Files Storage settings

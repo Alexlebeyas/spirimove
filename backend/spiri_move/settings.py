@@ -24,8 +24,6 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
-
-
 INSTALLED_APPS = [
     'djangocms_admin_style',
     'django.contrib.admin',
@@ -89,9 +87,9 @@ WSGI_APPLICATION = 'spiri_move.wsgi.application'
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-       'NAME': os.environ['POSTGRES_DB'],
-       'USER': os.environ['POSTGRES_USER'],
-       'PASSWORD': os.environ['POSTGRES_PASSWORD'],
+       'NAME': os.environ.get('POSTGRES_DB'),
+       'USER': os.environ.get('POSTGRES_USER'),
+       'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
        'HOST': 'db',
        'PORT': '5432',
    }

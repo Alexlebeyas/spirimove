@@ -63,8 +63,7 @@ stages:
               WebAppName: $(webAppName)
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               RuntimeStack: 'NODE|18-lts'
-              StartupCommand: 'npm run build'
+              StartupCommand: 'npm run dev'
               ScriptType: 'Inline Script'
               InlineScript: |
                 npm install --legacy-peer-deps
-                npm run build --if-present
