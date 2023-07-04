@@ -31,6 +31,14 @@
       "Title": "Page not found",
       "GoBack": "Go back"
     },
+    "MySpiriMove": {
+      "Stats": {
+        "Title": "My Spiri-Move: {{name}}",
+        "Points": "{{points}} Participations",
+        "Streak": "{{streak}} day streak, keep it up!",
+        "RewardLevel": "You are eligible for {{rewardLevel}} prizes."
+      }
+    },
     "Time": {
       "DayShortName": "d"
     },

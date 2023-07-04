@@ -28,8 +28,16 @@
       "Toronto": "Toronto"
     },
     "NotFound": {
-      "Title": "Page non trouvé",
+      "Title": "Page introuvable",
       "GoBack": "Retourner"
+    },
+    "MySpiriMove": {
+      "Stats": {
+        "Title": "Mon Spiri-Move: {{name}}",
+        "Points": "{{points}} Participations",
+        "Streak": "{{streak}} jours d'affilée, continue comme ca!",
+        "RewardLevel": "Tu es éligible pour {{rewardLevel}} prix."
+      }
     },
     "Time": {
       "DayShortName": "j"
