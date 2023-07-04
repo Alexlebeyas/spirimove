@@ -1,41 +1,26 @@
-export interface Language {
-  langId: string;
-  langText: string;
-}
-
 const localStorageKey = 'currentLang';
-let currentLanguage: Language;
+let currentLanguage: string;
 
-export const defaultLanguage: Language = {
-  langId: 'en',
-  langText: 'English',
-};
-
-export const Languages = [
-  {
-    langId: 'en',
-    langText: 'English',
+export const LANGUAGES = {
+  EN: {
+    name: 'en',
+    key: 'English',
   },
-  {
-    langId: 'fr',
-    langText: 'Français',
+  FR: {
+    name: 'fr',
+    key: 'French',
   },
-];
-
-export const getLanguageById = function (langId: string): Language | undefined {
-  return Languages.find((l) => l.langId === langId);
 };
 
 export const getCurrentLanguage = function () {
   if (!currentLanguage) {
-    const langId = localStorage.getItem(localStorageKey) ?? Languages[0].langId;
-    const value = getLanguageById(langId) ?? Languages[0];
-    setCurrentLanguage(value);
+    const language = localStorage.getItem(localStorageKey) ?? LANGUAGES.EN.name;
+    setCurrentLanguage(language);
   }
   return currentLanguage;
 };
 
-export const setCurrentLanguage = function (lang: Language) {
-  localStorage.setItem(localStorageKey, lang.langId);
+export const setCurrentLanguage = function (lang: string) {
+  localStorage.setItem(localStorageKey, lang);
   currentLanguage = lang;
 };

@@ -1,30 +1,31 @@
-import { TAILWIND_COLORS } from '@/constants';
-
 interface Props {
   name: string;
   image?: string;
+  size: number;
+  fontSize: number;
 }
 
 const getInitials = (name: string) => {
   const splitFullname = name.split(' ');
-  const firstNameInitial = splitFullname[0].charAt(0);
-  const lastNameInitial = splitFullname[splitFullname.length - 1].charAt(0);
+  const firstName = splitFullname[0];
+  const lastName = splitFullname[splitFullname.length - 1];
 
-  return `${firstNameInitial}${lastNameInitial}`;
+  return `${firstName.charAt(0)}${lastName.charAt(0)}`;
 };
 
-export const ProfileImage: React.FC<Props> = ({ name, image }) => {
+export const ProfileImage: React.FC<Props> = ({ name, image, size, fontSize }) => {
   const initials = getInitials(name);
-  const backgroundColor = TAILWIND_COLORS[Math.floor(Math.random() * TAILWIND_COLORS.length)];
-
   return image ? (
-    <div className="flex h-[45px] w-[45px] select-none items-center justify-center">
-      <img className="h-auto w-full rounded-full" src={image} alt="" />
+    <div
+      style={{ width: `${size}px`, height: `${size}px` }}
+      className="flex select-none items-center justify-center overflow-hidden rounded-full"
+    >
+      <img src={image} />
     </div>
   ) : (
     <div
-      style={{ backgroundColor }}
-      className={`flex h-[45px] w-[45px] select-none items-center justify-center rounded-full text-lg font-semibold text-white`}
+      style={{ width: `${size}px`, height: `${size}px`, fontSize: `${fontSize}px` }}
+      className={`flex select-none items-center justify-center rounded-full bg-[#e0303b] font-semibold text-white`}
     >
       {initials}
     </div>

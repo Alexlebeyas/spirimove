@@ -1,17 +1,38 @@
 {
   "translation": {
+    "Common": {
+      "Save": "Save",
+      "Cancel": "Cancel",
+      "Office": "Office",
+      "Language": "Language",
+      "English": "English",
+      "French": "French"
+    },
+    "Header": {
+      "Feed": "Feed",
+      "Leaderboard": "Leaderboard",
+      "MySpiriMove": "My Spiri Move",
+      "About": "About",
+      "MyProfile": "My Profile",
+      "Logout": "Logout"
+    },
     "Home": {
       "AddParticipation": "Add participation"
     },
-    "Navigation": {
-      "Feed": "Feed",
-      "Leaderboard": "Leaderboard",
-      "About": "About Spiri-Move",
-      "MySpiriMove": "My Spiri-Move"
+    "Leaderboard": {
+      "AllOffices": "All offices"
+    },
+    "Office": {
+      "Montreal": "Montreal",
+      "Gatineau": "Gatineau",
+      "Toronto": "Toronto"
     },
     "NotFound": {
       "Title": "Page not found",
       "GoBack": "Go back"
+    },
+    "Time": {
+      "DayShortName": "d"
     },
     "Button": {
       "Cancel": "Cancel",

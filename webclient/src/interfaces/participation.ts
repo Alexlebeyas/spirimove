@@ -1,14 +1,12 @@
-import { IUser } from '@/interfaces';
-
 export interface IParticipation {
   id: number;
+  name: string;
   description: string;
   date: string;
-  image: string;
-  is_intensive: boolean;
   date_created: string;
-  last_modified: string;
-  type: number;
-  contest: number;
-  user: IUser;
+  image: string;
+  user: {
+    display_name: string;
+    profile_picture: string;
+  };
 }

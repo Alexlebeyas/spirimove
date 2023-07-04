@@ -1,5 +1,5 @@
 export interface ICreateParticipationForm {
-  contestId: string;
+  contestId: number;
   name: string;
   description: string;
   date: string;

@@ -1,21 +1,26 @@
 import { ProfileImage } from '@/components';
-import { IUser } from '@/interfaces';
 import { DateTime } from 'luxon';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   description: string;
   date: string;
   dateCreated: string;
   image: string;
-  user: IUser;
+  user: {
+    display_name: string;
+    pofile_picture?: string;
+  };
 }
 
 export const ParticipationCard: React.FC<Props> = ({ description, date, dateCreated, image, user }) => {
+  const { t } = useTranslation();
+
   const renderCreationTime = () => {
     const diff = DateTime.now().diff(DateTime.fromISO(dateCreated), ['day', 'hour', 'minute', 'second']).toObject();
 
     if (diff.days !== 0) {
-      return `${diff.days}d`;
+      return `${diff.days}${t('Time.DayShortName')}`;
     }
 
     if (diff.hours !== 0) {
@@ -34,7 +39,7 @@ export const ParticipationCard: React.FC<Props> = ({ description, date, dateCrea
       <div className="p-3">
         <div className="flex items-center">
           <div className="mr-2">
-            <ProfileImage name={user.display_name} image={user.profile_picture} />
+            <ProfileImage name={user.display_name} image={user.pofile_picture} size={45} fontSize={18} />
           </div>
           <div>
             <div className=" text-base font-semibold">{user.display_name}</div>

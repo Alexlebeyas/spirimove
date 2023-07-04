@@ -1,4 +1,4 @@
-import logo from '@/assets/images/logo.png';
+import logo from '@/assets/images/logo.svg';
 import { Disclosure } from '@headlessui/react';
 import { ProfileDropdownMenu } from '@/components';
 import CloseIcon from '@mui/icons-material/Close';
@@ -8,19 +8,20 @@ import { useIsAuthenticated } from '@azure/msal-react';
 import { useTranslation } from 'react-i18next';
 
 export const Header = () => {
-  const isAuth = useIsAuthenticated();
-  const location = useLocation();
   const { t } = useTranslation();
 
+  const isAuth = useIsAuthenticated();
+  const location = useLocation();
+
   const navigation = [
-    { name: t('Navigation.Feed'), to: '/' },
-    { name: t('Navigation.Leaderboard'), to: '/leaderboard' },
-    { name: t('Navigation.About'), to: 'https://spoc.spiria.com/display/fun/Spiri-Move' },
-    { name: t('Navigation.MySpiriMove'), to: '/my-spiri-move' },
+    { name: t('Header.Feed'), to: '/' },
+    { name: t('Header.Leaderboard'), to: '/leaderboard' },
+    { name: t('Header.MySpiriMove'), to: '/my-spiri-move' },
+    { name: t('Header.About'), to: 'https://spoc.spiria.com/display/fun/Spiri-Move', target: '_blank' },
   ];
 
   return (
-    <Disclosure as="nav" className="fixed left-0 top-0 w-full bg-gray-800">
+    <Disclosure as="nav" className="fixed left-0 top-0 z-[999] w-full bg-gray-800">
       {({ open }) => (
         <>
           <div className="mx-auto w-[85%]">
@@ -37,7 +38,7 @@ export const Header = () => {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="hidden sm:block">
                   <div className="flex items-center space-x-4">
-                    <div className="mr-6 w-[100px]">
+                    <div className="mr-8 w-[80px]">
                       <img src={logo} alt="" />
                     </div>
                     {isAuth &&
@@ -45,6 +46,7 @@ export const Header = () => {
                         <Link
                           key={item.name}
                           to={item.to}
+                          target={item.target}
                           className={`rounded-md px-3 py-2 text-sm font-medium ${
                             location.pathname === item.to
                               ? 'bg-gray-900 text-white'

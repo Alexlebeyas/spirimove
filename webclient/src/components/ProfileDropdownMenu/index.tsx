@@ -1,24 +1,28 @@
 import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
-import SignOutButton from '@/components/SignOutButton';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link } from 'react-router-dom';
+import { ProfileImage } from '@/components';
+import useUserStore from '@/stores/useUserStore';
+import { useTranslation } from 'react-i18next';
+import { useMsal } from '@azure/msal-react';
 
 export const ProfileDropdownMenu = () => {
-  const data = {
-    image: '',
+  const { t } = useTranslation();
+  const user = useUserStore((state) => state.user);
+
+  const { instance } = useMsal();
+
+  const onLogoutHandler = () => {
+    instance.logoutRedirect({ postLogoutRedirectUri: '/logout' });
   };
+
   return (
     <>
       <Menu as="div" className="relative">
         <div>
           <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
             <span className="sr-only">Open user menu</span>
-            {data.image ? (
-              <img className="rounded-md-m-md-full h-8 w-8" src={data.image} alt="" />
-            ) : (
-              <AccountCircleIcon color="primary" fontSize="large" />
-            )}
+            <ProfileImage name={user.display_name} image={user.profile_picture} size={45} fontSize={18} />
           </Menu.Button>
         </div>
         <Transition
@@ -34,15 +38,20 @@ export const ProfileDropdownMenu = () => {
             <Menu.Item>
               {({ active }) => (
                 <Link to="/profile" className={`${active && 'bg-gray-100'} block px-4 py-2 text-sm text-gray-700`}>
-                  Your Profile
+                  {t('Header.MyProfile')}
                 </Link>
               )}
             </Menu.Item>
             <Menu.Item>
               {({ active }) => (
-                <a href="/logout" className={`${active && 'bg-gray-100'} block px-4 py-2 text-sm text-gray-700`}>
-                  <SignOutButton />
-                </a>
+                <button
+                  onClick={onLogoutHandler}
+                  className={`${
+                    active && 'bg-gray-100'
+                  }  w-full px-4 py-2 text-left text-sm text-gray-700 hover:cursor-pointer`}
+                >
+                  {t('Header.Logout')}
+                </button>
               )}
             </Menu.Item>
           </Menu.Items>

@@ -5,15 +5,34 @@ import Home from '@/pages/Home';
 import Login from '@/pages/Login';
 import NotFound from '@/pages/NotFound';
 import Logout from '@/pages/Logout';
+import Leaderboard from '@/pages/Leaderboard';
+import Profile from '@/pages/Profile';
 
 const Router = () => {
   return (
     <Routes>
       <Route
         path="/"
+        index
         element={
           <PrivateRoute>
             <Home />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/leaderboard"
+        element={
+          <PrivateRoute>
+            <Leaderboard />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <PrivateRoute>
+            <Profile />
           </PrivateRoute>
         }
       />

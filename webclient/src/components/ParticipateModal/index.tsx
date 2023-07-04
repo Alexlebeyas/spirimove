@@ -30,13 +30,13 @@ const mobileStyle = {
 };
 
 interface Props {
-  contestId: string;
+  contestId: number;
   startDate: string;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const Participate: React.FC<Props> = ({ contestId, startDate, open, setOpen }) => {
+export const ParticipateModal: React.FC<Props> = ({ contestId, startDate, open, setOpen }) => {
   const [mobile, setMobile] = useState(window.innerWidth <= 500);
 
   const handleWindowSizeChange = () => {
@@ -67,5 +67,3 @@ const Participate: React.FC<Props> = ({ contestId, startDate, open, setOpen }) =
     </div>
   );
 };
-
-export default Participate;

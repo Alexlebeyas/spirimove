@@ -25,7 +25,7 @@ import {
 interface Props {
   startDate: string;
   endDate: string;
-  contestId: string;
+  contestId: number;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
