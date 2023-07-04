@@ -5,6 +5,7 @@ import Home from '@/pages/Home';
 import Login from '@/pages/Login';
 import NotFound from '@/pages/NotFound';
 import Logout from '@/pages/Logout';
+import { MySpiriMove } from '@/pages/MySpiriMove';
 import Leaderboard from '@/pages/Leaderboard';
 import Profile from '@/pages/Profile';
 
@@ -17,6 +18,14 @@ const Router = () => {
         element={
           <PrivateRoute>
             <Home />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/my-spiri-move"
+        element={
+          <PrivateRoute>
+            <MySpiriMove />
           </PrivateRoute>
         }
       />

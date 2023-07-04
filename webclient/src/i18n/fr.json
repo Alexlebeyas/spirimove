@@ -31,6 +31,14 @@
       "Title": "Page introuvable",
       "GoBack": "Retourner"
     },
+    "ContestCalendar": {
+      "Progression": "Ma progression Spiri-Move",
+      "Date": "Date",
+      "ParticipationType": "Type de participation",
+      "Description": "Description de l'activité",
+      "Intensity": "Intensité",
+      "Approved": "Status de la participation"
+    },
     "MySpiriMove": {
       "Stats": {
         "Title": "Mon Spiri-Move: {{name}}",
@@ -54,10 +62,12 @@
         "Label": "Haute Intensité",
         "Tooltip": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
       },
+      "Approved": "Approuvée",
+      "NotApproved": "Non Approuvée",
       "SelectImage": "Choisir Image",
       "Title": "Nouvelle Participation"
     },
-    "ActivityType": {
+    "ParticipationType": {
       "TypeNormal": "Normal",
       "TypePopup": "Pop-up!",
       "TypeGroup": "Groupe"

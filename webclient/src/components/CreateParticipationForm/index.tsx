@@ -143,6 +143,12 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
             id="outlined-basic"
             label="Activity Description"
             variant="outlined"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setParticipationData({
+                ...participationData,
+                description: e.target.value,
+              })
+            }
           />
         </div>
 

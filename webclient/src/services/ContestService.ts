@@ -1,6 +1,6 @@
 import ApiService from '@/services/ApiService';
 
-class ContestService {
+export class ContestService {
   async getCurrent() {
     return (await ApiService.get('/all/contests')).data[0];
   }

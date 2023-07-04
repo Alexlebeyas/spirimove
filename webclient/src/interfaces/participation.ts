@@ -9,4 +9,13 @@ export interface IParticipation {
     display_name: string;
     profile_picture: string;
   };
+  type: {
+    id: number;
+    description: string;
+    from_date: string;
+    to_date: string;
+    name: string;
+  };
+  is_intensive: boolean;
+  is_approved: boolean;
 }
