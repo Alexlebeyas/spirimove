@@ -11,7 +11,7 @@ class UserAdmin(DjangoUserAdmin):
     model = User
     fieldsets = (
         (None, {'fields': ('display_name', 'phone', 'password', )}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'office',)}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
@@ -34,7 +34,7 @@ class UserAdmin(DjangoUserAdmin):
 
     def has_module_permission(self, request):
         if request.user.is_authenticated:
-            return request.user.is_superuser or request.user.is_admin()
+            return request.user.is_superuser and request.user.is_admin()
         return False
 
 

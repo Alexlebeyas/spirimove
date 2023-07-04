@@ -93,16 +93,11 @@ class User(AbstractUser):
 
     def save(self, *args, **kwargs):
         super(User, self).save(*args, **kwargs)
-        self.groups.clear()
-        # Handle default groupe
-        if not self.roles.count():
+        if not self.groups.all().exists():
             default_role = Role.objects.filter(is_default=True).first()
             group, created = Group.objects.get_or_create(name=default_role.role)
             self.groups.add(group)
-        else:
-            for role in self.roles.all():
-                group, created = Group.objects.get_or_create(name=role.role)
-                self.groups.add(group)
+
 
     def __str__(self):
         return self.email

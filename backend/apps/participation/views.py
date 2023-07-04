@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
+from django.utils.decorators import method_decorator
 from .serializers import *
 from .models import ParticipationModel, ParticipationTypeModel
 
@@ -180,14 +181,12 @@ class ListMyOfficeleaderBoardAPIView(ListAPIView):
 
     serializer_class = LeaderBoardSerializer
 
-
+@method_decorator(cache_page(60 * 30), name='dispatch')
 class ListStatAPIView(ListAPIView):
     """ Globals Stats
-    60 Seconds x 10 so 10 Min for cahce
+    60 Seconds x 10 so 30 Minutes for cache
     """
-
-    @cache_page(60 * 10)
-    def list(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         return Response(get_list_stats_date(get_object_or_404(ContestsModel, pk=kwargs['contest_id'])))
 
 
@@ -211,8 +210,11 @@ class ListMyStatAPIView(ListAPIView):
         while yesterday.date() in list_date:
             streak += 1
             yesterday = yesterday - timedelta(1)
-        user_stats = list(users_data_with_total_points)[0]
-        user_stats.setdefault('streak',streak)
+
+        user_stats = []
+        if users_data_with_total_points.count():
+            user_stats = list(users_data_with_total_points)[0]
+            user_stats.setdefault('streak', streak)
 
         return Response(user_stats)
 
@@ -233,16 +235,16 @@ def get_list_stats_date(contest, user=None):
     list_date = get_list_contest_date(contest)
     stats_for_users = ParticipationModel.objects.filter(is_to_considered_for_day=True, is_approved=True). \
         exclude(Q(user__office=None) | Q(user__is_active=False)). \
-        values_list('contest__name', 'user__office', 'user__display_name', 'date', 'points', 'user'). \
+        values_list('user__pk', 'contest__name', 'user__office', 'user__display_name', 'date', 'points'). \
         order_by('user__display_name', 'contest__name', 'date'). \
         annotate(total_points=Sum('points'))
 
     if user:
-        stats_for_users = stats_for_users.filter(user=user)
+        stats_for_users = stats_for_users.filter(user__pk=user.pk)
 
     result = {}
     for element in stats_for_users:
-        result.setdefault(element[2], {}).setdefault(element[3], element[5])
+        result.setdefault(element[3], {}).setdefault(element[4], element[6])
 
     for el in result:
         # Set points to 0 on all dates where the user did not participate
@@ -252,6 +254,6 @@ def get_list_stats_date(contest, user=None):
     return result
 
 def get_list_contest_date(contest):
-    return [contest.start_date + timedelta(days=x) for x in range((contest.end_date - contest.start_date).days)]
+    return [contest.start_date + timedelta(days=x) for x in range((contest.end_date - (contest.start_date-timedelta(1))).days)]
 
 

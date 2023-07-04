@@ -5,19 +5,19 @@ from django.contrib import messages
 from .models import *
 
 
-@admin.action(description=_("Mark selected participations as approved"))
+@admin.action(description=_("Approuver les participations selectionnées"))
 def make_active(modeladmin, request, queryset):
     list_participation = list(queryset)[:]
     queryset.update(is_approved=True)
-    messages.success(request, _("Selected Participation(s) Marked as approved Successfully !!"))
+    messages.success(request, _("Participation(s) sélectionnée(s) Marqué(s) comme approuvé(s) avec succès !!"))
     for participation in list_participation:
         handleConsideredParticipation(participation)
 
-@admin.action(description=_("Mark selected participations as disapproved"))
+@admin.action(description=_("Désapprouver les participations selectionnées"))
 def make_inactive(modeladmin, request, queryset):
     list_participation = list(queryset)[:]
     queryset.update(is_approved=False)
-    messages.success(request, _("Selected Participation(s) Marked as not approved Successfully !!"))
+    messages.success(request, _("Participation(s) sélectionnée(s) Marquée(s) comme non approuvée(s) !!"))
     for participation in list_participation:
         handleConsideredParticipation(participation)
 

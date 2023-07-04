@@ -64,9 +64,7 @@ DATABASES = {
 
 # Files Storage settings
 DEFAULT_FILE_STORAGE = 'spiri_move.azure_storage.AzureMediaStorage'
-
 MEDIA_LOCATION = "media"
-
 AZURE_ACCOUNT_NAME = "spirimovestorage"
 AZURE_ACCOUNT_KEY = os.environ.get('AZURE_ACCOUNT_KEY')
 AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
@@ -74,4 +72,3 @@ MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
 AZURE_OVERWRITE_FILES = False
 AZURE_MEDIA_CONTAINER_NAME = "spiri-pictures"
 AZURE_URL_EXPIRATION_SECS = 30
-

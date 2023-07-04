@@ -11,7 +11,7 @@ class ListParticipationModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParticipationModel
         read_only_fields = ('user',)
-        exclude = ('is_to_considered_for_day', 'points', 'is_approved')
+        fields = '__all__'
 
 
 class AddParticipationModelSerializer(serializers.ModelSerializer):
