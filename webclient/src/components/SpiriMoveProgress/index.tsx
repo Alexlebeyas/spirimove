@@ -24,8 +24,6 @@ export const SpiriMoveProgress: React.FC<Props> = ({ contest }) => {
     );
   }
 
-  console.log(contest);
-
   const datesArray = getDates(contest.start_date, contest.end_date);
 
   const contestParticipations: IMySpiriMoveProgress[] = [];

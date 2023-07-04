@@ -24,7 +24,6 @@ export const SpiriMoveProgressRow: React.FC<Props> = ({ currentDate, participati
     );
   }
 
-  console.log(participation.is_approved);
   const typeName = GetTranslatedParticipationType(
     participation.type ? participation.type.id : ParticipationType.Normal
   );

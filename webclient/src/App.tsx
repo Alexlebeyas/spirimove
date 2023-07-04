@@ -6,6 +6,7 @@ import useUserStore from '@/stores/useUserStore';
 
 import '@/i18n/i18n';
 import { useIsAuthenticated } from '@azure/msal-react';
+import useParticipationStore from '@/stores/useParticipationStore';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,11 +15,13 @@ const App = () => {
 
   const fetchConstest = useContestStore((state) => state.fetchConstest);
   const fetchUser = useUserStore((state) => state.fetchUser);
+  const fetchParticipations = useParticipationStore((state) => state.fetchParticipations);
 
   useEffect(() => {
     const initStore = async () => {
       await fetchConstest();
       await fetchUser();
+      await fetchParticipations();
       setIsLoading(false);
     };
 

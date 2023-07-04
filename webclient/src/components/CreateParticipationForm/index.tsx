@@ -22,6 +22,8 @@ import {
   Tooltip,
 } from '@mui/material';
 
+import useParticipationStore from '@/stores/useParticipationStore';
+
 interface Props {
   startDate: string;
   endDate: string;
@@ -45,10 +47,13 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
 
   const { t } = useTranslation();
 
-  const onSubmitHandler = (e: React.MouseEvent<HTMLElement>) => {
+  const { refreshParticipations } = useParticipationStore((state) => state);
+
+  const onSubmitHandler = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     ParticipationService.submitParticipation(participationData);
     setOpen(false);
+    await refreshParticipations();
   };
 
   const onCancelHandler = (e: React.MouseEvent<HTMLElement>) => {
@@ -130,9 +135,9 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
               label="Activity Type"
               onChange={onParticipationTypeChange}
             >
-              <MenuItem value={1}>{t('ActivityType.TypeNormal')}</MenuItem>
-              <MenuItem value={2}>{t('ActivityType.TypePopup')}</MenuItem>
-              <MenuItem value={3}>{t('ActivityType.TypeGroup')}</MenuItem>
+              <MenuItem value={1}>{t('ParticipationType.Normal')}</MenuItem>
+              <MenuItem value={2}>{t('ParticipationType.Popup')}</MenuItem>
+              <MenuItem value={3}>{t('ParticipationType.Group')}</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -189,7 +194,13 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
         )}
 
         <div className="mb-6 md:flex md:items-center">
-          <Button className="w-full" variant="contained" component="label" onClick={onSubmitHandler}>
+          <Button
+            className="w-full"
+            variant="contained"
+            component="label"
+            onClick={onSubmitHandler}
+            disabled={!participationData.image || participationData.description === ''}
+          >
             {t('Button.Submit')}
           </Button>
         </div>

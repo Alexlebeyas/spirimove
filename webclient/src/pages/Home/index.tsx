@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PageContainer, ParticipationCard, ParticipateModal } from '@/components';
-import { useParticipations } from '@/hooks';
 import CircularProgress from '@mui/material/CircularProgress';
 import useContestStore from '@/stores/useContestStore';
+import useParticipationStore from '@/stores/useParticipationStore';
 
 const Home = () => {
   const { t } = useTranslation();
 
   const contest = useContestStore((state) => state.contest);
-  const { isLoading, participations } = useParticipations();
+  const { isLoading, participations } = useParticipationStore((state) => state);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
