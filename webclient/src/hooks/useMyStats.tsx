@@ -19,7 +19,8 @@ export const useMyStats = (contestId: string) => {
 
   useEffect(() => {
     getStats();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contestId]);
 
   return stats;
 };

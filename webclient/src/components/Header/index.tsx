@@ -22,7 +22,7 @@ export const Header = () => {
 
   return (
     <Disclosure as="nav" className="fixed left-0 top-0 z-[999] w-full bg-gray-800">
-      {({ open }) => (
+      {({ open, close }) => (
         <>
           <div className="mx-auto w-[85%]">
             <div className="relative flex h-16 items-center justify-between">
@@ -71,10 +71,10 @@ export const Header = () => {
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2">
               {navigation.map((item) => (
-                <Disclosure.Button
+                <Link
                   key={item.name}
-                  as="a"
-                  href={item.to}
+                  to={item.to}
+                  onClick={() => close()}
                   className={`block rounded-md px-3 py-2 text-base font-medium ${
                     location.pathname === item.to
                       ? 'bg-gray-900 text-white'
@@ -83,7 +83,7 @@ export const Header = () => {
                   aria-current={location.pathname === item.to ? 'page' : undefined}
                 >
                   {item.name}
-                </Disclosure.Button>
+                </Link>
               ))}
             </div>
           </Disclosure.Panel>

@@ -1,19 +1,20 @@
-import { useNavigate } from 'react-router-dom';
-import { useIsAuthenticated } from '@azure/msal-react';
-
-// TODO Add roles verification later;
+import { useEffect } from 'react';
+import { InteractionStatus } from '@azure/msal-browser';
+import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 
 interface Props {
   children: JSX.Element;
 }
 
 export const PrivateRoute: React.FC<Props> = ({ children }) => {
-  const isAuth = useIsAuthenticated();
-  const navigate = useNavigate();
+  const { instance, inProgress } = useMsal();
+  const isAuthenticated = useIsAuthenticated();
 
-  if (!isAuth) {
-    navigate('/login');
-  }
+  useEffect(() => {
+    if (!isAuthenticated && inProgress === InteractionStatus.None) {
+      instance.loginRedirect();
+    }
+  }, [isAuthenticated, inProgress, instance]);
 
   return children;
 };

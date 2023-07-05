@@ -58,7 +58,7 @@ const Leaderboard = () => {
                         </div>
                       </div>
                     </div>
-                    <LinearProgress value={Number(data.total_days)} max={numberDaysFromStart} />
+                    <LinearProgress value={Number(10)} max={numberDaysFromStart} />
                   </div>
                   <div className="mb-3 h-[1px] w-full bg-slate-200 last:hidden"></div>
                 </>

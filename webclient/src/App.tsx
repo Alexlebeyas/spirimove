@@ -5,29 +5,42 @@ import useContestStore from '@/stores/useContestStore';
 import useUserStore from '@/stores/useUserStore';
 
 import '@/i18n/i18n';
-import { useIsAuthenticated } from '@azure/msal-react';
 import useParticipationStore from '@/stores/useParticipationStore';
+import { useIsAuthenticated, useMsal } from '@azure/msal-react';
+import { InteractionStatus } from '@azure/msal-browser';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
-
-  const isAuth = useIsAuthenticated();
 
   const fetchConstest = useContestStore((state) => state.fetchConstest);
   const fetchUser = useUserStore((state) => state.fetchUser);
   const fetchParticipations = useParticipationStore((state) => state.fetchParticipations);
 
+  const { inProgress } = useMsal();
+  const isAuthenticated = useIsAuthenticated();
+
   useEffect(() => {
-    const initStore = async () => {
+    const initStores = async () => {
       await fetchConstest();
       await fetchUser();
       await fetchParticipations();
       setIsLoading(false);
     };
 
-    initStore();
+    if (isAuthenticated && inProgress === InteractionStatus.None) {
+      initStores();
+      return;
+    }
+
+    if (!isAuthenticated && inProgress === InteractionStatus.None) {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+      return;
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuth]);
+  }, [isAuthenticated, inProgress]);
 
   return (
     <>
@@ -41,5 +54,3 @@ const App = () => {
 };
 
 export default App;
-
-// use the loader function for react router

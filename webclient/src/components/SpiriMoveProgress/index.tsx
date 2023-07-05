@@ -28,8 +28,6 @@ export const SpiriMoveProgress: React.FC<Props> = ({ contest }) => {
 
   const contestParticipations: IMySpiriMoveProgress[] = [];
 
-  console.log(participations);
-
   datesArray.forEach((currentDate) => {
     const currentDayParticipations = participations.filter((p) => p.date === currentDate);
     if (currentDayParticipations.length === 0) {
@@ -67,9 +65,9 @@ export const SpiriMoveProgress: React.FC<Props> = ({ contest }) => {
             ))}
           </thead>
           <tbody className="flex-1 sm:flex-none">
-            {contestParticipations.map((currentParticipation) => (
+            {contestParticipations.map((currentParticipation, index) => (
               <SpiriMoveProgressRow
-                key={currentParticipation.contestDate + currentParticipation.participation?.type}
+                key={index}
                 currentDate={currentParticipation.contestDate}
                 participation={currentParticipation.participation}
               />
