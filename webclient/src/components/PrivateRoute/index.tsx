@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { InteractionStatus } from '@azure/msal-browser';
+import { InteractionStatus, RedirectRequest } from '@azure/msal-browser';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 
 interface Props {
@@ -12,7 +12,8 @@ export const PrivateRoute: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (!isAuthenticated && inProgress === InteractionStatus.None) {
-      instance.loginRedirect();
+      const redirectOpts: RedirectRequest = { scopes: ['User.Read'], prompt: 'consent' };
+      instance.loginRedirect(redirectOpts);
     }
   }, [isAuthenticated, inProgress, instance]);
 
