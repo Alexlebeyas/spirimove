@@ -6,12 +6,14 @@
       "Office": "Bureau",
       "Language": "Langage",
       "English": "Anglais",
-      "French": "Français"
+      "French": "Français",
+      "Yes": "Oui",
+      "No": "Non"
     },
     "Header": {
       "Feed": "Flux",
       "Leaderboard": "Classement",
-      "MySpiriMove": "Mon Spiri Move",
+      "MySpiriMove": "Mon Spiri-Move",
       "About": "À Propos",
       "MyProfile": "Mon Profile",
       "Logout": "Se déconnecter"
@@ -36,14 +38,14 @@
       "Date": "Date",
       "ParticipationType": "Type de participation",
       "Description": "Description de l'activité",
-      "Intensity": "Intensité",
+      "Intensity": "Haute Intensité",
       "Approved": "Status de la participation"
     },
     "MySpiriMove": {
       "Stats": {
         "Title": "Mon Spiri-Move: {{name}}",
         "Points": "{{points}} Participations",
-        "Streak": "{{streak}} jours d'affilée, continue comme ca!",
+        "Streak": "{{streak}} jours consécutifs, continue comme ca!",
         "RewardLevel": "Tu es éligible pour {{rewardLevel}} prix."
       }
     },
@@ -60,7 +62,7 @@
       "ActivityDescription": "Description",
       "HighIntensity": {
         "Label": "Haute Intensité",
-        "Tooltip": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        "Tooltip": "Par exemple : Entraînement à haute intensité, course à pied, vélo, boxe, sports d'équipes (hockey, soccer, etc...) ou plus de 10 000 pas par jour."
       },
       "Approved": "Approuvée",
       "NotApproved": "Non Approuvée",
@@ -70,7 +72,7 @@
     "ParticipationType": {
       "TypeNormal": "Normal",
       "TypePopup": "Pop-up!",
-      "TypeGroup": "Groupe"
+      "TypeGroup": "Henri pis sa gang"
     }
   }
 }

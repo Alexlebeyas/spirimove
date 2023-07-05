@@ -6,12 +6,14 @@
       "Office": "Office",
       "Language": "Language",
       "English": "English",
-      "French": "French"
+      "French": "French",
+      "Yes": "Yes",
+      "No": "No"
     },
     "Header": {
       "Feed": "Feed",
       "Leaderboard": "Leaderboard",
-      "MySpiriMove": "My Spiri Move",
+      "MySpiriMove": "My Spiri-Move",
       "About": "About",
       "MyProfile": "My Profile",
       "Logout": "Logout"
@@ -60,7 +62,7 @@
       "ActivityDescription": "Description",
       "HighIntensity": {
         "Label": "High Intensity",
-        "Tooltip": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        "Tooltip": "For example: High-intensity training, running, cycling, boxing, team sports (hockey, soccer, etc...) or more than 10,000 steps a day."
       },
       "Approved": "Approved",
       "NotApproved": "Not Approved",
@@ -70,7 +72,7 @@
     "ParticipationType": {
       "Normal": "Normal",
       "Popup": "Pop-up!",
-      "Group": "Group"
+      "Group": "King of the Hill"
     }
   }
 }

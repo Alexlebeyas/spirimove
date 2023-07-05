@@ -24,6 +24,8 @@ const MyContestScore: React.FC<Props> = ({ contestId }) => {
     rewardLevel++;
   }
 
+  const streakText = stats.streak > 1 ? t('MySpiriMove.Stats.Streak', { streak: stats.streak }) : '';
+
   return (
     <div className="mb-6 w-full overflow-hidden rounded-md bg-white shadow-md">
       <a
@@ -36,9 +38,7 @@ const MyContestScore: React.FC<Props> = ({ contestId }) => {
         <p className="font-normal text-gray-700 dark:text-gray-400">
           {t('MySpiriMove.Stats.Points', { points: stats.total_points })}
         </p>
-        <p className="font-normal text-gray-700 dark:text-gray-400">
-          {t('MySpiriMove.Stats.Streak', { streak: stats.streak })}
-        </p>
+        <p className="font-normal text-gray-700 dark:text-gray-400">{streakText}</p>
         <p className="font-normal text-gray-700 dark:text-gray-400">
           {t('MySpiriMove.Stats.RewardLevel', { rewardLevel: rewardLevel })}
         </p>

@@ -28,13 +28,15 @@ export const SpiriMoveProgressRow: React.FC<Props> = ({ currentDate, participati
     participation.type ? participation.type.id : ParticipationType.Normal
   );
 
+  const showIntensityResult = participation.type ? participation.type.id === ParticipationType.Normal : false;
+  const intensityValue = participation.is_intensive ? t('Common.Yes') : t('Common.No');
   return (
     <tr className="flex-no wrap mb-2 flex flex-col hover:bg-gray-100 sm:mb-0 sm:table-row">
       <td className="border-grey-light border p-3">{currentDate}</td>
       <td className="border-grey-light border p-3">{t(typeName)}</td>
       <td className="border-grey-light border p-3">{participation.description}</td>
       <td className="border-grey-light border p-3">
-        {participation.is_intensive ? t('Participation.HighIntensity.Label') : t('Participation.LowIntensity.Label')}
+        {showIntensityResult ? intensityValue : <hr className="h-px border-0 bg-gray-500" />}
       </td>
       <td className="border-grey-light border p-3">
         {participation.is_approved ? <DoneIcon style={{ color: 'green' }} /> : <CancelIcon style={{ color: 'red' }} />}
