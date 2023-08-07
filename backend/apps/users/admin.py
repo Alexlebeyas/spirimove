@@ -34,7 +34,7 @@ class UserAdmin(DjangoUserAdmin):
 
     def has_module_permission(self, request):
         if request.user.is_authenticated:
-            return request.user.is_superuser and request.user.is_admin()
+            return request.user.is_superuser
         return False
 
 
