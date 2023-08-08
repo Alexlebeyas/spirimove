@@ -1,19 +1,22 @@
-from datetime import date
-from django.db import models
-from django.contrib.auth.models import Group, AbstractUser, BaseUserManager
-from django.utils.translation import gettext_lazy as _
-from spiri_move.azure_storage import get_storage
-from slugify import slugify
 import uuid
+from datetime import date
+
+from django.contrib.auth.models import Group, AbstractUser, BaseUserManager
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from slugify import slugify
+from spiri_move.azure_storage import get_storage
 
 
 def profile_picture_path(instance, filename):
     todays_date = date.today()
     ext = filename.split('.')[-1]
     if instance.display_name:
-        return f"profile/{slugify(instance.display_name)}_{todays_date.year}_{todays_date.month}_{todays_date.day}.{ext}"
+        return f"profile/{slugify(instance.display_name)}_{todays_date.year}_{todays_date.month}_" \
+               f"{todays_date.day}.{ext}"
     else:
         return f"profile{todays_date.year}_{todays_date.month}_{todays_date.day}_{uuid.uuid1()}.{ext}"
+
 
 # manager for our custom model
 class UserManager(BaseUserManager):
@@ -65,10 +68,12 @@ class Role(models.Model):
 
     def __str__(self):
         return self.role
+
     role = models.CharField(_('Role'), choices=ROLE_CHOICES, max_length=50, unique=True)
     is_default = models.BooleanField(default=False)
     created = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
+
     def save(self, *args, **kwargs):
         super(Role, self).save(*args, **kwargs)
         Group.objects.get_or_create(name=self.role)
@@ -83,7 +88,8 @@ class User(AbstractUser):
     phone = models.CharField(_('Phone'), max_length=256, null=True, blank=True)
     office = models.CharField(_('Office'), max_length=256, null=True, blank=True)
     display_name = models.CharField(_('Display Name'), max_length=256, null=True, blank=True)
-    profile_picture = models.ImageField(upload_to=profile_picture_path, storage=get_storage(private=True), null=True, blank=True)
+    profile_picture = models.ImageField(upload_to=profile_picture_path, storage=get_storage(private=True), null=True,
+                                        blank=True)
     roles = models.ManyToManyField(Role, blank=True)
 
     USERNAME_FIELD = 'email'
@@ -97,7 +103,6 @@ class User(AbstractUser):
             default_role = Role.objects.filter(is_default=True).first()
             group, created = Group.objects.get_or_create(name=default_role.role)
             self.groups.add(group)
-
 
     def __str__(self):
         return self.email

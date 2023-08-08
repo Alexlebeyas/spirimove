@@ -12,7 +12,7 @@ export const PrivateRoute: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (!isAuthenticated && inProgress === InteractionStatus.None) {
-      const redirectOpts: RedirectRequest = { scopes: ['User.Read'], prompt: 'consent' };
+      const redirectOpts: RedirectRequest = { scopes: ['User.Read']};
       instance.loginRedirect(redirectOpts);
     }
   }, [isAuthenticated, inProgress, instance]);

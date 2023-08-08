@@ -1,8 +1,9 @@
 from django.contrib import admin
+from django.contrib import messages
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
-from django.contrib import messages
-from .models import *
+
+from .models import ParticipationModel, DrawModel, ParticipationTypeModel, LevelModel, handleConsideredParticipation
 
 
 @admin.action(description=_("Approuver les participations selectionnées"))
@@ -12,6 +13,7 @@ def make_active(modeladmin, request, queryset):
     messages.success(request, _("Participation(s) sélectionnée(s) Marqué(s) comme approuvé(s) avec succès !!"))
     for participation in list_participation:
         handleConsideredParticipation(participation)
+
 
 @admin.action(description=_("Désapprouver les participations selectionnées"))
 def make_inactive(modeladmin, request, queryset):
@@ -24,7 +26,8 @@ def make_inactive(modeladmin, request, queryset):
 
 @admin.register(ParticipationModel)
 class ParticipationModelAdmin(admin.ModelAdmin):
-    list_display = ['user', 'contest_name',  'description', 'type_name', 'points', 'is_intensive', 'date', 'image_displayed', 'is_approved', 'is_to_considered_for_day',]
+    list_display = ['user', 'contest_name', 'description', 'type_name', 'points', 'is_intensive', 'date',
+                    'image_displayed', 'is_approved', 'is_to_considered_for_day', ]
     list_filter = ('contest__name',)
     actions = [make_active, make_inactive]
 
@@ -38,7 +41,8 @@ class ParticipationModelAdmin(admin.ModelAdmin):
         return obj.type.name if obj.type else "/"
 
     def image_displayed(self, obj):
-        return format_html(f"<a target='_blank' href='{obj.image.url}'><img height='100px' width='100px' src='{obj.image.url}'></a>")
+        return format_html(
+            f"<a target='_blank' href='{obj.image.url}'><img height='100px' width='100px' src='{obj.image.url}'></a>")
 
     def has_delete_permission(self, request, obj=None):
         return False

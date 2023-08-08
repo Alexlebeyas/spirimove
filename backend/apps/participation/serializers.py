@@ -1,13 +1,12 @@
+from apps.contest.serializers import ContestsModelSerializer
+from apps.users.serializers import UserModelSerializer
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
-from apps.users.serializers import UserModelSerializer
-from apps.contest.serializers import ContestsModelSerializer
 
 from .models import ParticipationModel, ParticipationTypeModel, DrawModel, LevelModel
 
 
 class AddParticipationModelSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ParticipationModel
         exclude = ('is_to_considered_for_day', 'user', 'points', 'is_approved', 'date_created', 'last_modified')
@@ -16,8 +15,10 @@ class AddParticipationModelSerializer(serializers.ModelSerializer):
         """
             Check that the type of participation is active today.
         """
-        if ('type' in data and data['type'] and data['type'].from_date and data['type'].to_date) and not (data['type'].from_date <= data['date'] <= data['type'].to_date):
-            raise serializers.ValidationError({"type": _("The type of participation chosen is not active on this date")})
+        if ('type' in data and data['type'] and data['type'].from_date and data['type'].to_date) and not (
+                data['type'].from_date <= data['date'] <= data['type'].to_date):
+            raise serializers.ValidationError(
+                {"type": _("The type of participation chosen is not active on this date")})
 
         if not (data['contest'].start_date <= data['date'] <= data['contest'].end_date and data['contest'].is_open):
             raise serializers.ValidationError({"date": _("The date does not match this Spiri-Move")})
@@ -33,10 +34,12 @@ class ParticipationTypeModelSerializer(serializers.ModelSerializer):
 class ListParticipationModelSerializer(serializers.ModelSerializer):
     user = UserModelSerializer(many=False)
     type = ParticipationTypeModelSerializer(many=False)
+
     class Meta:
         model = ParticipationModel
         read_only_fields = ('user',)
         fields = '__all__'
+
 
 class LevelModelSerializer(serializers.ModelSerializer):
     class Meta:

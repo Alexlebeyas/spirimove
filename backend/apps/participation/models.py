@@ -1,22 +1,25 @@
+import uuid
+from datetime import date
+
 from apps.contest.models import ContestsModel
 from apps.users.models import User
-from datetime import date
 from django.db import models
 from django.db.models.aggregates import Max
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from spiri_move.azure_storage import get_storage
 from slugify import slugify
-import uuid
+from spiri_move.azure_storage import get_storage
 
 
 def participation_picture_path(instance, filename):
     todays_date = date.today()
     ext = filename.split('.')[-1]
     if instance.user.display_name:
-        return f"participations/{todays_date.year}/{todays_date.month}/{todays_date.day}/{slugify(instance.user.display_name)}_{uuid.uuid1()}.{ext}"
+        return f"participations/{todays_date.year}/{todays_date.month}/{todays_date.day}/" \
+               f"{slugify(instance.user.display_name)}_{uuid.uuid1()}.{ext}"
     else:
         return f"participations/{todays_date.year}/{todays_date.month}/{todays_date.day}/{uuid.uuid1()}.{ext}"
+
 
 class ParticipationTypeModel(models.Model):
     class Meta:
@@ -47,14 +50,15 @@ class ParticipationModel(models.Model):
     description = models.TextField(null=True, blank=True)
     points = models.PositiveSmallIntegerField(null=False, blank=False, default=1)
     date = models.DateField(null=False, blank=False)
-    image = models.ImageField(upload_to=participation_picture_path, storage=get_storage(private=True), null=False, blank=False)
+    image = models.ImageField(upload_to=participation_picture_path, storage=get_storage(private=True), null=False,
+                              blank=False)
     contest = models.ForeignKey(ContestsModel, on_delete=models.CASCADE)
     is_to_considered_for_day = models.BooleanField(default=False)
     is_intensive = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
     date_created = models.DateTimeField(editable=False)
     last_modified = models.DateTimeField()
-    
+
     def __str___(self):
         return self.pk
 
@@ -121,7 +125,7 @@ def handleConsideredParticipation(participation):
         contest=participation.contest,
     )
     participations_day_for_type.update(is_to_considered_for_day=False)
-    list_anotate = participations_day_for_type.\
+    list_anotate = participations_day_for_type. \
         values('user', 'type', 'date', 'contest', 'is_approved').annotate(max_points=Max('points'))
     if list_anotate:
         main_participation = ParticipationModel.objects.filter(

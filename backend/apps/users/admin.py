@@ -2,15 +2,16 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.contrib.auth.models import Group
 from django.utils.translation import gettext_lazy as _
-from .models import User, Role
 from rest_framework.authtoken.models import TokenProxy
+
+from .models import User, Role
 
 
 @admin.register(User)
 class UserAdmin(DjangoUserAdmin):
     model = User
     fieldsets = (
-        (None, {'fields': ('display_name', 'phone', 'password', )}),
+        (None, {'fields': ('display_name', 'phone', 'password',)}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'office',)}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
@@ -18,13 +19,14 @@ class UserAdmin(DjangoUserAdmin):
 
     add_fieldsets = (
         (None, {
-            'classes': ('wide', ),
+            'classes': ('wide',),
             'fields': ('email', 'password1', 'password2'),
         }),
     )
-    list_display = ['email', 'display_name', 'first_name', 'last_name', 'office', 'group_list', 'role_list', 'is_superuser']
+    list_display = ['email', 'display_name', 'first_name', 'last_name', 'office', 'group_list', 'role_list',
+                    'is_superuser']
     search_fields = ('email', 'first_name', 'last_name')
-    ordering = ('email', )
+    ordering = ('email',)
 
     def group_list(self, obj):
         return ' / '.join([group.name for group in obj.groups.all()])
@@ -44,6 +46,7 @@ class RoleModelAdmin(admin.ModelAdmin):
 
     def has_module_permission(self, request):
         return False
+
 
 admin.site.unregister(Group)
 admin.site.unregister(TokenProxy)

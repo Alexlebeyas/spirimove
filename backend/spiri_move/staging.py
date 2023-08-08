@@ -1,19 +1,36 @@
-import os
-from .settings import *
-import dj_database_url
+from .base_settings import *
 
-ALLOWED_HOSTS = ['call-app-demo.herokuapp.com']  # TODO add allowed hosts
-PROJECT_PROTOCOL = 'https://'
-PROJECT_DOMAIN = ''  # TODO add staging domain
-PROJECT_URI = "".join((PROJECT_PROTOCOL, PROJECT_DOMAIN))
-SECRET_KEY = os.environ['SECRET_KEY']
-
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-SESSION_ENGINE = "django.contrib.sessions.backends.cache"
-SESSION_CACHE_ALIAS = "default"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-DATABASES = {'default': dj_database_url.config()}
+ALLOWED_HOSTS = ['']
+PROJECT_PROTOCOL = 'https://'
+PROJECT_DOMAIN = ''
+PROJECT_URI = "".join((PROJECT_PROTOCOL, PROJECT_DOMAIN))
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 8,
+        }
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
 LOGGING = {
     'version': 1,
@@ -32,3 +49,14 @@ LOGGING = {
         },
     },
 }
+
+# Files Storage settings
+DEFAULT_FILE_STORAGE = 'spiri_move.azure_storage.AzureMediaStorage'
+MEDIA_LOCATION = "staging"
+AZURE_ACCOUNT_NAME = "spirimovestorage"
+AZURE_ACCOUNT_KEY = os.environ.get('AZURE_ACCOUNT_KEY')
+AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
+MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
+AZURE_OVERWRITE_FILES = False
+AZURE_MEDIA_CONTAINER_NAME = "spiri-pictures"
+AZURE_URL_EXPIRATION_SECS = 30

@@ -1,15 +1,18 @@
-from apps.contest.models import ContestsModel
 from datetime import datetime, timedelta
+
+from apps.contest.models import ContestsModel
 from django.db.models import Sum, Count, Q
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from rest_framework import status
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
-from django.utils.decorators import method_decorator
-from .serializers import *
-from .models import ParticipationModel, ParticipationTypeModel
+
+from .models import ParticipationTypeModel, DrawModel, ParticipationModel, LevelModel
+from .serializers import AddParticipationModelSerializer, ParticipationTypeModelSerializer, \
+    ListParticipationModelSerializer, LevelModelSerializer, LeaderBoardSerializer, DrawModelSerializer
 
 
 # Create your views here.
@@ -21,6 +24,7 @@ class ListParticipationTypeAPIView(ListAPIView):
 
 class DrawResultAPIView(ListAPIView):
     """ Best Results"""
+
     def list(self, request, *args, **kwargs):
         contest = get_object_or_404(ContestsModel, pk=kwargs['contest_id'])
         queryset = DrawModel.objects.filter(contest=contest)
@@ -32,6 +36,7 @@ class DrawResultAPIView(ListAPIView):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
     serializer_class = DrawModelSerializer
 
 
@@ -43,6 +48,7 @@ class ListAllParticipationAPIView(ListAPIView):
 
 class ListMyParticipationAPIView(ListAPIView):
     """List all participations from the current user and active contests"""
+
     def list(self, request, *args, **kwargs):
         queryset = ParticipationModel.objects.filter(
             user=request.user,
@@ -62,6 +68,7 @@ class ListMyParticipationAPIView(ListAPIView):
 
 class CreateParticipationAPIView(CreateAPIView):
     """ Create a new participation for the current user """
+
     def list(self, request, *args, **kwargs):
         queryset = ParticipationModel.objects.filter(
             user=request.user,
@@ -80,13 +87,13 @@ class CreateParticipationAPIView(CreateAPIView):
 
         try:
             participation_type_from_fe = ['Normal', 'Défis Popup', 'Henry et sa Gang']
-            participation_type_name_choosen = participation_type_from_fe[int(request.data['type'])-1]
+            participation_type_name_choosen = participation_type_from_fe[int(request.data['type']) - 1]
             if participation_type_name_choosen == participation_type_from_fe[0]:
                 request.data['type'] = ""
             else:
                 participation = ParticipationTypeModel.objects.get(name=participation_type_name_choosen)
                 request.data['type'] = participation.pk
-        except:
+        except Exception:
             request.data['type'] = ""
 
         serializer = self.get_serializer(data=request.data)
@@ -104,6 +111,7 @@ class UpdateParticipationAPIView(UpdateAPIView):
         Update the participation whose id has been passed through the request
         The participation must be for the current user
     """
+
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = get_object_or_404(ParticipationModel, pk=kwargs['pk'], user=request.user)
@@ -127,6 +135,7 @@ class DeleteParticipationAPIView(DestroyAPIView):
         Delete the participation whose id has been passed through the request
         The participation must be for the current user
     """
+
     def destroy(self, request, *args, **kwargs):
         instance = get_object_or_404(ParticipationModel, pk=kwargs['pk'], user=request.user)
         self.perform_destroy(instance)
@@ -138,6 +147,7 @@ class DeleteParticipationAPIView(DestroyAPIView):
 
 class ListleaderBoardAPIView(ListAPIView):
     """ Leaderboard list """
+
     def list(self, request, *args, **kwargs):
         contest = get_object_or_404(ContestsModel, pk=kwargs['contest_id'])
         list_leaderboard = ParticipationModel.objects.filter(
@@ -165,6 +175,7 @@ class ListleaderBoardAPIView(ListAPIView):
 
 class ListMyOfficeleaderBoardAPIView(ListAPIView):
     """ Leaderboard for my office """
+
     def list(self, request, *args, **kwargs):
         contest = get_object_or_404(ContestsModel, pk=kwargs['contest_id'])
         liste_leaderboard = ParticipationModel.objects.filter(
@@ -177,7 +188,7 @@ class ListMyOfficeleaderBoardAPIView(ListAPIView):
             order_by('user__display_name', 'contest__name'). \
             annotate(total_points=Sum('points'), total_days=Count('user__display_name'))
 
-        queryset = liste_leaderboard.order_by('-total_points')[:contest.nb_element_leaderboard]\
+        queryset = liste_leaderboard.order_by('-total_points')[:contest.nb_element_leaderboard] \
             if contest.nb_element_leaderboard else liste_leaderboard.order_by('-total_points')
 
         page = self.paginate_queryset(queryset)
@@ -190,11 +201,13 @@ class ListMyOfficeleaderBoardAPIView(ListAPIView):
 
     serializer_class = LeaderBoardSerializer
 
+
 @method_decorator(cache_page(60 * 30), name='dispatch')
 class ListStatAPIView(ListAPIView):
     """ Globals Stats
     60 Seconds x 10 so 30 Minutes for cache
     """
+
     def get(self, request, *args, **kwargs):
         return Response(get_list_stats_date(get_object_or_404(ContestsModel, pk=kwargs['contest_id'])))
 
@@ -204,14 +217,14 @@ class ListMyStatAPIView(ListAPIView):
 
     def get(self, request, *args, **kwargs):
         contest = get_object_or_404(ContestsModel, pk=kwargs['contest_id'])
-        user_participations_data = ParticipationModel.objects.\
+        user_participations_data = ParticipationModel.objects. \
             filter(contest=contest, user=request.user, is_to_considered_for_day=True, is_approved=True). \
             exclude(Q(user__office=None) | Q(user__is_active=False)). \
             values_list('contest__name', 'user__display_name', 'date', 'points')
 
         list_date = list(user_participations_data.values_list('date', flat=True).distinct())
 
-        users_data_with_total_points = user_participations_data.values('contest__name', 'user__display_name').\
+        users_data_with_total_points = user_participations_data.values('contest__name', 'user__display_name'). \
             order_by('user__display_name', 'contest__name').annotate(total_points=Sum('points'))
 
         yesterday = datetime.now() - timedelta(1)
@@ -230,6 +243,7 @@ class ListMyStatAPIView(ListAPIView):
 
 class ListDateForContestAPIView(ListAPIView):
     """ List of contest dates"""
+
     def list(self, request, *args, **kwargs):
         return Response(get_list_contest_date(get_object_or_404(ContestsModel, pk=kwargs['contest_id'])))
 
@@ -262,7 +276,7 @@ def get_list_stats_date(contest, user=None):
         result[el] = sorted(result[el].items(), key=lambda x: x[0])
     return result
 
+
 def get_list_contest_date(contest):
-    return [contest.start_date + timedelta(days=x) for x in range((contest.end_date - (contest.start_date-timedelta(1))).days)]
-
-
+    return [contest.start_date + timedelta(days=x) for x in
+            range((contest.end_date - (contest.start_date - timedelta(1))).days)]

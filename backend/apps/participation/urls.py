@@ -1,4 +1,5 @@
 from django.urls import path
+
 from . import views
 
 urlpatterns = [
@@ -9,7 +10,8 @@ urlpatterns = [
     path("all/stats/dates/<int:contest_id>/", views.ListDateForContestAPIView.as_view(), name="all_stats_dates_list"),
     path("all/stats/<int:contest_id>/", views.ListStatAPIView.as_view(), name="all_stats_list"),
     path("draw/results/<int:contest_id>/", views.DrawResultAPIView.as_view(), name="draw_results"),
-    path("my/office/leaderboard/<int:contest_id>/", views.ListMyOfficeleaderBoardAPIView.as_view(), name="my_office_leaderboard_list"),
+    path("my/office/leaderboard/<int:contest_id>/", views.ListMyOfficeleaderBoardAPIView.as_view(),
+         name="my_office_leaderboard_list"),
     path("my/participations/", views.ListMyParticipationAPIView.as_view(), name="my_participations_list"),
     path("my/stats/<int:contest_id>/", views.ListMyStatAPIView.as_view(), name="my_stats_list"),
     path("create/participation/", views.CreateParticipationAPIView.as_view(), name="participations_create"),

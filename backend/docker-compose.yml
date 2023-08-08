@@ -5,22 +5,24 @@ services:
       context: .
       dockerfile: ./docker/django/Dockerfile
     environment:
-     - POSTGRES_USER=spiri_move
-     - POSTGRES_PASSWORD=12345
-     - POSTGRES_DB=spiri_move
+     - POSTGRES_DB_USER=spiri_move
+     - POSTGRES_DB_PW=12345
+     - POSTGRES_DB_NAME=spiri_move
     ports:
       - "8000:8000"
     volumes:
       - .:/spiri_move
     tty: true
     restart: always
-    command: sh -c "./docker/wait-for.sh -c 'nc -z db 5432' -t 30 && python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
+    command: sh -c "python manage.py runsslserver 0.0.0.0:8000"
   db:
    image: postgres:13-alpine
    environment:
-     - POSTGRES_USER=spiri_move
-     - POSTGRES_PASSWORD=12345
-     - POSTGRES_DB=spiri_move
+     - POSTGRES_DB_USER=spiri_move
+     - POSTGRES_DB_PW=12345
+     - POSTGRES_DB_NAME=spiri_move
    volumes:
      - data:/var/lib/postgresql/data
    expose:

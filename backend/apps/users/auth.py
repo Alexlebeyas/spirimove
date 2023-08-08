@@ -1,11 +1,13 @@
-from rest_framework import authentication
-from rest_framework import HTTP_HEADER_ENCODING, exceptions
-from django.utils.translation import gettext_lazy as _
 import requests
-from .exceptions import WrongTokenException
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.utils.crypto import get_random_string
-from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
+from rest_framework import HTTP_HEADER_ENCODING, exceptions
+from rest_framework import authentication
+
+from .exceptions import WrongTokenException
+
 
 def get_authorization_header(request):
     """
@@ -19,9 +21,11 @@ def get_authorization_header(request):
         auth = auth.encode(HTTP_HEADER_ENCODING)
     return auth
 
+
 def get_microsoft_info(access_token):
     r = requests.get(r'https://graph.microsoft.com/v1.0/me/', headers={'Authorization': f'Bearer {access_token}'})
     return r.json()
+
 
 def get_user_by_email(email):
     user = get_user_model().objects.filter(email=email)
@@ -29,6 +33,7 @@ def get_user_by_email(email):
         return None
 
     return user[0]
+
 
 class Authentication(authentication.BaseAuthentication):
     def authenticate(self, request):
@@ -59,13 +64,13 @@ class Authentication(authentication.BaseAuthentication):
         if not user:
             # User not found in the system, we should create a new user
             user = get_user_model().objects.create_user(
-                                            email=(microsoft_info['mail'] or microsoft_info['userPrincipalName']),
-                                            phone=microsoft_info['businessPhones'],
-                                            office=microsoft_info['officeLocation'],
-                                            display_name=microsoft_info['displayName'],
-                                            password=get_random_string(length=12),
-                                            first_name=microsoft_info.get('givenName', ''),
-                                            last_name=microsoft_info.get('surname', ''))
+                email=(microsoft_info['mail'] or microsoft_info['userPrincipalName']),
+                phone=microsoft_info['businessPhones'],
+                office=microsoft_info['officeLocation'],
+                display_name=microsoft_info['displayName'],
+                password=get_random_string(length=12),
+                first_name=microsoft_info.get('givenName', ''),
+                last_name=microsoft_info.get('surname', ''))
 
         if not user.is_active:
             raise exceptions.AuthenticationFailed(_('No such user'))

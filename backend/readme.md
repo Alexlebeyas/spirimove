@@ -43,17 +43,29 @@ After creating your first superuser, you must connect to the admin with him and 
     2 - create a contest.\
 You must follow the main link by "/admin"
 ~~~~
-Ex: http://127.0.0.1:8000/admin  (For local)
+Ex: https://127.0.0.1:8000/admin  (For local)
 ~~~~
 
 
 ## 6. Api Documentation:
 You can access the API documentation by accessing the main link
 ~~~~
-Ex: http://127.0.0.1:8000/ (For local)
+Ex: https://127.0.0.1:8000/ (For local)
 ~~~~
 
-## 7. Stop all containers:
+## 7. Run linter:
+You can run the linter by typing the following command in the web container:
+~~~~
+make lint
+~~~~
+
+## 8. Run test:
+You can run the test by typing the following command in the web container:
+~~~~
+make test
+~~~~
+
+## 9. Stop all containers:
 It could help to access the administration interface or to connect for the tests
 ~~~~
 docker stop $(docker ps -aq)

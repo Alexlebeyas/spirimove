@@ -5,3 +5,6 @@ RUN apt-get update -y && apt-get install libjpeg-dev libproj-dev gettext libgett
 RUN pip install pip
 RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
+RUN pip install -r requirements-dev.txt
+RUN apt-get install make
+RUN apt-get update

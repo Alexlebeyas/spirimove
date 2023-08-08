@@ -18,4 +18,3 @@ class ContestsModel(models.Model):
 
     def __str___(self):
         return self.name
-

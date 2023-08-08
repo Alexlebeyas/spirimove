@@ -1,13 +1,16 @@
-from django.contrib import admin, messages
-from django.urls import path, reverse
-from django.http import HttpResponseRedirect
-from django.utils.html import format_html
-from django.shortcuts import get_object_or_404
+import random
+
 from apps.participation.models import ParticipationModel, DrawModel, LevelModel
 from apps.users.models import User
-from django.db.models import Sum, Count
-from .models import *
-import random
+from django.contrib import admin
+from django.db.models import Count
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.urls import path, reverse
+from django.utils.html import format_html
+
+from .models import ContestsModel
+
 
 @admin.register(ContestsModel)
 class ActivitiesModelAdmin(admin.ModelAdmin):
@@ -58,6 +61,7 @@ def get_list_element_for_draw(contest):
         order_by('user__pk', 'user__office').annotate(total_days=Count('user__pk'))
 
     return list_with_total_days
+
 
 def make_draw_between_list(list_element, list_to_exclude=[]):
     final_list = [element for element in list_element if element not in list_to_exclude]

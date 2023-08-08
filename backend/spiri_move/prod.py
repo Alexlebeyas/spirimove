@@ -1,14 +1,14 @@
-from .settings import *
+from .base_settings import *
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = TEMPLATE_DEBUG = False
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 ALLOWED_HOSTS = ['spiri-move-be.azurewebsites.net']
 PROJECT_PROTOCOL = 'https://'
 PROJECT_DOMAIN = 'spiri-move-be.azurewebsites.net'
 PROJECT_URI = "".join((PROJECT_PROTOCOL, PROJECT_DOMAIN))
-SECRET_KEY = os.environ['SECRET_KEY']
-
-DEBUG = TEMPLATE_DEBUG = False
-
-MIDDLEWARE += ('whitenoise.middleware.WhiteNoiseMiddleware',)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -31,7 +31,6 @@ AUTH_PASSWORD_VALIDATORS = [
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_SSL_REDIRECT = True
 
 LOGGING = {
     'version': 1,
@@ -49,17 +48,6 @@ LOGGING = {
             'propagate': True,
         },
     },
-}
-
-DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql_psycopg2',
-       'NAME': os.environ['POSTGRES_DB_NAME'],
-       'USER': os.environ['POSTGRES_DB_USER'],
-       'PASSWORD': os.environ['POSTGRES_DB_PW'],
-       'HOST': os.environ['POSTGRES_DB_HOST'],
-       'PORT': os.environ['POSTGRES_DB_PORT'],
-   }
 }
 
 # Files Storage settings
