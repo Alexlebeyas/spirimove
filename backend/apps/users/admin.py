@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.contrib.auth.models import Group
 from django.utils.translation import gettext_lazy as _
+from django.utils.html import format_html
 from rest_framework.authtoken.models import TokenProxy
 
 from .models import User, Role
@@ -24,9 +25,15 @@ class UserAdmin(DjangoUserAdmin):
         }),
     )
     list_display = ['email', 'display_name', 'first_name', 'last_name', 'office', 'group_list', 'role_list',
-                    'is_superuser']
+                    'image_displayed', 'is_superuser']
     search_fields = ('email', 'first_name', 'last_name')
     ordering = ('email',)
+
+    def image_displayed(self, obj):
+        if obj.profile_picture:
+            return format_html(
+                f"<a target='_blank' href='{obj.profile_picture.url}'><img height='100px' width='100px' src='{obj.profile_picture.url}'></a>")
+        return "/"
 
     def group_list(self, obj):
         return ' / '.join([group.name for group in obj.groups.all()])

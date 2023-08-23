@@ -43,7 +43,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
   });
 
   const [tooltipVisibility, setTooltipVisibility] = useState(false);
-  const [fileName, setFileName] = useState('');
+  const [fileUrl, setfileUrl] = useState('');
 
   const { t } = useTranslation();
 
@@ -64,8 +64,8 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
   const handleImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const file = e.target?.files != undefined ? e.target.files[0] : undefined;
-    const fn = file != undefined ? file.name : '';
-    setFileName(fn);
+    const filePath = file != undefined ? URL.createObjectURL(file):'';
+    setfileUrl(filePath);
 
     setParticipationData({
       ...participationData,
@@ -108,6 +108,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
             </LocalizationProvider>
           </div>
         </div>
+
         <div className="mb-6">
           <input
             accept="image/*"
@@ -121,8 +122,8 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
             <Button className="w-full" variant="outlined" component="span" onChange={handleImageFile}>
               {t('Participation.SelectImage')}
             </Button>
-            <span>{fileName}</span>
           </label>
+          {fileUrl ? <img src={fileUrl} style={{ height:200}}/> : ''}
         </div>
         <div className="mb-6 md:flex md:items-center">
           <FormControl className="w-full" variant="outlined" style={{ width: '100%' }}>

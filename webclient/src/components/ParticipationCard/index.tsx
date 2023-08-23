@@ -9,7 +9,7 @@ interface Props {
   image: string;
   user: {
     display_name: string;
-    pofile_picture?: string;
+    profile_picture?: string;
   };
 }
 
@@ -39,7 +39,7 @@ export const ParticipationCard: React.FC<Props> = ({ description, date, dateCrea
       <div className="p-3">
         <div className="flex items-center">
           <div className="mr-2">
-            <ProfileImage name={user.display_name} image={user.pofile_picture} size={45} fontSize={18} />
+            <ProfileImage name={user.display_name} image={user.profile_picture} size={45} fontSize={18} />
           </div>
           <div>
             <div className=" text-base font-semibold">{user.display_name}</div>
