@@ -13,11 +13,9 @@
     "@azure/msal-browser": "^2.37.1",
     "@azure/msal-react": "^1.5.8",
     "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.15",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.6",
-    "@mui/styled-engine-sc": "^5.12.0",
     "@mui/x-date-pickers": "^6.9.0",
     "axios": "^1.4.0",
     "i18next": "^23.2.3",
@@ -27,7 +25,6 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^13.0.1",
     "react-router-dom": "^6.13.0",
-    "styled-components": "^6.0.0-rc.6",
     "zustand": "^4.3.8"
   },
   "devDependencies": {
