@@ -14,6 +14,20 @@
 
 You'll need to get [Node.js v18+](https://nodejs.org/en) installed on your local environement.
 
+* Create your local environment
+
+```sh
+cp .env.sample .env.local
+```
+
+This will configure your app to talk to your local Django backend. If you want to point to the real production environment instead, edit `.env.local` and change the value of `VITE_SPIRI_MOVE_API_URL`: 
+
+```
+VITE_SPIRI_MOVE_API_URL="https://spiri-move-be.azurewebsites.net/"
+```
+
+* Install node dependencies 
+
 ```sh
 npm install
 ```

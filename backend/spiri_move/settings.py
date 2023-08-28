@@ -6,8 +6,8 @@ DEBUG = True
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 INSTALLED_APPS += ["sslserver",]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
-ALLOWED_HOSTS = ['127.0.0.1']
 PROJECT_PROTOCOL = 'http://'
 PROJECT_DOMAIN = ''
 PROJECT_URI = "".join((PROJECT_PROTOCOL, PROJECT_DOMAIN))
