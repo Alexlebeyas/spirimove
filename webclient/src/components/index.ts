@@ -9,3 +9,4 @@ export * from './LinearProgress';
 export * from './AppLoading';
 export * from './ParticipateModal';
 export * from './ConfirmBox';
+export * from './LeaderboardTable';

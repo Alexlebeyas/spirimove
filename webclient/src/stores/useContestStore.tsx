@@ -11,7 +11,7 @@ interface ContestState {
 
 const useContestStore = create<ContestState>((set) => ({
   contest: {
-    id: 0,
+    id: 1,
     name: '',
     start_date: '',
     end_date: '',
