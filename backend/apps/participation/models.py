@@ -58,7 +58,7 @@ class ParticipationModel(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # This field could be use to check if it's extra activity
-    type = models.ForeignKey(ParticipationTypeModel, on_delete=models.CASCADE, null=True, blank=True)
+    type = models.ForeignKey(ParticipationTypeModel, on_delete=models.CASCADE, null=False, blank=False)
     description = models.TextField(null=True, blank=True)
     points = models.PositiveSmallIntegerField(null=False, blank=False, default=1)
     date = models.DateField(null=False, blank=False)
@@ -84,6 +84,22 @@ class ParticipationModel(models.Model):
         self.points = self.type.points
         if self.is_intensive:
             self.points += 1
+        super().save(*args, **kwargs)
+
+
+class ReactionModel(models.Model):
+    class Meta:
+        verbose_name = _('Reaction')
+        verbose_name_plural = _('Reactions')
+        unique_together = ["user", "participation"]
+        ordering = ['-pk']
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    participation = models.ForeignKey(ParticipationModel, on_delete=models.CASCADE)
+    reaction = models.CharField(_('Reactions'), max_length=150)
+
+    def save(self, *args, **kwargs):
+        self.reaction = self.reaction.lower()
         super().save(*args, **kwargs)
 
 

@@ -1,5 +1,5 @@
 import { ICreateParticipationForm } from '@/interfaces/ICreateParticipationForm';
-import { IParticipation } from '@/interfaces';
+import { IParticipation, ToggleReactionsType } from '@/interfaces';
 import ApiService from '@/services/ApiService';
 import { toast } from 'react-toastify';
 import { AxiosResponse } from 'axios';
@@ -9,7 +9,7 @@ import i18n from 'i18next';
 const ToastDisplay = (response:AxiosResponse<{ errors: {detail: string}[] }>, responseType:'success' | 'error') => {
   if (responseType === 'error') {
     toast.error(response?.data.errors[0].detail, {
-      position: toast.POSITION.TOP_RIGHT,      
+      position: toast.POSITION.TOP_RIGHT,
       autoClose: 20000,
     });
   } else {
@@ -70,6 +70,10 @@ class ParticipationService {
       .catch(function (error) {
         ToastDisplay(error.response, 'error');
       });
+  }
+
+  static toggleReactionParticipation(data: ToggleReactionsType) {
+    return ApiService.post(`reaction/participation/`, data)
   }
 }
 

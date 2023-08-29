@@ -46,7 +46,7 @@ fail-under=10
 #from-stdin=
 
 # Files or directories to be skipped. They should be base names, not paths.
-ignore=static,templates, venv, locale, CVS, wsgi.py, settings.py, prod.py, staging.py
+ignore=static,templates, venv, locale, CVS, wsgi.py, settings.py, prod.py, staging.py, media, migrations
 
 # Add files or directories matching the regular expressions patterns to the
 # ignore-list. The regex matches against paths and can be in Posix or Windows

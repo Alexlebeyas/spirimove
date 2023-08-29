@@ -10,8 +10,8 @@ from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, 
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 
-from .models import ParticipationTypeModel, DrawModel, ParticipationModel, LevelModel
-from .serializers import AddParticipationModelSerializer, ParticipationTypeModelSerializer, \
+from .models import ParticipationTypeModel, ParticipationModel, ReactionModel, LevelModel, DrawModel
+from .serializers import AddParticipationModelSerializer, ParticipationTypeModelSerializer, ReactionsModelSerializer, \
     ListParticipationModelSerializer, LevelModelSerializer, LeaderBoardSerializer, DrawModelSerializer
 
 
@@ -92,6 +92,34 @@ class CreateParticipationAPIView(CreateAPIView):
 
     parser_classes = (FormParser, MultiPartParser,)
     serializer_class = AddParticipationModelSerializer
+
+
+class ToggleReactionAPIView(CreateAPIView):
+    """ Toggle current user reaction for participation """
+
+    def handle_reaction(self, request, serializer):
+        current_reaction = ReactionModel.objects.filter(user=request.user,
+                                                        participation=serializer.data.get('participation'))
+        if current_reaction:
+            if current_reaction.first().reaction == serializer.data.get('reaction'):
+                current_reaction.delete()
+            else:
+                current_reaction.update(reaction=serializer.data.get('reaction'))
+        else:
+            ReactionModel.objects.create(
+                user=request.user,
+                participation=get_object_or_404(ParticipationModel, pk=serializer.data.get('participation')),
+                reaction=serializer.data.get('reaction')
+            )
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.handle_reaction(request, serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    serializer_class = ReactionsModelSerializer
 
 
 class UpdateParticipationAPIView(UpdateAPIView):

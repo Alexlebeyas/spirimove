@@ -13,7 +13,6 @@ const Home = () => {
   const { isLoading, participations, getParticipations } = fetchAllParticipations((state) => state);
   const { getParticipationsTypes } = fetchParticipationsType((state) => state);
 
-
   const contest = useContestStore((state) => state.contest);
 
   const [isOpen, setIsOpen] = useState(false);

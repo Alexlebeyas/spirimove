@@ -16,5 +16,6 @@ urlpatterns = [
     path("my/stats/<int:contest_id>/", views.ListMyStatAPIView.as_view(), name="my_stats_list"),
     path("create/participation/", views.CreateParticipationAPIView.as_view(), name="participations_create"),
     path("update/participation/<int:pk>/", views.UpdateParticipationAPIView.as_view(), name="update_participation"),
-    path("delete/participation/<int:pk>/", views.DeleteParticipationAPIView.as_view(), name="delete_participation")
+    path("delete/participation/<int:pk>/", views.DeleteParticipationAPIView.as_view(), name="delete_participation"),
+    path("reaction/participation/", views.ToggleReactionAPIView.as_view(), name="participation_reaction")
 ]

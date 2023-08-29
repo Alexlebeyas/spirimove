@@ -53,10 +53,8 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
 
   const updateMyParticipations = fetchMyParticipations((state) => state.getParticipations);
   const updateAllParticipations = fetchAllParticipations((state) => state.getParticipations);
-  
+
   const [canBeIntensive, setCanBeIntensive] = useState(participationsTypes.find((p) => p.id === participationData.type)?.can_be_intensive);
-
-
 
   const { t } = useTranslation();
 
@@ -73,7 +71,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
         updateAllParticipations();
       });
     }
-    
+
     setOpen(false);
   };
 
@@ -105,7 +103,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
       isIntensive: intensive,
     });
   };
-  
+
   return (
     <>
       <h1 className="mb-6">{!participationToEdit ? t('Participation.NewTitle'): t('Participation.EditTitle')}</h1>

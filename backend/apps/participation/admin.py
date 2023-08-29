@@ -98,7 +98,7 @@ class DrawModelAdmin(admin.ModelAdmin):
 
 @admin.register(ParticipationTypeModel)
 class ParticipationTypeModelAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description', 'date_created', 'can_be_intensive', 'can_add_more_by_day']
+    list_display = ['name', 'description', 'can_be_intensive', 'can_add_more_by_day', 'points', 'date_created']
 
     def has_module_permission(self, request):
         return request.user.is_admin() if request.user.is_authenticated else False

@@ -63,12 +63,11 @@ class Authentication(authentication.BaseAuthentication):
         user = get_user_by_email(microsoft_info['mail'] or microsoft_info['userPrincipalName'])
         if not user:
             # User not found in the system, we should create a new user
-            user = get_user_model().objects.create_user(
+            user, created = get_user_model().objects.get_or_create(
                 email=(microsoft_info['mail'] or microsoft_info['userPrincipalName']),
                 phone=microsoft_info['businessPhones'],
                 office=microsoft_info['officeLocation'],
                 display_name=microsoft_info['displayName'],
-                password=get_random_string(length=12),
                 first_name=microsoft_info.get('givenName', ''),
                 last_name=microsoft_info.get('surname', ''))
 

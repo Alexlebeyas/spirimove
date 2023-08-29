@@ -3,7 +3,7 @@ from apps.users.serializers import UserModelSerializer
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
-from .models import ParticipationModel, ParticipationTypeModel, DrawModel, LevelModel
+from .models import ParticipationModel, ParticipationTypeModel, DrawModel, LevelModel, ReactionModel
 
 
 class AddParticipationModelSerializer(serializers.ModelSerializer):
@@ -23,7 +23,6 @@ class AddParticipationModelSerializer(serializers.ModelSerializer):
         """
             Check that the type of participation is active today.
         """
-
         if 'type' in data and data['type']:
             if (data['type'].from_date and data['type'].to_date) and not (
                     data['type'].from_date <= data['date'] <= data['type'].to_date):
@@ -32,8 +31,8 @@ class AddParticipationModelSerializer(serializers.ModelSerializer):
 
             user_part_with_same_type_for_a_day = ParticipationModel.objects.filter(user=self.context.get('user'),
                                                                                    type=data['type'],
-                                                                                   date=data['date']).\
-                                                    exclude(pk=None if not self.instance else self.instance.pk)
+                                                                                   date=data['date']). \
+                exclude(pk=None if not self.instance else self.instance.pk)
 
             if not data['type'].can_add_more_by_day and user_part_with_same_type_for_a_day:
                 raise serializers.ValidationError(
@@ -50,9 +49,16 @@ class ParticipationTypeModelSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'description', 'from_date', 'to_date', 'can_be_intensive')
 
 
+class ReactionsModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReactionModel
+        fields = ('id', 'participation', 'reaction')
+
+
 class ListParticipationModelSerializer(serializers.ModelSerializer):
     user = UserModelSerializer(many=False)
     type = ParticipationTypeModelSerializer(many=False)
+    reactions = serializers.SerializerMethodField()
     status_display = serializers.CharField(
         source='get_status_display'
     )
@@ -61,6 +67,9 @@ class ListParticipationModelSerializer(serializers.ModelSerializer):
         model = ParticipationModel
         read_only_fields = ('user',)
         exclude = ('is_to_considered_for_day', 'status', 'is_approved', 'last_modified')
+
+    def get_reactions(self, obj):
+        return ReactionModel.objects.filter(participation__pk=obj.pk).values('user__display_name', 'reaction')
 
 
 class LevelModelSerializer(serializers.ModelSerializer):

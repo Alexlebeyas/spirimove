@@ -1,7 +1,7 @@
+import { create } from 'zustand';
 import { IParticipation } from '@/interfaces';
 import ApiService from '@/services/ApiService';
 import { IParticipationType } from '@/interfaces';
-import { create } from 'zustand';
 
 interface ParticipationState {
   isLoading: boolean;

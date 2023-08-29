@@ -11,8 +11,6 @@ import { IParticipation } from '@/interfaces';
 import ParticipationService from '@/services/ParticipationService';
 import { fetchMyParticipations, fetchAllParticipations } from '@/stores/useParticipationStore';
 
-
-
 interface Props {
   contest: IContest;
 }
@@ -27,7 +25,7 @@ export const SpiriMoveProgress: React.FC<Props> = ({ contest }) => {
 
   const updateMyParticipations = fetchMyParticipations((state) => state.getParticipations);
   const updateAllParticipations = fetchAllParticipations((state) => state.getParticipations);
-  
+
   const handleDeleteParticipation = () => {
     ParticipationService.deleteParticipation(participationToHandle).then(()=>{
       updateMyParticipations();
