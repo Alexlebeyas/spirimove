@@ -13,7 +13,7 @@ import { ToastContainer } from 'react-toastify';
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchConstest = useContestStore((state) => state.fetchConstest);
+  const fetchConstest = useContestStore((state) => state.fetchContest);
   const fetchUser = useUserStore((state) => state.fetchUser);
 
   const { inProgress } = useMsal();
