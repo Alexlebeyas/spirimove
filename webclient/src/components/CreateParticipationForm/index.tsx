@@ -22,38 +22,59 @@ import {
   Tooltip,
 } from '@mui/material';
 
-import useParticipationStore from '@/stores/useParticipationStore';
+import { IParticipation } from '@/interfaces';
+import { fetchMyParticipations, fetchAllParticipations, fetchParticipationsType } from '@/stores/useParticipationStore';
 
 interface Props {
   startDate: string;
   endDate: string;
   contestId: number;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  participationToEdit?: IParticipation;
 }
 
-const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDate, setOpen }) => {
+const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDate, setOpen, participationToEdit }) => {
+  const {isLoading, participationsTypes, getParticipationsTypes} = fetchParticipationsType((state) => state);
+  if(isLoading){
+    getParticipationsTypes();
+  }
   const [participationData, setParticipationData] = useState<ICreateParticipationForm>({
     contestId: contestId,
     name: 'name',
-    description: '',
-    date: moment().format(DATE_FORMAT),
+    description: participationToEdit ? participationToEdit.description : '',
+    date: participationToEdit ? participationToEdit.date : moment().format(DATE_FORMAT),
     image: undefined,
-    isIntensive: false,
-    type: 1,
+    isIntensive: participationToEdit ? participationToEdit.is_intensive : false,
+    type: participationToEdit?.type?.id ?? participationsTypes[0]?.id,
   });
 
   const [tooltipVisibility, setTooltipVisibility] = useState(false);
-  const [fileUrl, setfileUrl] = useState('');
+  const [fileUrl, setfileUrl] = useState( participationToEdit?.image ?? '');
+
+  const updateMyParticipations = fetchMyParticipations((state) => state.getParticipations);
+  const updateAllParticipations = fetchAllParticipations((state) => state.getParticipations);
+  
+  const [canBeIntensive, setCanBeIntensive] = useState(participationsTypes.find((p) => p.id === participationData.type)?.can_be_intensive);
+
+
 
   const { t } = useTranslation();
 
-  const { refreshParticipations } = useParticipationStore((state) => state);
-
   const onSubmitHandler = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    ParticipationService.submitParticipation(participationData);
+    if(participationToEdit){
+      ParticipationService.updateParticipation(participationData, participationToEdit?.id).then(()=>{
+        updateMyParticipations();
+        updateAllParticipations();
+      });
+    }else{
+      ParticipationService.submitParticipation(participationData).then(()=>{
+        updateMyParticipations();
+        updateAllParticipations();
+      });
+    }
+    
     setOpen(false);
-    await refreshParticipations();
   };
 
   const onCancelHandler = (e: React.MouseEvent<HTMLElement>) => {
@@ -73,19 +94,21 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
     });
   };
 
-  const onParticipationTypeChange = (e: SelectChangeEvent<number>) => {
-    const val = Number(e.target.value);
-    const intensive = val == 1 ? participationData.isIntensive : false;
+  const onParticipationTypeChange = (e: SelectChangeEvent<number|string>) => {
+    const val = e.target.value ? Number(e.target.value) : "";
+    const choosenType = participationsTypes?.find((type) => type.id === val)
+    const intensive = choosenType?.can_be_intensive ? participationData.isIntensive : false;
+    setCanBeIntensive(choosenType?.can_be_intensive ?? false);
     setParticipationData({
       ...participationData,
-      type: Number(e.target.value),
+      type: val,
       isIntensive: intensive,
     });
   };
-
+  
   return (
     <>
-      <h1 className="mb-6">{t('Participation.Title')}</h1>
+      <h1 className="mb-6">{!participationToEdit ? t('Participation.NewTitle'): t('Participation.EditTitle')}</h1>
       <form>
         <div className="mb-6">
           <div data-te-datepicker-init data-te-inline="true" data-te-input-wrapper-init>
@@ -136,9 +159,9 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
               label="Activity Type"
               onChange={onParticipationTypeChange}
             >
-              <MenuItem value={1}>{t('ParticipationType.Normal')}</MenuItem>
-              <MenuItem value={2}>{t('ParticipationType.Popup')}</MenuItem>
-              <MenuItem value={3}>{t('ParticipationType.Group')}</MenuItem>
+            { participationsTypes?.map((participationType) => (
+                <MenuItem key={participationType.id} value={participationType.id}>{participationType.name}</MenuItem>
+            ))}
             </Select>
           </FormControl>
         </div>
@@ -149,6 +172,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
             id="outlined-basic"
             label="Activity Description"
             variant="outlined"
+            value={participationData.description}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setParticipationData({
                 ...participationData,
@@ -158,7 +182,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
           />
         </div>
 
-        {participationData.type === 1 ? (
+        {canBeIntensive ? (
           <div className="mb-6">
             <FormControlLabel
               label={t('Participation.HighIntensity.Label')}
@@ -200,7 +224,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
             variant="contained"
             component="label"
             onClick={onSubmitHandler}
-            disabled={!participationData.image || participationData.description === ''}
+            disabled={!(participationData.image || participationToEdit?.image) || participationData.description === '' || participationData.type === ''}
           >
             {t('Button.Submit')}
           </Button>

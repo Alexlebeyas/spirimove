@@ -3,14 +3,24 @@ import { useTranslation } from 'react-i18next';
 import { PageContainer, ParticipationCard, ParticipateModal } from '@/components';
 import CircularProgress from '@mui/material/CircularProgress';
 import useContestStore from '@/stores/useContestStore';
-import useParticipationStore from '@/stores/useParticipationStore';
+import { fetchAllParticipations, fetchParticipationsType } from '@/stores/useParticipationStore';
+
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Home = () => {
   const { t } = useTranslation();
+  const { isLoading, participations, getParticipations } = fetchAllParticipations((state) => state);
+  const { getParticipationsTypes } = fetchParticipationsType((state) => state);
+
 
   const contest = useContestStore((state) => state.contest);
-  const { isLoading, participations } = useParticipationStore((state) => state);
+
   const [isOpen, setIsOpen] = useState(false);
+  if(isLoading){
+    getParticipations();
+    getParticipationsTypes();
+  }
 
   return (
     <PageContainer>
@@ -22,15 +32,11 @@ const Home = () => {
           {t('Home.AddParticipation')}
         </button>
         {isLoading && <CircularProgress color="inherit" />}
-        {participations.length !== 0 &&
-          participations.map((participation) => (
+        {!isLoading && participations?.length !== 0 &&
+          participations?.map((participation) => (
             <ParticipationCard
               key={participation.id}
-              description={participation.description}
-              image={participation.image}
-              dateCreated={participation.date_created}
-              date={participation.date}
-              user={participation.user}
+              participation={participation}
             />
           ))}
       </div>

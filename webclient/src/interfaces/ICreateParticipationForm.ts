@@ -5,5 +5,5 @@ export interface ICreateParticipationForm {
   date: string;
   image?: File;
   isIntensive: boolean;
-  type: number;
+  type: number|string;
 }

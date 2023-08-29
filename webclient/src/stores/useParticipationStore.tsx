@@ -1,31 +1,43 @@
-import { create } from 'zustand';
 import { IParticipation } from '@/interfaces';
 import ApiService from '@/services/ApiService';
+import { IParticipationType } from '@/interfaces';
+import { create } from 'zustand';
 
 interface ParticipationState {
-  participations: Array<IParticipation>;
   isLoading: boolean;
-  fetchParticipations: () => Promise<void>;
-  refreshParticipations: () => Promise<void>;
+  participations: Array<IParticipation>;
+  getParticipations: () => Promise<void>;
 }
 
-const useParticipationStore = create<ParticipationState>((set) => ({
-  participations: [],
+interface ParticipationTypeState {
+  isLoading: boolean;
+  participationsTypes: Array<IParticipationType>;
+  getParticipationsTypes: () => Promise<void>;
+}
+
+export const fetchMyParticipations  = create<ParticipationState>((set) => ({
   isLoading: true,
-  fetchParticipations: async () => {
-    const participations: Array<IParticipation> = (await ApiService.get('/all/participations')).data;
-
-    set({ participations, isLoading: false });
-  },
-  refreshParticipations: async () => {
-    set({ isLoading: true, participations: [] });
-
-    setTimeout(async () => {
-      const participations: Array<IParticipation> = (await ApiService.get('/all/participations')).data;
-
-      set({ participations, isLoading: false });
-    }, 500);
+  participations: [] as Array<IParticipation>,
+  getParticipations: async () => {
+    const participations: Array<IParticipation> = (await ApiService.get('/my/participations')).data;
+    set({ isLoading: false, participations });
   },
 }));
 
-export default useParticipationStore;
+export const fetchAllParticipations  = create<ParticipationState>((set) => ({
+  isLoading: true,
+  participations: [] ,
+  getParticipations: async () => {
+    const participations: Array<IParticipation> = (await ApiService.get('/all/participations')).data;
+    set({ isLoading: false, participations });
+  },
+}));
+
+export const fetchParticipationsType  = create<ParticipationTypeState>((set) => ({
+  isLoading: true,
+  participationsTypes: [] as Array<IParticipationType>,
+  getParticipationsTypes: async () => {
+    const participationsTypes: Array<IParticipationType> = (await ApiService.get('/all/participations_type')).data;
+    set({ isLoading: false, participationsTypes });
+  },
+}));

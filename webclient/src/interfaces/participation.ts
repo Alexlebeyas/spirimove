@@ -1,3 +1,5 @@
+import { IParticipationType } from '@/interfaces';
+
 export interface IParticipation {
   id: number;
   name: string;
@@ -9,13 +11,7 @@ export interface IParticipation {
     display_name: string;
     profile_picture: string;
   };
-  type: {
-    id: number;
-    description: string;
-    from_date: string;
-    to_date: string;
-    name: string;
-  };
+  type: IParticipationType;
   is_intensive: boolean;
-  is_approved: boolean;
+  status_display: 'In verification' | 'Approved' | 'Rejected';
 }

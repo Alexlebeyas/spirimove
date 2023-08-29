@@ -2,7 +2,10 @@
   "translation": {
     "Common": {
       "Save": "Save",
+      "Actions": "Actions",
       "Cancel": "Cancel",
+      "Delete": "Delete",
+      "DeleteTitle": "Deletion",
       "Office": "Office",
       "Language": "Language",
       "English": "English",
@@ -56,10 +59,14 @@
       "Cancel": "Cancel",
       "Submit": "Submit"
     },
+    "Request": {
+      "Success": "Operation performed successfully"
+    },
     "Participation": {
       "ActivityDate": "Activity Date",
       "ActivityType": "Activity Type",
       "ActivityDescription": "Description",
+      "DeleteMessageConfirm": "Are you sure you want to delete the following participation :",
       "HighIntensity": {
         "Label": "High Intensity",
         "Tooltip": "For example: High-intensity training, running, cycling, boxing, team sports (hockey, soccer, etc...) or more than 10,000 steps a day."
@@ -67,12 +74,11 @@
       "Approved": "Approved",
       "NotApproved": "Not Approved",
       "SelectImage": "Select Image",
-      "Title": "New Participation"
+      "NewTitle": "New Participation",
+      "EditTitle": "Edit Participation"
     },
     "ParticipationType": {
-      "Normal": "Normal",
-      "Popup": "Pop-up!",
-      "Group": "King of the Hill"
+      "Normal": "Normal"
     }
   }
 }

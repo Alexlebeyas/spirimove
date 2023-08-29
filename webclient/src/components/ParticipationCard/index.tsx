@@ -1,23 +1,17 @@
 import { ProfileImage } from '@/components';
 import { DateTime } from 'luxon';
 import { useTranslation } from 'react-i18next';
+import { IParticipation } from '@/interfaces';
 
 interface Props {
-  description: string;
-  date: string;
-  dateCreated: string;
-  image: string;
-  user: {
-    display_name: string;
-    profile_picture?: string;
-  };
+  participation: IParticipation;
 }
 
-export const ParticipationCard: React.FC<Props> = ({ description, date, dateCreated, image, user }) => {
+export const ParticipationCard: React.FC<Props> = ({ participation }) => {
   const { t } = useTranslation();
 
   const renderCreationTime = () => {
-    const diff = DateTime.now().diff(DateTime.fromISO(dateCreated), ['day', 'hour', 'minute', 'second']).toObject();
+    const diff = DateTime.now().diff(DateTime.fromISO(participation.date_created), ['day', 'hour', 'minute', 'second']).toObject();
 
     if (diff.days !== 0) {
       return `${diff.days}${t('Time.DayShortName')}`;
@@ -39,18 +33,18 @@ export const ParticipationCard: React.FC<Props> = ({ description, date, dateCrea
       <div className="p-3">
         <div className="flex items-center">
           <div className="mr-2">
-            <ProfileImage name={user.display_name} image={user.profile_picture} size={45} fontSize={18} />
+          <ProfileImage name={participation.user.display_name} image={participation.user.profile_picture} size={45} fontSize={18} />
           </div>
           <div>
-            <div className=" text-base font-semibold">{user.display_name}</div>
+            <div className=" text-base font-semibold">{participation.user.display_name}</div>
             <div className="text-xs font-medium leading-[14px] text-gray-700">{renderCreationTime()}</div>
           </div>
         </div>
       </div>
-      <img className="max-h-[450px] w-full object-cover" src={image} />
+      <img className="max-h-[450px] w-full object-cover" src={participation.image} />
       <div className="bg-white p-3">
-        <div className="mb-1 text-sm font-semibold">{date}</div>
-        <p>{description}</p>
+        <div className="mb-1 text-sm font-semibold">{participation.date}</div>
+        <p>{participation.description}</p>
       </div>
     </div>
   );

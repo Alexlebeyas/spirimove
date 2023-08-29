@@ -7,7 +7,7 @@ from .models import ParticipationModel, DrawModel, ParticipationTypeModel, Level
 
 
 @admin.action(description=_("Approuver les participations selectionnées"))
-def make_active(modeladmin, request, queryset):
+def make_approve(modeladmin, request, queryset):
     list_participation = list(queryset)[:]
     queryset.update(is_approved=True)
     messages.success(request, _("Participation(s) sélectionnée(s) Marqué(s) comme approuvé(s) avec succès !!"))
@@ -16,7 +16,7 @@ def make_active(modeladmin, request, queryset):
 
 
 @admin.action(description=_("Désapprouver les participations selectionnées"))
-def make_inactive(modeladmin, request, queryset):
+def make_unapprove(modeladmin, request, queryset):
     list_participation = list(queryset)[:]
     queryset.update(is_approved=False)
     messages.success(request, _("Participation(s) sélectionnée(s) Marquée(s) comme non approuvée(s) !!"))
@@ -27,9 +27,9 @@ def make_inactive(modeladmin, request, queryset):
 @admin.register(ParticipationModel)
 class ParticipationModelAdmin(admin.ModelAdmin):
     list_display = ['user', 'contest_name', 'description', 'type_name', 'points', 'is_intensive', 'date',
-                    'image_displayed', 'is_approved', 'is_to_considered_for_day', ]
+                    'image_displayed', 'status']
     list_filter = ('contest__name',)
-    actions = [make_active, make_inactive]
+    actions = [make_approve, make_unapprove]
 
     def has_change_permission(self, request, obj=None):
         return obj is None
@@ -64,7 +64,7 @@ class UnApprovedParticipation(ParticipationModel):
 @admin.register(UnApprovedParticipation)
 class UnApprovedParticipationAdmin(ParticipationModelAdmin):
     def get_queryset(self, request):
-        return self.model.objects.filter(is_approved=False)
+        return self.model.objects.filter(status=self.model.IN_VERIFICATION)
 
     def has_module_permission(self, request):
         return (request.user.is_moderator() or request.user.is_admin()) if request.user.is_authenticated else False
@@ -98,7 +98,7 @@ class DrawModelAdmin(admin.ModelAdmin):
 
 @admin.register(ParticipationTypeModel)
 class ParticipationTypeModelAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description', 'date_created']
+    list_display = ['name', 'description', 'date_created', 'can_be_intensive', 'can_add_more_by_day']
 
     def has_module_permission(self, request):
         return request.user.is_admin() if request.user.is_authenticated else False

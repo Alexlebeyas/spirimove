@@ -5,7 +5,6 @@ import useContestStore from '@/stores/useContestStore';
 
 export const MySpiriMove = () => {
   const { contest } = useContestStore((state) => state);
-
   return (
     <PageContainer>
       <MyContestScore contestId={contest.id.toString()} />

@@ -5,25 +5,25 @@ import useContestStore from '@/stores/useContestStore';
 import useUserStore from '@/stores/useUserStore';
 
 import '@/i18n/i18n';
-import useParticipationStore from '@/stores/useParticipationStore';
+
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { InteractionStatus } from '@azure/msal-browser';
+import { ToastContainer } from 'react-toastify';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchConstest = useContestStore((state) => state.fetchConstest);
   const fetchUser = useUserStore((state) => state.fetchUser);
-  const fetchParticipations = useParticipationStore((state) => state.fetchParticipations);
 
   const { inProgress } = useMsal();
   const isAuthenticated = useIsAuthenticated();
+
 
   useEffect(() => {
     const initStores = async () => {
       await fetchConstest();
       await fetchUser();
-      await fetchParticipations();
       setIsLoading(false);
     };
 
@@ -42,9 +42,11 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, inProgress]);
 
+
   return (
     <>
       <Header />
+      <ToastContainer />
       <AppContainer>
         <Router />
       </AppContainer>

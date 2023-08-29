@@ -84,19 +84,7 @@ class CreateParticipationAPIView(CreateAPIView):
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
-
-        try:
-            participation_type_from_fe = ['Normal', 'Défis Popup', 'Henry et sa Gang']
-            participation_type_name_choosen = participation_type_from_fe[int(request.data['type']) - 1]
-            if participation_type_name_choosen == participation_type_from_fe[0]:
-                request.data['type'] = ""
-            else:
-                participation = ParticipationTypeModel.objects.get(name=participation_type_name_choosen)
-                request.data['type'] = participation.pk
-        except Exception:
-            request.data['type'] = ""
-
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=request.data, context={'user': request.user})
         serializer.is_valid(raise_exception=True)
         serializer.save(user=request.user)
         headers = self.get_success_headers(serializer.data)
@@ -115,7 +103,8 @@ class UpdateParticipationAPIView(UpdateAPIView):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = get_object_or_404(ParticipationModel, pk=kwargs['pk'], user=request.user)
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer = self.get_serializer(instance=instance, data=request.data, partial=partial, context={'user': request.user},
+                                         update_action=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
@@ -126,6 +115,7 @@ class UpdateParticipationAPIView(UpdateAPIView):
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
+    parser_classes = (FormParser, MultiPartParser,)
     queryset = ParticipationModel.objects.filter(contest__is_open=True)
     serializer_class = AddParticipationModelSerializer
 

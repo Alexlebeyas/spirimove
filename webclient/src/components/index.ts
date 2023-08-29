@@ -8,3 +8,4 @@ export * from './PageContainer';
 export * from './LinearProgress';
 export * from './AppLoading';
 export * from './ParticipateModal';
+export * from './ConfirmBox';

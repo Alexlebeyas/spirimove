@@ -2,7 +2,10 @@
   "translation": {
     "Common": {
       "Save": "Sauvegarder",
+      "Actions": "Actions",
       "Cancel": "Annuler",
+      "Delete": "Supprimer",
+      "DeleteTitle": "Suppression",
       "Office": "Bureau",
       "Language": "Langage",
       "English": "Anglais",
@@ -56,10 +59,14 @@
       "Cancel": "Annuler",
       "Submit": "Soumettre"
     },
+    "Request": {
+      "Success": "Opération effectuée avec succès"
+    },
     "Participation": {
       "ActivityDate": "Date de l'activité",
       "ActivityType": "Type",
       "ActivityDescription": "Description",
+      "DeleteMessageConfirm": "Êtes-vous sûr de vouloir supprimer la participation suivante :",
       "HighIntensity": {
         "Label": "Haute Intensité",
         "Tooltip": "Par exemple : Entraînement à haute intensité, course à pied, vélo, boxe, sports d'équipes (hockey, soccer, etc...) ou plus de 10 000 pas par jour."
@@ -67,12 +74,11 @@
       "Approved": "Approuvée",
       "NotApproved": "Non Approuvée",
       "SelectImage": "Choisir Image",
-      "Title": "Nouvelle Participation"
+      "NewTitle": "Nouvelle Participation",
+      "EditTitle": "Modifier la Participation"
     },
     "ParticipationType": {
-      "TypeNormal": "Normal",
-      "TypePopup": "Pop-up!",
-      "TypeGroup": "Henri pis sa gang"
+      "Normal": "Normal"
     }
   }
 }

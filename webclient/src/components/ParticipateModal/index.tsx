@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Modal } from '@mui/material';
 import { DATE_FORMAT } from '@/constants/formats';
+import { IParticipation } from '@/interfaces';
 
 const desktopStyle = {
   position: 'absolute',
@@ -34,9 +35,10 @@ interface Props {
   startDate: string;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  participationToEdit?: IParticipation|undefined;
 }
 
-export const ParticipateModal: React.FC<Props> = ({ contestId, startDate, open, setOpen }) => {
+export const ParticipateModal: React.FC<Props> = ({ contestId, startDate, open, setOpen, participationToEdit }) => {
   const [mobile, setMobile] = useState(window.innerWidth <= 500);
 
   const handleWindowSizeChange = () => {
@@ -61,7 +63,7 @@ export const ParticipateModal: React.FC<Props> = ({ contestId, startDate, open, 
         aria-describedby="modal-modal-description"
       >
         <Box sx={mobile ? mobileStyle : desktopStyle}>
-          <CreateParticipationForm contestId={contestId} startDate={startDate} endDate={endDate} setOpen={setOpen} />
+          <CreateParticipationForm contestId={contestId} startDate={startDate} endDate={endDate} setOpen={setOpen} participationToEdit={participationToEdit} />
         </Box>
       </Modal>
     </div>

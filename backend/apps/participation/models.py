@@ -25,12 +25,15 @@ class ParticipationTypeModel(models.Model):
     class Meta:
         verbose_name = _('Participation type')
         verbose_name_plural = _('Participations type')
+        ordering = ['pk']
 
     name = models.CharField(max_length=200, null=False, blank=False)
     description = models.TextField(null=True, blank=True)
     points = models.PositiveSmallIntegerField(null=False, blank=False, default=1)
     from_date = models.DateField(null=True, blank=True)
     to_date = models.DateField(null=True, blank=True)
+    can_be_intensive = models.BooleanField(default=False)
+    can_add_more_by_day = models.BooleanField(default=False)
     date_created = models.DateField(auto_now_add=True)
     last_modified = models.DateField(auto_now=True)
 
@@ -44,6 +47,15 @@ class ParticipationModel(models.Model):
         verbose_name_plural = _('Participations')
         ordering = ['-pk']
 
+    IN_VERIFICATION = 'IN_VERIFICATION'
+    REJECTED = 'REJECTED'
+    APPROVED = 'APPROVED'
+    STATUS_CHOICES = [
+        (IN_VERIFICATION, _('In verification')),
+        (REJECTED, _('Rejected')),
+        (APPROVED, _('Approved'))
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # This field could be use to check if it's extra activity
     type = models.ForeignKey(ParticipationTypeModel, on_delete=models.CASCADE, null=True, blank=True)
@@ -56,6 +68,7 @@ class ParticipationModel(models.Model):
     is_to_considered_for_day = models.BooleanField(default=False)
     is_intensive = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
+    status = models.CharField(_('Status'), choices=STATUS_CHOICES, default=IN_VERIFICATION, max_length=50)
     date_created = models.DateTimeField(editable=False)
     last_modified = models.DateTimeField()
 
@@ -67,11 +80,9 @@ class ParticipationModel(models.Model):
             self.date_created = timezone.now()
         self.last_modified = timezone.now()
 
-        self.points = 1
-        if self.type:
-            self.points = self.type.points
-            self.is_intensive = False
-        elif self.is_intensive:
+        self.is_intensive = self.type.can_be_intensive and self.is_intensive
+        self.points = self.type.points
+        if self.is_intensive:
             self.points += 1
         super().save(*args, **kwargs)
 
@@ -124,7 +135,7 @@ def handleConsideredParticipation(participation):
         type=participation.type,
         contest=participation.contest,
     )
-    participations_day_for_type.update(is_to_considered_for_day=False)
+    participations_day_for_type.update(is_to_considered_for_day=False, status=ParticipationModel.REJECTED)
     list_anotate = participations_day_for_type. \
         values('user', 'type', 'date', 'contest', 'is_approved').annotate(max_points=Max('points'))
     if list_anotate:
@@ -138,4 +149,5 @@ def handleConsideredParticipation(participation):
         ).first()
         if main_participation:
             main_participation.is_to_considered_for_day = True
+            main_participation.status = ParticipationModel.APPROVED
             main_participation.save()

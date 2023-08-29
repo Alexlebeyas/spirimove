@@ -13,6 +13,11 @@ class Migration(migrations.Migration):
     def initParticipationType(apps, schema_editor):
         type_list = ['Défis Popup', 'Henry et sa Gang']
         ParticipationTypeModel = apps.get_model('participation', 'ParticipationTypeModel')
+        ParticipationTypeModel.objects.create(
+            name='Normal',
+            can_be_intensive=True,
+            can_add_more_by_day=True
+        )
         for type in type_list:
             ParticipationTypeModel.objects.create(
                 name=type
