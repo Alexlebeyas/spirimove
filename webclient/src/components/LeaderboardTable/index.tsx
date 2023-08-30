@@ -33,10 +33,10 @@ export const LeaderboardTable = ({ stats, renderer }: Props) => {
 export const TotalPointsRenderer = (stat: ILeaderboardStats, idx: number) => {
   return (
     <>
-      <div className="flex items-center justify-between p-3">
-        <div className="mr-1 flex h-[100%] items-center">
-          <div className="mr-6 text-sm text-gray-500">{idx + 1}</div>
-          <div className="flex items-center">
+      <div className="flex items-center p-3 ">
+        <div className="mr-4 flex-none text-sm text-gray-500">{idx + 1}</div>
+        <div className="flex grow items-center">
+          <div className="flex grow items-center">
             <div className="mr-2">
               <ProfileImage name={stat.user__display_name} size={32} fontSize={14} />
             </div>
@@ -45,8 +45,8 @@ export const TotalPointsRenderer = (stat: ILeaderboardStats, idx: number) => {
               <div className="text-xs font-medium leading-[14px] text-gray-500">{stat.user__office}</div>
             </div>
           </div>
+          <div className="flex-none text-sm font-semibold">{stat.total_points} pts</div>
         </div>
-        <div className="text-sm font-semibold">{stat.total_points} pts</div>
       </div>
     </>
   );
@@ -55,20 +55,25 @@ export const TotalPointsRenderer = (stat: ILeaderboardStats, idx: number) => {
 export const TotalDaysRenderer = (stat: ILeaderboardStats, idx: number) => {
   return (
     <>
-      <div className="mb-3">
-        <div className="mb-2 flex items-center">
-          <div className="mr-2">
-            <ProfileImage name={stat.user__display_name} size={40} fontSize={18} />
-          </div>
-          <div className="w-full">
-            <div className="font-semibold">{stat.user__display_name}</div>
-            <div className="flex justify-between">
-              <div className="text-sm leading-[14px] text-gray-500">{stat.user__office}</div>
-              <div className="text-sm font-semibold">{stat.total_days}d</div>
+      <div className="flex items-center p-3 ">
+        <div className="mr-4 flex-none text-sm text-gray-500">{idx + 1}</div>
+        <div className="grow">
+          <div className="flex grow items-center">
+            <div className="flex grow items-center">
+              <div className="mr-2">
+                <ProfileImage name={stat.user__display_name} size={32} fontSize={14} />
+              </div>
+              <div>
+                <div className="text-sm font-semibold">{stat.user__display_name}</div>
+                <div className="text-xs font-medium leading-[14px] text-gray-500">{stat.user__office}</div>
+              </div>
             </div>
+            <div className="flex-none text-sm font-semibold">{stat.total_days} days</div>
+          </div>
+          <div className="grow pt-2">
+            <LinearProgress value={Number(10)} max={10} />
           </div>
         </div>
-        <LinearProgress value={Number(10)} max={10} />
       </div>
     </>
   );
