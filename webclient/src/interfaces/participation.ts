@@ -24,5 +24,6 @@ export interface IParticipation {
   type: IParticipationType;
   reactions: Array<ReactionsType>;
   is_intensive: boolean;
+  is_organizer: boolean;
   status_display: 'In verification' | 'Approved' | 'Rejected';
 }

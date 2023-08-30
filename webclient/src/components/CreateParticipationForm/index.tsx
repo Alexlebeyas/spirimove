@@ -38,23 +38,27 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
   if(isLoading){
     getParticipationsTypes();
   }
+
   const [participationData, setParticipationData] = useState<ICreateParticipationForm>({
     contestId: contestId,
     name: 'name',
     description: participationToEdit ? participationToEdit.description : '',
     date: participationToEdit ? participationToEdit.date : moment().format(DATE_FORMAT),
     image: undefined,
-    isIntensive: participationToEdit ? participationToEdit.is_intensive : false,
+    isIntensive: participationToEdit ? participationToEdit.is_intensive : false, 
+    isOrganizer: participationToEdit ? participationToEdit.is_organizer : false, 
     type: participationToEdit?.type?.id ?? participationsTypes[0]?.id,
   });
 
-  const [tooltipVisibility, setTooltipVisibility] = useState(false);
+  const [intensiveTooltipVisibility, setIntensiveTooltipVisibility] = useState(false);
+  const [organizerTooltipVisibility, setOrganizerTooltipVisibility] = useState(false);
   const [fileUrl, setfileUrl] = useState( participationToEdit?.image ?? '');
 
   const updateMyParticipations = fetchMyParticipations((state) => state.getParticipations);
   const updateAllParticipations = fetchAllParticipations((state) => state.getParticipations);
 
   const [canBeIntensive, setCanBeIntensive] = useState(participationsTypes.find((p) => p.id === participationData.type)?.can_be_intensive);
+  const [canHaveOrganizer, setCanHaveOrganizer] = useState(participationsTypes.find((p) => p.id === participationData.type)?.can_have_organizer);
 
   const { t } = useTranslation();
 
@@ -96,11 +100,14 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
     const val = e.target.value ? Number(e.target.value) : "";
     const choosenType = participationsTypes?.find((type) => type.id === val)
     const intensive = choosenType?.can_be_intensive ? participationData.isIntensive : false;
+    const organizer = choosenType?.can_have_organizer ? participationData.isOrganizer : false;
     setCanBeIntensive(choosenType?.can_be_intensive ?? false);
+    setCanHaveOrganizer(choosenType?.can_have_organizer ?? false);
     setParticipationData({
       ...participationData,
       type: val,
       isIntensive: intensive,
+      isOrganizer: organizer,
     });
   };
 
@@ -196,19 +203,55 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                 />
               }
             />
-            <ClickAwayListener onClickAway={() => setTooltipVisibility(false)}>
+            <ClickAwayListener onClickAway={() => setIntensiveTooltipVisibility(false)}>
               <Tooltip
                 PopperProps={{
                   disablePortal: true,
                 }}
-                onClose={() => setTooltipVisibility(false)}
-                open={tooltipVisibility}
+                onClose={() => setIntensiveTooltipVisibility(false)}
+                open={intensiveTooltipVisibility}
                 disableFocusListener
                 disableHoverListener
                 disableTouchListener
                 title={t('Participation.HighIntensity.Tooltip')}
               >
-                <HelpIcon onClick={() => setTooltipVisibility(true)} />
+                <HelpIcon onClick={() => setIntensiveTooltipVisibility(true)} />
+              </Tooltip>
+            </ClickAwayListener>
+          </div>
+        ) : (
+          ''
+        )}
+
+        {canHaveOrganizer ? (
+          <div className="mb-6">
+            <FormControlLabel
+              label={t('Participation.Organizer.Label')}
+              control={
+                <Checkbox
+                  checked={participationData.isOrganizer}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setParticipationData({
+                      ...participationData,
+                      isOrganizer: e.target.checked,
+                    })
+                  }
+                />
+              }
+            />
+            <ClickAwayListener onClickAway={() => setOrganizerTooltipVisibility(false)}>
+              <Tooltip
+                PopperProps={{
+                  disablePortal: true,
+                }}
+                onClose={() => setOrganizerTooltipVisibility(false)}
+                open={organizerTooltipVisibility}
+                disableFocusListener
+                disableHoverListener
+                disableTouchListener
+                title={t('Participation.Organizer.Tooltip')}
+              >
+                <HelpIcon onClick={() => setOrganizerTooltipVisibility(true)} />
               </Tooltip>
             </ClickAwayListener>
           </div>

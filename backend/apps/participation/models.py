@@ -34,6 +34,7 @@ class ParticipationTypeModel(models.Model):
     to_date = models.DateField(null=True, blank=True)
     can_be_intensive = models.BooleanField(default=False)
     can_add_more_by_day = models.BooleanField(default=False)
+    can_have_organizer = models.BooleanField(default=False)
     date_created = models.DateField(auto_now_add=True)
     last_modified = models.DateField(auto_now=True)
 
@@ -67,6 +68,7 @@ class ParticipationModel(models.Model):
     contest = models.ForeignKey(ContestsModel, on_delete=models.CASCADE)
     is_to_considered_for_day = models.BooleanField(default=False)
     is_intensive = models.BooleanField(default=False)
+    is_organizer = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
     status = models.CharField(_('Status'), choices=STATUS_CHOICES, default=IN_VERIFICATION, max_length=50)
     date_created = models.DateTimeField(editable=False)
@@ -81,8 +83,11 @@ class ParticipationModel(models.Model):
         self.last_modified = timezone.now()
 
         self.is_intensive = self.type.can_be_intensive and self.is_intensive
+        self.is_organizer = self.type.can_have_organizer and self.is_organizer
         self.points = self.type.points
         if self.is_intensive:
+            self.points += 1
+        if self.is_organizer:
             self.points += 1
         super().save(*args, **kwargs)
 
