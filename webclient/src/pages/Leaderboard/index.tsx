@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 const Leaderboard = () => {
   const { t } = useTranslation();
   const { contest, numberDaysFromStart } = useContestStore((state) => state);
-  const { data: leaderboardStats, getAllSortedByDays, getTopFromOffice } = useLeaderboard(contest);
+  const { stats, getAllSortedByDays, getTopFromOffice } = useLeaderboard(contest);
 
   const filters = [
     {
@@ -60,7 +60,7 @@ const Leaderboard = () => {
               </div>
             </div>
             {/* Table */}
-            <LeaderboardTable stats={leaderboardStats} renderer={TotalPointsRenderer}></LeaderboardTable>
+            <LeaderboardTable stats={stats} renderer={TotalPointsRenderer}></LeaderboardTable>
           </div>
           <div className="max-h-[500px] rounded-md bg-white p-4">
             <h3 className="mb-5">Participation days</h3>
