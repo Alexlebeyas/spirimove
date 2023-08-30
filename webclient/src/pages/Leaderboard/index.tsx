@@ -1,14 +1,16 @@
-import { PageContainer, ProfileImage } from '@/components';
-import { LeaderboardTable, TotalDaysRenderer, TotalPointsRenderer } from '@/components/LeaderboardTable';
-import { OFFICES } from '@/constants';
+import { PageContainer } from '@/components';
+import { LeaderboardTable, SortingMode } from '@/components/LeaderboardTable';
 import { useLeaderboard } from '@/hooks';
 import useContestStore from '@/stores/useContestStore';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const Leaderboard = () => {
   const { t } = useTranslation();
   const { contest, numberDaysFromStart } = useContestStore((state) => state);
   const { stats, getAllSortedByDays, getTopFromOffice } = useLeaderboard(contest);
+
+  const [sortingMode, setSortingMode] = useState<SortingMode>('pts');
 
   const filters = [
     {
@@ -25,6 +27,7 @@ const Leaderboard = () => {
       title: 'Toronto',
     },
   ];
+
   return (
     <PageContainer>
       <div className="flex flex-col items-center justify-center">
@@ -53,19 +56,33 @@ const Leaderboard = () => {
             {/* Stat selection */}
             <div className="mb-4 flex justify-center">
               <div className="rounded-3xl bg-slate-100 py-0">
-                <button className="mx-1 rounded-3xl bg-gray-700 px-4 py-1 text-xs font-medium text-slate-200">
+                <button
+                  className={
+                    'mx-1 rounded-3xl px-4 py-1 text-xs font-medium ' +
+                    (sortingMode == 'pts' ? 'bg-gray-700 text-slate-200' : '')
+                  }
+                  onClick={() => setSortingMode('pts')}
+                >
                   Points
                 </button>
-                <button className="mx-1 rounded-3xl px-4 py-1 text-xs font-medium ">Consecutive days</button>
+                <button
+                  className={
+                    'mx-1 rounded-3xl px-4 py-1 text-xs font-medium ' +
+                    (sortingMode == 'days' ? 'bg-gray-700 text-slate-200' : '')
+                  }
+                  onClick={() => setSortingMode('days')}
+                >
+                  Consecutive days
+                </button>
               </div>
             </div>
             {/* Table */}
-            <LeaderboardTable stats={stats} renderer={TotalPointsRenderer}></LeaderboardTable>
+            <LeaderboardTable stats={stats} mode={sortingMode}></LeaderboardTable>
           </div>
-          <div className="max-h-[500px] rounded-md bg-white p-4">
+          {/* <div className="max-h-[500px] rounded-md bg-white p-4">
             <h3 className="mb-5">Participation days</h3>
-            <LeaderboardTable stats={getAllSortedByDays()} renderer={TotalDaysRenderer}></LeaderboardTable>
-          </div>
+            <LeaderboardTable stats={stats} mode={}></LeaderboardTable>
+          </div> */}
         </div>
         {/* <div className="flex w-full flex-col lg:w-1/3">
           {OFFICES.map((office) => (

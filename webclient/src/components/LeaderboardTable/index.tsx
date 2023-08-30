@@ -3,19 +3,31 @@ import { LinearProgress, ProfileImage } from '..';
 
 interface Props {
   stats: ILeaderboardStats[];
-  renderer: (stat: ILeaderboardStats, idx: number) => JSX.Element;
+  officeFilter?: string;
+  mode: SortingMode;
 }
 
-export const LeaderboardTable = ({ stats, renderer }: Props) => {
+export type SortingMode = 'pts' | 'days';
+
+export const LeaderboardTable = ({ stats, officeFilter, mode }: Props) => {
+  const sortedStats = filterAndSort(stats, mode, officeFilter);
+
   return (
     <>
       {/* First entries */}
       <div className="h-[300px] divide-y overflow-y-auto border-b">
-        {stats.map((stat, idx) => (
-          <>{renderer(stat, idx)}</>
+        {sortedStats.map((stat, idx) => (
+          <>
+            {
+              {
+                pts: TotalPointsRenderer(stat, idx),
+                days: TotalDaysRenderer(stat, idx),
+              }[mode]
+            }
+          </>
         ))}
       </div>
-      {/* Load more */}
+      {/* Load more button */}
       <div className="mt-3 flex justify-center">
         <div className="py-2">
           <button className="mx-1 inline-flex items-center px-4 py-1 text-base font-medium">
@@ -30,7 +42,16 @@ export const LeaderboardTable = ({ stats, renderer }: Props) => {
   );
 };
 
-export const TotalPointsRenderer = (stat: ILeaderboardStats, idx: number) => {
+function filterAndSort(stats: ILeaderboardStats[], mode: SortingMode, filter?: string): ILeaderboardStats[] {
+  const compareFn = {
+    pts: (a: ILeaderboardStats, b: ILeaderboardStats) => Number(b.total_days) - Number(a.total_days),
+    days: (a: ILeaderboardStats, b: ILeaderboardStats) => Number(b.total_points) - Number(a.total_points),
+  }[mode];
+
+  return stats.filter((stat) => !filter || stat.user__office === filter).sort(compareFn);
+}
+
+const TotalPointsRenderer = (stat: ILeaderboardStats, idx: number) => {
   return (
     <>
       <div className="flex items-center p-3 ">
@@ -52,7 +73,7 @@ export const TotalPointsRenderer = (stat: ILeaderboardStats, idx: number) => {
   );
 };
 
-export const TotalDaysRenderer = (stat: ILeaderboardStats, idx: number) => {
+const TotalDaysRenderer = (stat: ILeaderboardStats, idx: number) => {
   return (
     <>
       <div className="flex items-center p-3 ">
@@ -78,3 +99,5 @@ export const TotalDaysRenderer = (stat: ILeaderboardStats, idx: number) => {
     </>
   );
 };
+
+
