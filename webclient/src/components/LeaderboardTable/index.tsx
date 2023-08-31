@@ -1,5 +1,10 @@
+import { CurrentContestContext } from '@/components';
 import { ILeaderboardStats } from '@/interfaces/leaderboardStats';
 import { LinearProgress, ProfileImage } from '..';
+import { useContext } from 'react';
+import { daysInterval } from '@/utils/dates';
+import { DateTime } from 'luxon';
+import { DATE_FORMAT } from '@/constants/formats';
 
 interface Props {
   stats: ILeaderboardStats[];
@@ -11,6 +16,11 @@ export type SortingMode = 'pts' | 'days';
 
 export const LeaderboardTable = ({ stats, officeFilter, mode }: Props) => {
   const sortedStats = filterAndSort(stats, mode, officeFilter);
+  const contest = useContext(CurrentContestContext);
+
+  if (!contest) return <></>; // no contest
+
+  const currentDaysInContest = daysInterval(DateTime.fromISO(contest.start_date), DateTime.fromISO(contest.end_date));
 
   return (
     <>
@@ -21,7 +31,7 @@ export const LeaderboardTable = ({ stats, officeFilter, mode }: Props) => {
             {
               {
                 pts: TotalPointsRenderer(stat, idx),
-                days: TotalDaysRenderer(stat, idx),
+                days: TotalDaysRenderer(stat, idx, currentDaysInContest),
               }[mode]
             }
           </>
@@ -71,7 +81,7 @@ const TotalPointsRenderer = (stat: ILeaderboardStats, idx: number) => (
   </>
 );
 
-const TotalDaysRenderer = (stat: ILeaderboardStats, idx: number) => (
+const TotalDaysRenderer = (stat: ILeaderboardStats, idx: number, max: number) => (
   <>
     <div id={stat.user__display_name} className="flex items-center p-3">
       <div className="mr-4 flex-none text-sm text-gray-500">{idx + 1}</div>
@@ -89,11 +99,9 @@ const TotalDaysRenderer = (stat: ILeaderboardStats, idx: number) => (
           <div className="flex-none text-sm font-semibold">{stat.total_days} days</div>
         </div>
         <div className="grow pt-2">
-          <LinearProgress value={Number(stat.total_days)} max={10} />
+          <LinearProgress value={Number(stat.total_days)} max={max} />
         </div>
       </div>
     </div>
   </>
 );
-
-
