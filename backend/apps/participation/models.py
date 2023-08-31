@@ -4,7 +4,6 @@ from datetime import date
 from apps.contest.models import ContestsModel
 from apps.users.models import User
 from django.db import models
-from django.db.models.aggregates import Max
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from slugify import slugify
@@ -139,36 +138,3 @@ class DrawModel(models.Model):
             self.date_created = timezone.now()
         self.last_modified = timezone.now()
         super().save(*args, **kwargs)
-
-
-def handleConsideredParticipation(participation):
-    """
-    In this section we choose the participation to be considered
-    for the calculation of the points among several of the same
-    type entered on the same day by the same user and which has been
-     approved. The one with the highest number of points is the one to consider
-    :param participation:
-    :return None:
-    """
-    participations_day_for_type = ParticipationModel.objects.filter(
-        user=participation.user,
-        date=participation.date,
-        type=participation.type,
-        contest=participation.contest,
-    )
-    participations_day_for_type.update(is_to_considered_for_day=False, status=ParticipationModel.REJECTED)
-    list_anotate = participations_day_for_type. \
-        values('user', 'type', 'date', 'contest', 'is_approved').annotate(max_points=Max('points'))
-    if list_anotate:
-        main_participation = ParticipationModel.objects.filter(
-            user=participation.user,
-            date=participation.date,
-            type=participation.type,
-            contest=participation.contest,
-            is_approved=True,
-            points=list_anotate[0]['max_points']
-        ).first()
-        if main_participation:
-            main_participation.is_to_considered_for_day = True
-            main_participation.status = ParticipationModel.APPROVED
-            main_participation.save()
