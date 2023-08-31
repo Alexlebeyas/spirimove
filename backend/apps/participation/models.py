@@ -68,7 +68,6 @@ class ParticipationModel(models.Model):
     is_to_considered_for_day = models.BooleanField(default=False)
     is_intensive = models.BooleanField(default=False)
     is_organizer = models.BooleanField(default=False)
-    is_approved = models.BooleanField(default=False)
     status = models.CharField(_('Status'), choices=STATUS_CHOICES, default=IN_VERIFICATION, max_length=50)
     date_created = models.DateTimeField(editable=False)
     last_modified = models.DateTimeField()
