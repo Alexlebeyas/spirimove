@@ -29,6 +29,7 @@ class ParticipationService {
     formData.set('date', data.date);
     formData.set('image', data.image as Blob);
     formData.set('is_intensive', data.isIntensive.toString());
+    formData.set('is_organizer', data.isOrganizer.toString());
     formData.set('type', data.type.toString());
 
     return ApiService.post('/create/participation/', formData)
@@ -51,6 +52,7 @@ class ParticipationService {
       formData.set('image', data.image as Blob);
     }
     formData.set('is_intensive', data.isIntensive.toString());
+    formData.set('is_organizer', data.isOrganizer.toString());
     formData.set('type', data.type ? data.type.toString() : "") ;
 
     return ApiService.put(`/update/participation/${paticipationId}/`, formData)

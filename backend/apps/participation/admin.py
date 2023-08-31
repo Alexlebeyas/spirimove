@@ -20,8 +20,8 @@ def make_unapprove(modeladmin, request, queryset):
 
 @admin.register(ParticipationModel)
 class ParticipationModelAdmin(admin.ModelAdmin):
-    list_display = ['user', 'contest_name', 'description', 'type_name', 'points', 'is_intensive', 'date',
-                    'image_displayed', 'status']
+    list_display = ['user', 'contest_name', 'description', 'type_name', 'points', 'is_intensive', 'is_organizer',
+                    'date', 'image_displayed', 'status']
     list_filter = ('contest__name',)
     actions = [make_approve, make_unapprove]
 
@@ -95,7 +95,8 @@ class DrawModelAdmin(admin.ModelAdmin):
 
 @admin.register(ParticipationTypeModel)
 class ParticipationTypeModelAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description', 'can_be_intensive', 'can_add_more_by_day', 'points', 'date_created']
+    list_display = ['name', 'description', 'can_be_intensive', 'can_add_more_by_day', 'can_have_organizer', 'points',
+                    'date_created']
 
     def has_module_permission(self, request):
         return request.user.is_admin() if request.user.is_authenticated else False

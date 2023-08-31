@@ -46,7 +46,7 @@ class AddParticipationModelSerializer(serializers.ModelSerializer):
 class ParticipationTypeModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParticipationTypeModel
-        fields = ('id', 'name', 'description', 'from_date', 'to_date', 'can_be_intensive')
+        fields = ('id', 'name', 'description', 'from_date', 'to_date', 'can_be_intensive', 'can_have_organizer')
 
 
 class ReactionsModelSerializer(serializers.ModelSerializer):
