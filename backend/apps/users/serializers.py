@@ -12,4 +12,4 @@ class UserModelSerializer(serializers.ModelSerializer):
 class UserModelUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('office', 'profile_picture')
+        fields = ('profile_picture',)

@@ -1,7 +1,6 @@
 import requests
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 from rest_framework import HTTP_HEADER_ENCODING, exceptions
 from rest_framework import authentication
@@ -70,6 +69,9 @@ class Authentication(authentication.BaseAuthentication):
                 display_name=microsoft_info['displayName'],
                 first_name=microsoft_info.get('givenName', ''),
                 last_name=microsoft_info.get('surname', ''))
+        else:
+            user.office = microsoft_info['officeLocation']
+            user.save()
 
         if not user.is_active:
             raise exceptions.AuthenticationFailed(_('No such user'))

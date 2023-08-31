@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react';
 import { PageContainer, ProfileImage } from '@/components';
-import { OFFICES } from '@/constants';
 import useUserStore from '@/stores/useUserStore';
 import UserService from '@/services/UserService';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +17,6 @@ const Profile = () => {
   const user = useUserStore((state) => state.user);
   const refreshUser = useUserStore((state) => state.refreshUser);
 
-  const [office, setOffice] = useState(user.office);
   const [language, setLanguage] = useState(getCurrentLanguage());
 
   const hiddenFileInput = useRef<HTMLInputElement>(null);
@@ -32,12 +30,6 @@ const Profile = () => {
   const onFileChangeHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files as FileList;
     await UserService.updateProfileImage(files[0]);
-    await refreshUser();
-  };
-
-  const onOfficeChangeHandler = async (e: SelectChangeEvent) => {
-    setOffice(e.target.value);
-    await UserService.updateOffice(e.target.value);
     await refreshUser();
   };
 
@@ -61,7 +53,8 @@ const Profile = () => {
                 <EditIcon />
               </button>
             </div>
-            <h4 className="mt-2">{user.display_name}</h4>
+            <h3 className="mt-2">{user.display_name}</h3>
+            <h4 className="mt-2">{t('Common.Office')} {user.office}</h4>
             <input
               className="hidden"
               type="file"
@@ -69,16 +62,7 @@ const Profile = () => {
               ref={hiddenFileInput}
               onChange={onFileChangeHandler}
             />
-          </div>
-          <div>
-            <FormControl sx={{ m: 1, minWidth: 120, margin: 0, marginRight: '8px' }} size="small">
-              <InputLabel id="office-select-label">{t('Common.Office')}</InputLabel>
-              <Select labelId="office-select-label" value={office} label="Office" onChange={onOfficeChangeHandler}>
-                {OFFICES.map((office) => (
-                  <MenuItem value={office}>{t(`Office.${office}`)}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <br />
             <FormControl sx={{ m: 1, minWidth: 120, margin: 0 }} size="small">
               <InputLabel id="language-select-label">{t('Common.Language')}</InputLabel>
               <Select labelId="language-select-label" value={language} label="Language" onChange={onLanguageChange}>
@@ -86,6 +70,8 @@ const Profile = () => {
                 <MenuItem value={LANGUAGES.FR.name}>{t(`Common.${LANGUAGES.FR.key}`)}</MenuItem>
               </Select>
             </FormControl>
+          </div>
+          <div>
           </div>
         </div>
       </div>
