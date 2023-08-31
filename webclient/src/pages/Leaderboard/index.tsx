@@ -1,10 +1,10 @@
 import { PageContainer } from '@/components';
+import Cumulated from '@/components/Cumulated';
 import { LeaderboardTable, SortingMode } from '@/components/LeaderboardTable';
 import { useLeaderboard } from '@/hooks';
 import useContestStore from '@/stores/useContestStore';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
 
 const OFFICES = [
   {
@@ -92,18 +92,7 @@ const Leaderboard = () => {
           {/* Cumulated stats */}
           <div className="mb-2 w-full rounded-md bg-white p-4 shadow-md">
             <h3 className="mb-3 text-lg font-bold">Cumulated</h3>
-            <div className="m-2 flex flex-row ">
-              <div className="flex grow justify-stretch">
-                <div className="grow p-1">
-                  <div className="justify-center text-4xl font-semibold">540</div>
-                  <div className="text-xs font-medium leading-[14px] text-gray-500">Pts</div>
-                </div>
-                <div className="grow border-l p-1 pl-7">
-                  <div className="text-4xl font-semibold">16</div>
-                  <div className="text-xs font-medium leading-[14px] text-gray-500">Participants</div>
-                </div>
-              </div>
-            </div>
+            <Cumulated stats={stats} officeFilter={officeFilter}></Cumulated>
           </div>
           {/* Spirimove progress */}
           {/* <div className="mb-2 w-full rounded-md bg-white p-4 shadow-md">
@@ -116,3 +105,4 @@ const Leaderboard = () => {
 };
 
 export default Leaderboard;
+
