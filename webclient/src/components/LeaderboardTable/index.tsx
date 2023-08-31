@@ -44,8 +44,8 @@ export const LeaderboardTable = ({ stats, officeFilter, mode }: Props) => {
 
 function filterAndSort(stats: ILeaderboardStats[], mode: SortingMode, filter?: string): ILeaderboardStats[] {
   const compareFn = {
-    pts: (a: ILeaderboardStats, b: ILeaderboardStats) => Number(b.total_days) - Number(a.total_days),
-    days: (a: ILeaderboardStats, b: ILeaderboardStats) => Number(b.total_points) - Number(a.total_points),
+    pts: (a: ILeaderboardStats, b: ILeaderboardStats) => Number(b.total_points) - Number(a.total_points),
+    days: (a: ILeaderboardStats, b: ILeaderboardStats) => Number(b.total_days) - Number(a.total_days),
   }[mode];
 
   return stats.filter((stat) => !filter || stat.user__office === filter).sort(compareFn);
@@ -53,7 +53,7 @@ function filterAndSort(stats: ILeaderboardStats[], mode: SortingMode, filter?: s
 
 const TotalPointsRenderer = (stat: ILeaderboardStats, idx: number) => (
   <>
-    <div id={'${idx}'} className="flex items-center p-3">
+    <div id={stat.user__display_name} className="flex items-center p-3">
       <div className="mr-4 flex-none text-sm text-gray-500">{idx + 1}</div>
       <div className="flex grow items-center">
         <div className="flex grow items-center">
@@ -73,7 +73,7 @@ const TotalPointsRenderer = (stat: ILeaderboardStats, idx: number) => (
 
 const TotalDaysRenderer = (stat: ILeaderboardStats, idx: number) => (
   <>
-    <div id={'${idx}'} className="flex items-center p-3">
+    <div id={stat.user__display_name} className="flex items-center p-3">
       <div className="mr-4 flex-none text-sm text-gray-500">{idx + 1}</div>
       <div className="grow">
         <div className="flex grow items-center">
@@ -89,7 +89,7 @@ const TotalDaysRenderer = (stat: ILeaderboardStats, idx: number) => (
           <div className="flex-none text-sm font-semibold">{stat.total_days} days</div>
         </div>
         <div className="grow pt-2">
-          <LinearProgress value={Number(10)} max={10} />
+          <LinearProgress value={Number(stat.total_days)} max={10} />
         </div>
       </div>
     </div>
