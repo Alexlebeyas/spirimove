@@ -1,28 +1,24 @@
-import { useEffect, useState } from 'react';
-import { Header, AppContainer, AppLoading } from '@/components';
 import Router from '@/Router';
-import useContestStore from '@/stores/useContestStore';
+import { AppContainer, AppLoading, Header } from '@/components';
 import useUserStore from '@/stores/useUserStore';
+import { useEffect, useState } from 'react';
 
 import '@/i18n/i18n';
 
-import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { InteractionStatus } from '@azure/msal-browser';
+import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { ToastContainer } from 'react-toastify';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchConstest = useContestStore((state) => state.fetchContest);
   const fetchUser = useUserStore((state) => state.fetchUser);
 
   const { inProgress } = useMsal();
   const isAuthenticated = useIsAuthenticated();
 
-
   useEffect(() => {
     const initStores = async () => {
-      await fetchConstest();
       await fetchUser();
       setIsLoading(false);
     };
@@ -41,7 +37,6 @@ const App = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, inProgress]);
-
 
   return (
     <>

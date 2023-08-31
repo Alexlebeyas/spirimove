@@ -1,8 +1,12 @@
+import { IContest } from '@/interfaces';
 import ApiService from '@/services/ApiService';
 
 export class ContestService {
   async getCurrent() {
-    return (await ApiService.get('/all/contests')).data[0];
+    const contests = (await ApiService.get('/all/contests')).data;
+
+    return contests[0];
+    // return undefined;
   }
 }
 

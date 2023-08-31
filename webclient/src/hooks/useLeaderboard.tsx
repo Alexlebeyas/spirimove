@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
 import { IContest, ILeaderboardStats } from '@/interfaces';
-import ApiService from '@/services/ApiService';
+import { useEffect, useState } from 'react';
 
-export const useLeaderboard = (contest: IContest) => {
+export const useLeaderboard = (contest: IContest | undefined) => {
   const [stats, setStats] = useState<Array<ILeaderboardStats>>([]);
-  const [isLoading, setIsloading] = useState(true);
+  const [isLoading, setIsloading] = useState(!!contest);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -21,7 +20,7 @@ export const useLeaderboard = (contest: IContest) => {
         {
           user__display_name: 'Spirian B',
           user__profile_picture: '',
-          user__office: 'Toronto',
+          user__office: 'Brossard',
           contest__name: 'Spirimove',
           total_points: '5',
           total_days: '3',
@@ -48,8 +47,8 @@ export const useLeaderboard = (contest: IContest) => {
       setIsloading(false);
     };
 
-    fetchStats();
-  }, [contest.id]);
+    if (contest) fetchStats();
+  }, [contest]);
 
   return { stats: stats, isLoading };
 };
