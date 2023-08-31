@@ -1,9 +1,8 @@
-import { PageContainer } from '@/components';
+import { CurrentContestContext, PageContainer } from '@/components';
 import Cumulated from '@/components/Cumulated';
 import { LeaderboardTable, SortingMode } from '@/components/LeaderboardTable';
 import { useLeaderboard } from '@/hooks';
-import { useContest } from '@/hooks/useContest';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 type Office = {
@@ -17,7 +16,8 @@ const GlobalOffice = { id: 0, title: 'Global', filter: undefined };
 const Leaderboard = () => {
   const { t } = useTranslation();
 
-  const { contest } = useContest();
+  const contest = useContext(CurrentContestContext);
+
   const { stats, isLoading: isLoading } = useLeaderboard(contest);
 
   const [sortingMode, setSortingMode] = useState<SortingMode>('pts');
@@ -105,4 +105,3 @@ const Leaderboard = () => {
 };
 
 export default Leaderboard;
-

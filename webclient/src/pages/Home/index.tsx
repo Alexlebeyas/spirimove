@@ -1,18 +1,17 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { PageContainer, ParticipationCard, ParticipateModal } from '@/components';
-import CircularProgress from '@mui/material/CircularProgress';
+import { CurrentContestContext, PageContainer, ParticipateModal, ParticipationCard } from '@/components';
 import { fetchAllParticipations, fetchParticipationsType } from '@/stores/useParticipationStore';
+import CircularProgress from '@mui/material/CircularProgress';
+import { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import 'react-toastify/dist/ReactToastify.css';
-import { useContest } from '@/hooks/useContest';
 
 const Home = () => {
   const { t } = useTranslation();
   const { isLoading, participations, getParticipations } = fetchAllParticipations((state) => state);
   const { getParticipationsTypes } = fetchParticipationsType((state) => state);
 
-  const { contest } = useContest();
+  const contest = useContext(CurrentContestContext);
 
   const [isOpen, setIsOpen] = useState(false);
   if (isLoading) {

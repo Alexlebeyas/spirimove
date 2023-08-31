@@ -4,20 +4,17 @@ import { getDates } from '@/utils/dates';
 import { useTranslation } from 'react-i18next';
 import './index.css';
 import { CircularProgress } from '@mui/material';
-import { IContest } from '@/interfaces';
-import { ConfirmBox, ParticipateModal } from '@/components'
-import { useState } from 'react';
+import { ConfirmBox, CurrentContestContext, ParticipateModal } from '@/components';
+import { useContext, useState } from 'react';
 import { IParticipation } from '@/interfaces';
 import ParticipationService from '@/services/ParticipationService';
 import { fetchMyParticipations, fetchAllParticipations } from '@/stores/useParticipationStore';
 
-interface Props {
-  contest: IContest;
-}
+export const SpiriMoveProgress = () => {
+  const contest = useContext(CurrentContestContext);
 
-export const SpiriMoveProgress: React.FC<Props> = ({ contest }) => {
   const { t } = useTranslation();
-  const {isLoading, participations, getParticipations} = fetchMyParticipations((state) => state);
+  const { isLoading, participations, getParticipations } = fetchMyParticipations((state) => state);
 
   const [isConfirmDelOpen, setConfirmDelOpen] = useState(false);
   const [participationToHandle, setParticipationToHandle] = useState({} as IParticipation);
@@ -27,7 +24,7 @@ export const SpiriMoveProgress: React.FC<Props> = ({ contest }) => {
   const updateAllParticipations = fetchAllParticipations((state) => state.getParticipations);
 
   const handleDeleteParticipation = () => {
-    ParticipationService.deleteParticipation(participationToHandle).then(()=>{
+    ParticipationService.deleteParticipation(participationToHandle).then(() => {
       updateMyParticipations();
       updateAllParticipations();
     });
@@ -43,6 +40,8 @@ export const SpiriMoveProgress: React.FC<Props> = ({ contest }) => {
     );
   }
 
+  if (!contest) return <></>; // no context
+
   const datesArray = getDates(contest.start_date, contest.end_date);
 
   const contestParticipations: IMySpiriMoveProgress[] = [];
@@ -50,10 +49,10 @@ export const SpiriMoveProgress: React.FC<Props> = ({ contest }) => {
   datesArray.forEach((currentDate) => {
     const currentDayParticipations = participations?.filter((p) => p.date === currentDate);
     if (currentDayParticipations?.length === 0) {
-      contestParticipations.push({ contestDate: currentDate});
+      contestParticipations.push({ contestDate: currentDate });
     } else {
       currentDayParticipations?.forEach((participation) => {
-        contestParticipations.push({ contestDate: currentDate, participation  });
+        contestParticipations.push({ contestDate: currentDate, participation });
       });
     }
   });
@@ -88,8 +87,19 @@ export const SpiriMoveProgress: React.FC<Props> = ({ contest }) => {
           </tbody>
         </table>
       </div>
-      <ConfirmBox open={isConfirmDelOpen} setOpen={setConfirmDelOpen} handleDeleteParticipation={handleDeleteParticipation} participation={participationToHandle}/>
-      <ParticipateModal contestId={contest.id} startDate={contest.start_date} open={isEditParticipationModalOpen} setOpen={setIsEditParticipationModalOpen} participationToEdit={participationToHandle} />
+      <ConfirmBox
+        open={isConfirmDelOpen}
+        setOpen={setConfirmDelOpen}
+        handleDeleteParticipation={handleDeleteParticipation}
+        participation={participationToHandle}
+      />
+      <ParticipateModal
+        contestId={contest.id}
+        startDate={contest.start_date}
+        open={isEditParticipationModalOpen}
+        setOpen={setIsEditParticipationModalOpen}
+        participationToEdit={participationToHandle}
+      />
     </div>
   );
 };

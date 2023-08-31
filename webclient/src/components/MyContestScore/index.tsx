@@ -1,15 +1,13 @@
 import { useMyStats } from '@/hooks/useMyStats';
 import { CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useContext } from 'react';
+import { CurrentContestContext } from '@/components';
 
-interface Props {
-  contestId: string;
-}
-
-const MyContestScore: React.FC<Props> = ({ contestId }) => {
+const MyContestScore = () => {
+  const contest = useContext(CurrentContestContext);
   const { t } = useTranslation();
-
-  const stats = useMyStats(contestId);
+  const stats = useMyStats(contest);
 
   if (!stats) {
     return (

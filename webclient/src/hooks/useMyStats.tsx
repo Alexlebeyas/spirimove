@@ -1,8 +1,9 @@
+import { IContest } from '@/interfaces';
 import { IMyStats } from '@/interfaces/IMyStats';
 import ApiService from '@/services/ApiService';
 import { useState, useEffect } from 'react';
 
-export const useMyStats = (contestId: string) => {
+export const useMyStats = (contest: IContest | undefined) => {
   const [stats, setStats] = useState<IMyStats>({
     contest__name: '',
     total_points: 0,
@@ -10,17 +11,16 @@ export const useMyStats = (contestId: string) => {
     level: [21, 25, 33],
   });
 
-  const getStats = async () => {
-    const myStats = (await ApiService.get(`my/stats/${contestId}`)).data;
-
-    myStats.level = [21, 25, 33];
-    setStats(myStats);
-  };
-
   useEffect(() => {
-    getStats();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [contestId]);
+    const getStats = async () => {
+      const myStats = (await ApiService.get(`my/stats/${contest?.id}`)).data;
+
+      myStats.level = [21, 25, 33];
+      setStats(myStats);
+    };
+
+    if (contest) getStats();
+  }, [contest]);
 
   return stats;
 };
