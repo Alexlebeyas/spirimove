@@ -2,26 +2,20 @@ from django.contrib import admin
 from django.contrib import messages
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
-
-from .models import ParticipationModel, DrawModel, ParticipationTypeModel, LevelModel, handleConsideredParticipation
+from apps.contest.models import ContestsModel
+from .models import ParticipationModel, DrawModel, ParticipationTypeModel, LevelModel
 
 
 @admin.action(description=_("Approuver les participations selectionnées"))
 def make_approve(modeladmin, request, queryset):
-    list_participation = list(queryset)[:]
     queryset.update(is_approved=True)
     messages.success(request, _("Participation(s) sélectionnée(s) Marqué(s) comme approuvé(s) avec succès !!"))
-    for participation in list_participation:
-        handleConsideredParticipation(participation)
 
 
 @admin.action(description=_("Désapprouver les participations selectionnées"))
 def make_unapprove(modeladmin, request, queryset):
-    list_participation = list(queryset)[:]
     queryset.update(is_approved=False)
     messages.success(request, _("Participation(s) sélectionnée(s) Marquée(s) comme non approuvée(s) !!"))
-    for participation in list_participation:
-        handleConsideredParticipation(participation)
 
 
 @admin.register(ParticipationModel)
@@ -64,7 +58,10 @@ class UnApprovedParticipation(ParticipationModel):
 @admin.register(UnApprovedParticipation)
 class UnApprovedParticipationAdmin(ParticipationModelAdmin):
     def get_queryset(self, request):
-        return self.model.objects.filter(status=self.model.IN_VERIFICATION)
+        return self.model.objects.filter(
+            status=self.model.IN_VERIFICATION,
+            contest=ContestsModel.current_contest.first()
+        )
 
     def has_module_permission(self, request):
         return (request.user.is_moderator() or request.user.is_admin()) if request.user.is_authenticated else False
