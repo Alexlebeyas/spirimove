@@ -14,7 +14,7 @@ const Leaderboard = () => {
 
   const contest = useContext(CurrentContestContext);
 
-  const { stats, isLoading: isLoading } = useLeaderboard(contest);
+  const { stats } = useLeaderboard(contest);
 
   const [sortingMode, setSortingMode] = useState<SortingMode>('pts');
   const [officeFilter, setOfficeFilter] = useState<Office>(GlobalOffice);
