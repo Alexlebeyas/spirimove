@@ -3,7 +3,7 @@ import Cumulated from '@/components/Cumulated';
 import { LeaderboardTable, SortingMode } from '@/components/LeaderboardTable';
 import RemainingDays from '@/components/RemainingDays';
 import { useLeaderboard } from '@/hooks';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Office } from '../../interfaces/Office';
 

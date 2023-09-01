@@ -1,4 +1,3 @@
-import { IContest } from '@/interfaces';
 import ApiService from '@/services/ApiService';
 
 export class ContestService {
@@ -6,7 +5,6 @@ export class ContestService {
     const contests = (await ApiService.get('/all/contests')).data;
 
     return contests[0];
-    // return undefined;
   }
 }
 
