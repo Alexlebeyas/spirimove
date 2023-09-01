@@ -14,7 +14,9 @@ interface Props {
 export type SortingMode = 'pts' | 'days';
 
 export const LeaderboardTable = ({ stats, officeFilter, mode }: Props) => {
-  const sortedStats = filterAndSort(stats, mode, officeFilter);
+  const [topEntries, setTopEntries] = useState<number>(5);
+
+  const sortedStats = filterAndSort(stats, mode, topEntries, officeFilter);
   const contest = useContext(CurrentContestContext);
 
   if (!contest) return <></>; // no contest
@@ -24,7 +26,7 @@ export const LeaderboardTable = ({ stats, officeFilter, mode }: Props) => {
   return (
     <>
       {/* First entries */}
-      <div className="h-[330px] divide-y overflow-y-auto border-b">
+      <div className="h-[370px] divide-y overflow-y-auto border-b">
         {sortedStats.map((stat, idx) => (
           <>
             {
@@ -39,7 +41,10 @@ export const LeaderboardTable = ({ stats, officeFilter, mode }: Props) => {
       {/* Load more button */}
       <div className="mt-3 flex justify-center">
         <div className="py-2">
-          <button className="mx-1 inline-flex items-center px-4 py-1 text-base font-medium">
+          <button
+            className="mx-1 inline-flex items-center px-4 py-1 text-base font-medium"
+            onClick={() => setTopEntries((top) => top + 5)}
+          >
             View More
             <svg className="ml-2 h-3.5 w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 23">
               <path stroke="currentColor" strokeWidth="2" d="M11 11v-11h1v11h11v1h-11v11h-1v-11h-11v-1h11z" />
@@ -51,13 +56,21 @@ export const LeaderboardTable = ({ stats, officeFilter, mode }: Props) => {
   );
 };
 
-function filterAndSort(stats: ILeaderboardStats[], mode: SortingMode, filter?: string): ILeaderboardStats[] {
+function filterAndSort(
+  stats: ILeaderboardStats[],
+  mode: SortingMode,
+  top: number,
+  filter?: string
+): ILeaderboardStats[] {
   const compareFn = {
     pts: (a: ILeaderboardStats, b: ILeaderboardStats) => Number(b.total_points) - Number(a.total_points),
     days: (a: ILeaderboardStats, b: ILeaderboardStats) => Number(b.total_days) - Number(a.total_days),
   }[mode];
 
-  return stats.filter((stat) => !filter || stat.user__office === filter).sort(compareFn);
+  return stats
+    .filter((stat) => !filter || stat.user__office === filter)
+    .sort(compareFn)
+    .slice(0, top);
 }
 
 const TotalPointsRenderer = (stat: ILeaderboardStats, idx: number) => (

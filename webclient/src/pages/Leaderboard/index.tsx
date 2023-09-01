@@ -59,7 +59,7 @@ const Leaderboard = () => {
           <div className="mb-3 flex flex-col lg:flex-row">
             {/* Leaderboard */}
             <div className="mr-3 w-full lg:w-2/3">
-              <div className="mb-2 max-h-[511px] rounded-md bg-white p-4 shadow-md">
+              <div className="mb-2 max-h-[540px] rounded-md bg-white p-4 shadow-md">
                 <h3 className="mb-2 text-lg font-bold">Leaderboard</h3>
                 {/* Stat selection */}
                 <div className="mb-2 flex justify-center">
