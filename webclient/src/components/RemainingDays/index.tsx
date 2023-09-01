@@ -1,12 +1,11 @@
 import { useContest } from '@/hooks';
-import { CircularProgress } from '@mui/material';
 import { daysInterval } from '@/utils/dates';
 import { DateTime } from 'luxon';
 
 const RemainingDays = () => {
   const { contest, isLoading } = useContest();
 
-  if (isLoading) return <CircularProgress />;
+  if (isLoading) return <></>;
 
   if (!contest) return <></>;
 

@@ -1,8 +1,9 @@
 import { CurrentContestContext } from '@/components';
 import { ILeaderboardStats } from '@/interfaces/leaderboardStats';
+import useUserStore from '@/stores/useUserStore';
 import { daysInterval } from '@/utils/dates';
 import { DateTime } from 'luxon';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { LinearProgress, ProfileImage } from '..';
 
 interface Props {
@@ -18,6 +19,7 @@ export const LeaderboardTable = ({ stats, officeFilter, mode }: Props) => {
 
   const sortedStats = filterAndSort(stats, mode, topEntries, officeFilter);
   const contest = useContext(CurrentContestContext);
+  const currentUser = useUserStore((state) => state.user);
 
   if (!contest) return <></>; // no contest
 
@@ -26,13 +28,13 @@ export const LeaderboardTable = ({ stats, officeFilter, mode }: Props) => {
   return (
     <>
       {/* First entries */}
-      <div className="h-[370px] divide-y overflow-y-auto border-b">
+      <div className="h-[365px] divide-y overflow-y-auto border-b">
         {sortedStats.map((stat, idx) => (
           <>
             {
               {
-                pts: TotalPointsRenderer(stat, idx),
-                days: TotalDaysRenderer(stat, idx, currentDaysInContest),
+                pts: TotalPointsRenderer(stat, idx, currentUser.display_name),
+                days: TotalDaysRenderer(stat, idx, currentDaysInContest, currentUser.display_name),
               }[mode]
             }
           </>
@@ -73,9 +75,12 @@ function filterAndSort(
     .slice(0, top);
 }
 
-const TotalPointsRenderer = (stat: ILeaderboardStats, idx: number) => (
+const TotalPointsRenderer = (stat: ILeaderboardStats, idx: number, current: string) => (
   <>
-    <div id={stat.user__display_name} className="flex items-center p-3">
+    <div
+      id={stat.user__display_name}
+      className={'flex items-center p-3' + (stat.user__display_name === current ? ' bg-gray-50' : '')}
+    >
       <div className="mr-4 flex-none text-sm text-gray-500">{idx + 1}</div>
       <div className="flex grow items-center">
         <div className="flex grow items-center">
@@ -93,9 +98,12 @@ const TotalPointsRenderer = (stat: ILeaderboardStats, idx: number) => (
   </>
 );
 
-const TotalDaysRenderer = (stat: ILeaderboardStats, idx: number, max: number) => (
+const TotalDaysRenderer = (stat: ILeaderboardStats, idx: number, max: number, current: string) => (
   <>
-    <div id={stat.user__display_name} className="flex items-center p-3">
+    <div
+      id={stat.user__display_name}
+      className={'flex items-center p-3' + (stat.user__display_name === current ? ' bg-gray-50' : '')}
+    >
       <div className="mr-4 flex-none text-sm text-gray-500">{idx + 1}</div>
       <div className="grow">
         <div className="flex grow items-center">
