@@ -8,14 +8,21 @@ from .models import ParticipationModel, DrawModel, ParticipationTypeModel, Level
 
 @admin.action(description=_("Approuver les participations selectionnées"))
 def make_approve(modeladmin, request, queryset):
-    queryset.update(is_approved=True)
+    queryset.update(status=ParticipationModel.APPROVED)
     messages.success(request, _("Participation(s) sélectionnée(s) Marqué(s) comme approuvé(s) avec succès !!"))
+
+
+@admin.action(description=_("Rejeter les participations selectionnées"))
+def make_rejected(modeladmin, request, queryset):
+    queryset.update(status=ParticipationModel.REJECTED)
+    messages.success(request, _("Participation(s) sélectionnée(s) Marquée(s) comme rejetée(s) !!"))
 
 
 @admin.action(description=_("Désapprouver les participations selectionnées"))
 def make_unapprove(modeladmin, request, queryset):
-    queryset.update(is_approved=False)
+    queryset.update(status=ParticipationModel.IN_VERIFICATION)
     messages.success(request, _("Participation(s) sélectionnée(s) Marquée(s) comme non approuvée(s) !!"))
+
 
 
 @admin.register(ParticipationModel)
@@ -23,7 +30,7 @@ class ParticipationModelAdmin(admin.ModelAdmin):
     list_display = ['user', 'contest_name', 'description', 'type_name', 'points', 'is_intensive', 'is_organizer',
                     'date', 'image_displayed', 'status']
     list_filter = ('contest__name',)
-    actions = [make_approve, make_unapprove]
+    actions = [make_approve, make_rejected, make_unapprove, ]
 
     def has_change_permission(self, request, obj=None):
         return obj is None
@@ -48,18 +55,59 @@ class ParticipationModelAdmin(admin.ModelAdmin):
         return (request.user.is_moderator() or request.user.is_admin()) if request.user.is_authenticated else False
 
 
-class UnApprovedParticipation(ParticipationModel):
+class ApproveParticipation(ParticipationModel):
     class Meta:
         proxy = True
         verbose_name = _('Participation to approve')
         verbose_name_plural = _('Participations to approve')
 
 
-@admin.register(UnApprovedParticipation)
-class UnApprovedParticipationAdmin(ParticipationModelAdmin):
+@admin.register(ApproveParticipation)
+class ApprovedParticipationAdmin(ParticipationModelAdmin):
+    actions = [make_approve,]
     def get_queryset(self, request):
         return self.model.objects.filter(
             status=self.model.IN_VERIFICATION,
+            contest=ContestsModel.current_contest.first()
+        )
+
+    def has_module_permission(self, request):
+        return (request.user.is_moderator() or request.user.is_admin()) if request.user.is_authenticated else False
+
+
+class RejectParticipation(ParticipationModel):
+    class Meta:
+        proxy = True
+        verbose_name = _('Participation to reject')
+        verbose_name_plural = _('Participations to reject')
+
+
+@admin.register(RejectParticipation)
+class RejecteParticipationAdmin(ParticipationModelAdmin):
+    actions = [make_rejected, ]
+    def get_queryset(self, request):
+        return self.model.objects.filter(
+            status=self.model.IN_VERIFICATION,
+            contest=ContestsModel.current_contest.first()
+        )
+
+    def has_module_permission(self, request):
+        return (request.user.is_moderator() or request.user.is_admin()) if request.user.is_authenticated else False
+
+
+class UnapproveParticipation(ParticipationModel):
+    class Meta:
+        proxy = True
+        verbose_name = _('Participation to unapproved')
+        verbose_name_plural = _('Participations to unapproved')
+
+
+@admin.register(UnapproveParticipation)
+class UnapproveParticipationAdmin(ParticipationModelAdmin):
+    actions = [make_unapprove, ]
+    def get_queryset(self, request):
+        return self.model.objects.filter(
+            status__in=[self.model.APPROVED, self.model.REJECTED],
             contest=ContestsModel.current_contest.first()
         )
 

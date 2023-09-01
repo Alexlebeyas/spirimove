@@ -171,7 +171,7 @@ class ListleaderBoardAPIView(ListAPIView):
         list_leaderboard = ParticipationModel.objects.filter(
             contest=contest,
             contest__is_open=True,
-            is_approved=True,
+            status=ParticipationModel.APPROVED,
             is_to_considered_for_day=True,
         ).values('user__display_name', 'user__profile_picture', 'user__office', 'contest__name'). \
             order_by('user__display_name', 'contest__name'). \
@@ -200,7 +200,7 @@ class ListMyOfficeleaderBoardAPIView(ListAPIView):
             contest=contest,
             user__office=request.user.office,
             contest__is_open=True,
-            is_approved=True,
+            status=ParticipationModel.APPROVED,
             is_to_considered_for_day=True,
         ).values('user__display_name', 'user__profile_picture', 'user__office', 'contest__name', ). \
             order_by('user__display_name', 'contest__name'). \
@@ -236,7 +236,7 @@ class ListMyStatAPIView(ListAPIView):
     def get(self, request, *args, **kwargs):
         contest = get_object_or_404(ContestsModel, pk=kwargs['contest_id'])
         user_participations_data = ParticipationModel.objects. \
-            filter(contest=contest, user=request.user, is_to_considered_for_day=True, is_approved=True). \
+            filter(contest=contest, user=request.user, is_to_considered_for_day=True, status=ParticipationModel.APPROVED). \
             exclude(Q(user__office=None) | Q(user__is_active=False)). \
             values_list('contest__name', 'user__display_name', 'date', 'points')
 
@@ -274,7 +274,7 @@ class ListLevelAPIView(ListAPIView):
 
 def get_list_stats_date(contest, user=None):
     list_date = get_list_contest_date(contest)
-    stats_for_users = ParticipationModel.objects.filter(is_to_considered_for_day=True, is_approved=True). \
+    stats_for_users = ParticipationModel.objects.filter(is_to_considered_for_day=True, status=ParticipationModel.APPROVED,). \
         exclude(Q(user__office=None) | Q(user__is_active=False)). \
         values_list('user__pk', 'contest__name', 'user__office', 'user__display_name', 'date', 'points'). \
         order_by('user__display_name', 'contest__name', 'date'). \

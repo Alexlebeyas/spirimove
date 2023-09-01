@@ -53,7 +53,7 @@ class ActivitiesModelAdmin(admin.ModelAdmin):
 def get_list_element_for_draw(contest):
     list_participation = ParticipationModel.objects.filter(
         contest=contest,
-        is_approved=True,
+        status=ParticipationModel.APPROVED,
         is_to_considered_for_day=True,
     ).values('user__pk', 'user__office', 'date').distinct()
 

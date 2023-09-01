@@ -10,7 +10,7 @@ class AddParticipationModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParticipationModel
         exclude = (
-            'is_to_considered_for_day', 'user', 'points', 'is_approved', 'date_created', 'last_modified', 'status')
+            'is_to_considered_for_day', 'user', 'points', 'date_created', 'last_modified', 'status')
 
     def __init__(self, *args, **kwargs):
         update_action = kwargs.pop('update_action', None)
@@ -66,7 +66,7 @@ class ListParticipationModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParticipationModel
         read_only_fields = ('user',)
-        exclude = ('is_to_considered_for_day', 'status', 'is_approved', 'last_modified')
+        exclude = ('is_to_considered_for_day', 'status', 'last_modified')
 
     def get_reactions(self, obj):
         return ReactionModel.objects.filter(participation__pk=obj.pk).values('user__display_name', 'reaction')
