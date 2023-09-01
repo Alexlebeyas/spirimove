@@ -5,10 +5,13 @@ import { daysInterval } from '@/utils/dates';
 import { DateTime } from 'luxon';
 import { useContext, useState } from 'react';
 import { LinearProgress, ProfileImage } from '..';
+import { Office } from '@/interfaces/Office';
+import { useTranslation } from 'react-i18next';
+import { TFunction } from 'i18next';
 
 interface Props {
   stats: ILeaderboardStats[];
-  officeFilter?: string;
+  officeFilter: Office;
   mode: SortingMode;
 }
 
@@ -16,8 +19,9 @@ export type SortingMode = 'pts' | 'days';
 
 export const LeaderboardTable = ({ stats, officeFilter, mode }: Props) => {
   const [topEntries, setTopEntries] = useState<number>(5);
+  const { t } = useTranslation();
 
-  const sortedStats = filterAndSort(stats, mode, topEntries, officeFilter);
+  const sortedStats = filterAndSort(stats, mode, topEntries, officeFilter, t);
   const contest = useContext(CurrentContestContext);
   const currentUser = useUserStore((state) => state.user);
 
@@ -62,7 +66,8 @@ function filterAndSort(
   stats: ILeaderboardStats[],
   mode: SortingMode,
   top: number,
-  filter?: string
+  office: Office,
+  translateF: TFunction<'translation', undefined>
 ): ILeaderboardStats[] {
   const compareFn = {
     pts: (a: ILeaderboardStats, b: ILeaderboardStats) => Number(b.total_points) - Number(a.total_points),
@@ -70,7 +75,7 @@ function filterAndSort(
   }[mode];
 
   return stats
-    .filter((stat) => !filter || stat.user__office === filter)
+    .filter((stat) => office.isGlobal || stat.user__office === translateF(office.titleKey))
     .sort(compareFn)
     .slice(0, top);
 }

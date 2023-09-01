@@ -5,14 +5,9 @@ import RemainingDays from '@/components/RemainingDays';
 import { useLeaderboard } from '@/hooks';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Office } from '../../interfaces/Office';
 
-type Office = {
-  id: number;
-  title: string;
-  filter: string | undefined;
-};
-
-const GlobalOffice = { id: 0, title: 'Global', filter: undefined };
+const GlobalOffice: Office = { id: 0, titleKey: 'Office.Global', isGlobal: true };
 
 const Leaderboard = () => {
   const { t } = useTranslation();
@@ -22,18 +17,7 @@ const Leaderboard = () => {
   const { stats, isLoading: isLoading } = useLeaderboard(contest);
 
   const [sortingMode, setSortingMode] = useState<SortingMode>('pts');
-  const [officeFilter, setOfficeFilter] = useState<string>();
-
-  // get list of offices into filters
-  const [offices, setOffices] = useState<Office[]>(() => [GlobalOffice]);
-  useEffect(() => {
-    const uniqueOffices = [...new Set(stats.map((s) => s.user__office))].map<Office>((officeName, idx) => ({
-      id: idx + 1,
-      title: officeName,
-      filter: officeName,
-    }));
-    setOffices([GlobalOffice, ...uniqueOffices]);
-  }, [stats]);
+  const [officeFilter, setOfficeFilter] = useState<Office>(GlobalOffice);
 
   return (
     <PageContainer>
@@ -42,15 +26,15 @@ const Leaderboard = () => {
           {/* Office filters */}
           <div className="flex flex-col items-center justify-center">
             <ul className="mb-4 flex flex-nowrap text-center text-sm font-medium">
-              {offices.map((office) => (
+              {getOffices().map((office) => (
                 <li className="mr-2" key={office.id}>
                   <button
                     className={`inline-block rounded-t-lg border-gray-900 p-4 ${
-                      office.filter == officeFilter ? 'border-b-4' : ''
+                      office.id === officeFilter.id ? 'border-b-4' : ''
                     }`}
-                    onClick={() => setOfficeFilter(office.filter)}
+                    onClick={() => setOfficeFilter(office)}
                   >
-                    {office.title}
+                    {t(office.titleKey)}
                   </button>
                 </li>
               ))}
@@ -108,5 +92,13 @@ const Leaderboard = () => {
     </PageContainer>
   );
 };
+
+function getOffices(): Office[] {
+  const MontrealOffice: Office = { id: 1, titleKey: 'Office.Montreal', isGlobal: false };
+  const GatineauOffice: Office = { id: 2, titleKey: 'Office.Gatineau', isGlobal: false };
+  const TorontoOffice: Office = { id: 3, titleKey: 'Office.Toronto', isGlobal: false };
+
+  return [GlobalOffice, MontrealOffice, GatineauOffice, TorontoOffice];
+}
 
 export default Leaderboard;

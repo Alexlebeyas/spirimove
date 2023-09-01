@@ -28,6 +28,7 @@
       "AllOffices": "Tous les bureaux"
     },
     "Office": {
+      "Global": "Global",
       "Montreal": "Montréal",
       "Gatineau": "Gatineau",
       "Toronto": "Toronto"
