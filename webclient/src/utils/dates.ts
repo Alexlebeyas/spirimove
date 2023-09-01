@@ -14,5 +14,5 @@ export const getDates = function (strStartDate: string, strEndDate: string): str
 };
 
 export const daysInterval = function (from: DateTime, to: DateTime): number {
-  return to.diff(from).as('days');
+  return Math.trunc(to.diff(from).as('days'));
 };

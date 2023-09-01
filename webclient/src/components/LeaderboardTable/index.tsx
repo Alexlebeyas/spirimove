@@ -1,10 +1,9 @@
 import { CurrentContestContext } from '@/components';
 import { ILeaderboardStats } from '@/interfaces/leaderboardStats';
-import { LinearProgress, ProfileImage } from '..';
-import { useContext } from 'react';
 import { daysInterval } from '@/utils/dates';
 import { DateTime } from 'luxon';
-import { DATE_FORMAT } from '@/constants/formats';
+import { useContext } from 'react';
+import { LinearProgress, ProfileImage } from '..';
 
 interface Props {
   stats: ILeaderboardStats[];

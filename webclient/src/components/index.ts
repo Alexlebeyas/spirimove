@@ -11,3 +11,4 @@ export * from './ParticipateModal';
 export * from './ConfirmBox';
 export * from './LeaderboardTable';
 export * from './Cumulated';
+export * from './RemainingDays';

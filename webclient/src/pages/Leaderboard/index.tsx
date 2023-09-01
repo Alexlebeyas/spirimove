@@ -1,6 +1,7 @@
 import { CurrentContestContext, PageContainer } from '@/components';
 import Cumulated from '@/components/Cumulated';
 import { LeaderboardTable, SortingMode } from '@/components/LeaderboardTable';
+import RemainingDays from '@/components/RemainingDays';
 import { useLeaderboard } from '@/hooks';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -84,16 +85,20 @@ const Leaderboard = () => {
                   </div>
                 </div>
                 {/* Table */}
-                <LeaderboardTable stats={stats} mode={sortingMode} officeFilter={officeFilter}></LeaderboardTable>
+                <LeaderboardTable stats={stats} mode={sortingMode} officeFilter={officeFilter} />
               </div>
             </div>
             <div className="mr-3 w-full lg:w-1/3">
               {/* Cumulated stats */}
               <div className="mb-2 w-full rounded-md bg-white p-4 shadow-md">
                 <h3 className="mb-3 text-lg font-bold">Cumulated</h3>
-                <Cumulated stats={stats} officeFilter={officeFilter}></Cumulated>
+                <Cumulated stats={stats} officeFilter={officeFilter} />
               </div>
               {/* Spirimove progress */}
+              <div className="mb-2 w-full rounded-md bg-white p-4 shadow-md">
+                <h3 className="mb-3 text-lg font-bold">{contest.name} progress</h3>
+                <RemainingDays />
+              </div>
             </div>
           </div>
         </>
