@@ -55,7 +55,7 @@ const Leaderboard = () => {
                       }
                       onClick={() => setSortingMode('pts')}
                     >
-                      Points
+                      {t('Leaderboard.PointsMode')}
                     </button>
                     <button
                       className={
@@ -64,23 +64,23 @@ const Leaderboard = () => {
                       }
                       onClick={() => setSortingMode('days')}
                     >
-                      Consecutive days
+                      {t('Leaderboard.ConsecutiveDaysMode')}
                     </button>
                   </div>
                 </div>
                 {/* Table */}
-                <LeaderboardTable stats={stats} mode={sortingMode} officeFilter={officeFilter} />
+                {stats && <LeaderboardTable stats={stats} mode={sortingMode} officeFilter={officeFilter} />}
               </div>
             </div>
             <div className="mr-3 w-full lg:w-1/3">
               {/* Cumulated stats */}
               <div className="mb-2 w-full rounded-md bg-white p-4 shadow-md">
-                <h3 className="mb-3 text-lg font-bold">Cumulated</h3>
-                <Cumulated stats={stats} officeFilter={officeFilter} />
+                <h3 className="mb-3 text-lg font-bold">{t('Leaderboard.Cumulated.Title')}</h3>
+                {stats && <Cumulated stats={stats} officeFilter={officeFilter} />}
               </div>
               {/* Spirimove progress */}
               <div className="mb-2 w-full rounded-md bg-white p-4 shadow-md">
-                <h3 className="mb-3 text-lg font-bold">{contest.name} progress</h3>
+                <h3 className="mb-3 text-lg font-bold">{t('Leaderboard.RemainingDays.Title')}</h3>
                 <RemainingDays />
               </div>
             </div>

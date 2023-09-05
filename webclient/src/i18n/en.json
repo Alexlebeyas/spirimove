@@ -25,7 +25,21 @@
       "AddParticipation": "Add participation"
     },
     "Leaderboard": {
-      "AllOffices": "All offices"
+      "ViewMore": "View more",
+      "PointsMode": "Points",
+      "PointsDisplay": "{{nb}} pts",
+      "ConsecutiveDaysMode": "Consecutive days",
+      "DaysDisplay": "{{nb}} days",
+      "RemainingDays": {
+        "Title": "Progress",
+        "Stimulation": "Don't give up!",
+        "ContestEnds": "{{contest}} ends in {{remaining}} days."
+      },
+      "Cumulated": {
+        "Title": "Cumulated",
+        "Points": "Pts",
+        "Participants": "Participants"
+      }
     },
     "Office": {
       "Global": "Global",

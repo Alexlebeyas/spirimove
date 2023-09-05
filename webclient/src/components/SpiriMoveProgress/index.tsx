@@ -40,7 +40,7 @@ export const SpiriMoveProgress = () => {
     );
   }
 
-  if (!contest) return <></>; // no context
+  if (!contest) return null; // no context
 
   const datesArray = getDates(contest.start_date, contest.end_date);
 

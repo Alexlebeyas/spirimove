@@ -1,13 +1,12 @@
 import { useContest } from '@/hooks';
 import { daysInterval } from '@/utils/dates';
 import { DateTime } from 'luxon';
+import { t } from 'i18next';
 
 const RemainingDays = () => {
   const { contest, isLoading } = useContest();
 
-  if (isLoading) return <></>;
-
-  if (!contest) return <></>;
+  if (isLoading || !contest) return null;
 
   const currentDay = 1 + daysInterval(DateTime.fromISO(contest.start_date), DateTime.now());
   const remaining = daysInterval(DateTime.now(), DateTime.fromISO(contest.end_date));
@@ -19,9 +18,9 @@ const RemainingDays = () => {
           <div className="text-xs font-medium text-gray-500">Day</div>
           <div className="text-4xl font-semibold">{currentDay}</div>
         </div>
-        <div className="text-base font-semibold ">Don't give up!</div>
+        <div className="text-base font-semibold ">{t('Leaderboard.RemainingDays.Stimulation')}</div>
         <div className="text-xs font-medium text-gray-500">
-          {contest.name} ends in {remaining} days.
+          {t('Leaderboard.RemainingDays.ContestEnds', { contest: contest.name, remaining: remaining })}
         </div>
       </div>
     </>

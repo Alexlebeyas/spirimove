@@ -11,13 +11,13 @@ export const CurrentContestContext = createContext<IContest | undefined>(undefin
 export const AppContainer: React.FC<Props> = ({ children }) => {
   const { contest, isLoading } = useContest();
 
-  return isLoading ? (
-    <></>
-  ) : (
+  return (
     <CurrentContestContext.Provider value={contest}>
-      <div className="bg-slate-100 pb-10 pt-24">
-        <div className="min-h-[75vh]">{children}</div>
-      </div>
+      {isLoading ? null : (
+        <div className="bg-slate-100 pb-10 pt-24">
+          <div className="min-h-[75vh]">{children}</div>
+        </div>
+      )}
     </CurrentContestContext.Provider>
   );
 };
