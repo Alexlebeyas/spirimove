@@ -1,20 +1,7 @@
-import { useState, useEffect } from 'react';
-import { IContest } from '@/interfaces';
-import ContestService from '@/services/ContestService';
+import { CurrentContestContext, ICurrentContestContext } from '@/providers/Contest';
+import { useContext } from 'react';
 
-export const useContest = () => {
-  const [contest, setContest] = useState<IContest>();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchContest = async () => {
-      const contest = await ContestService.getCurrent();
-      setContest(contest);
-      setIsLoading(false);
-    };
-
-    fetchContest();
-  }, []);
-
-  return { contest: contest, isLoading };
+export const useContest = (): ICurrentContestContext => {
+  const context = useContext(CurrentContestContext);
+  return context;
 };

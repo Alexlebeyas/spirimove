@@ -1,11 +1,10 @@
+import { useContest } from '@/hooks';
 import { useMyStats } from '@/hooks/useMyStats';
 import { CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useContext } from 'react';
-import { CurrentContestContext } from '@/components';
 
 const MyContestScore = () => {
-  const contest = useContext(CurrentContestContext);
+  const { contest } = useContest();
   const { t } = useTranslation();
   const stats = useMyStats(contest);
 

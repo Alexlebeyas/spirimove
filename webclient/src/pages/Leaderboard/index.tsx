@@ -1,9 +1,9 @@
-import { CurrentContestContext, PageContainer } from '@/components';
+import { PageContainer } from '@/components';
 import Cumulated from '@/components/Cumulated';
 import { LeaderboardTable, SortingMode } from '@/components/LeaderboardTable';
 import RemainingDays from '@/components/RemainingDays';
-import { useLeaderboard } from '@/hooks';
-import { useContext, useState } from 'react';
+import { useContest, useLeaderboard } from '@/hooks';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Office } from '../../interfaces/Office';
 
@@ -12,7 +12,7 @@ const GlobalOffice: Office = { id: 0, titleKey: 'Office.Global', isGlobal: true 
 const Leaderboard = () => {
   const { t } = useTranslation();
 
-  const contest = useContext(CurrentContestContext);
+  const { contest, fetchCurrent } = useContest();
 
   const { stats } = useLeaderboard(contest);
 
@@ -87,7 +87,7 @@ const Leaderboard = () => {
           </div>
         </>
       ) : (
-        <></>
+        <button onClick={fetchCurrent}>Fetch contest</button>
       )}
     </PageContainer>
   );

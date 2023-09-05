@@ -1,13 +1,13 @@
-import { CurrentContestContext } from '@/components';
+import { useContest } from '@/hooks';
+import { Office } from '@/interfaces/Office';
 import { ILeaderboardStats } from '@/interfaces/leaderboardStats';
 import useUserStore from '@/stores/useUserStore';
 import { daysInterval } from '@/utils/dates';
-import { DateTime } from 'luxon';
-import { useContext, useState } from 'react';
-import { LinearProgress, ProfileImage } from '..';
-import { Office } from '@/interfaces/Office';
-import { useTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
+import { DateTime } from 'luxon';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { LinearProgress, ProfileImage } from '..';
 
 interface Props {
   stats: ILeaderboardStats[];
@@ -22,7 +22,7 @@ export const LeaderboardTable = ({ stats, officeFilter, mode }: Props) => {
   const { t } = useTranslation();
 
   const sortedStats = filterAndSort(stats, mode, topEntries, officeFilter, t);
-  const contest = useContext(CurrentContestContext);
+  const { contest } = useContest();
   const currentUser = useUserStore((state) => state.user);
 
   if (!contest) return null; // no contest

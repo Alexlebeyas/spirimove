@@ -1,17 +1,18 @@
+import { ConfirmBox, ParticipateModal } from '@/components';
 import { SpiriMoveProgressRow } from '@/components/SpiriMoveProgressRow';
+import { useContest } from '@/hooks';
+import { IParticipation } from '@/interfaces';
 import { IMySpiriMoveProgress } from '@/interfaces/IMySpiriMoveProgress';
+import ParticipationService from '@/services/ParticipationService';
+import { fetchAllParticipations, fetchMyParticipations } from '@/stores/useParticipationStore';
 import { getDates } from '@/utils/dates';
+import { CircularProgress } from '@mui/material';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './index.css';
-import { CircularProgress } from '@mui/material';
-import { ConfirmBox, CurrentContestContext, ParticipateModal } from '@/components';
-import { useContext, useState } from 'react';
-import { IParticipation } from '@/interfaces';
-import ParticipationService from '@/services/ParticipationService';
-import { fetchMyParticipations, fetchAllParticipations } from '@/stores/useParticipationStore';
 
 export const SpiriMoveProgress = () => {
-  const contest = useContext(CurrentContestContext);
+  const { contest } = useContest();
 
   const { t } = useTranslation();
   const { isLoading, participations, getParticipations } = fetchMyParticipations((state) => state);
