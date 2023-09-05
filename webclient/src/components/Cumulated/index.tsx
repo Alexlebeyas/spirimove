@@ -1,16 +1,13 @@
 import { ILeaderboardStats } from '@/interfaces';
-import { Office } from '@/interfaces/Office';
-import { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
 
 interface CumulatedProps {
   stats: ILeaderboardStats[];
-  officeFilter: Office;
 }
 
-const Cumulated = ({ stats, officeFilter }: CumulatedProps) => {
+const Cumulated = ({ stats }: CumulatedProps) => {
   const { t } = useTranslation();
-  const { totalPts, totalParticipants } = getCumulatedStats(stats, officeFilter, t);
+  const { totalPts, totalParticipants } = getCumulatedStats(stats);
 
   return (
     <div className="m-2 flex flex-row ">
@@ -35,13 +32,8 @@ interface CumulatedStats {
   totalParticipants: number;
 }
 
-function getCumulatedStats(
-  stats: ILeaderboardStats[],
-  office: Office,
-  translateF: TFunction<'translation', undefined>
-): CumulatedStats {
+function getCumulatedStats(stats: ILeaderboardStats[]): CumulatedStats {
   return stats
-    .filter((stat) => office.isGlobal || stat.user__office === translateF(office.titleKey))
     .map((stat) => ({ totalPts: Number(stat.total_points), totalParticipants: 1 }))
     .reduce(
       (a, b) => ({

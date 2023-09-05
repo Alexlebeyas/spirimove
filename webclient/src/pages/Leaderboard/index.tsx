@@ -17,6 +17,10 @@ const Leaderboard = () => {
   const [sortingMode, setSortingMode] = useState<SortingMode>('pts');
   const [officeFilter, setOfficeFilter] = useState<Office>(GlobalOffice);
 
+  const filteredStats = stats?.filter(
+    (stat) => officeFilter.isGlobal || 'Office.' + stat.user__office === officeFilter.titleKey
+  );
+
   return (
     <PageContainer>
       {/* Office filters */}
@@ -65,14 +69,14 @@ const Leaderboard = () => {
               </div>
             </div>
             {/* Table */}
-            {stats && <LeaderboardTable stats={stats} mode={sortingMode} officeFilter={officeFilter} />}
+            {filteredStats && <LeaderboardTable stats={filteredStats} mode={sortingMode} />}
           </div>
         </div>
         <div className="mr-3 w-full lg:w-1/3">
           {/* Cumulated stats */}
           <div className="mb-2 w-full rounded-md bg-white p-4 shadow-md">
             <h3 className="mb-3 text-lg font-bold">{t('Leaderboard.Cumulated.Title')}</h3>
-            {stats && <Cumulated stats={stats} officeFilter={officeFilter} />}
+            {filteredStats && <Cumulated stats={filteredStats} />}
           </div>
           {/* Spirimove progress */}
           <div className="mb-2 w-full rounded-md bg-white p-4 shadow-md">
