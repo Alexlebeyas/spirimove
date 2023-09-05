@@ -1,6 +1,6 @@
 import { IContest } from '@/interfaces';
 import ContestService from '@/services/ContestService';
-import { createContext, useCallback, useMemo, useState } from 'react';
+import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 
 export interface ICurrentContestContext {
   contest: IContest | undefined;
@@ -29,6 +29,10 @@ const CurrentContestProvider: React.FC<Props> = ({ children }) => {
     }),
     [contest, fetchCurrent]
   );
+
+  useEffect(() => {
+    fetchCurrent();
+  }, [fetchCurrent]);
 
   return <CurrentContestContext.Provider value={contextValue}>{children}</CurrentContestContext.Provider>;
 };

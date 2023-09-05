@@ -1,9 +1,11 @@
-import { IContest, ILeaderboardStats } from '@/interfaces';
+import { ILeaderboardStats } from '@/interfaces';
 import ApiService from '@/services/ApiService';
 import { useEffect, useState } from 'react';
+import { useContest } from '.';
 
-export const useLeaderboard = (contest: IContest | undefined) => {
+export const useLeaderboard = () => {
   const [stats, setStats] = useState<ILeaderboardStats[] | undefined>();
+  const { contest } = useContest();
   const isLoading = !!contest && !!stats;
 
   useEffect(() => {
