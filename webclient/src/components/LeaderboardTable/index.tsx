@@ -1,8 +1,6 @@
 import { useContest } from '@/hooks';
 import { ILeaderboardStats } from '@/interfaces/leaderboardStats';
 import useUserStore from '@/stores/useUserStore';
-import { daysInterval } from '@/utils/dates';
-import { DateTime } from 'luxon';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LinearProgress, ProfileImage } from '..';
@@ -24,7 +22,7 @@ export const LeaderboardTable = ({ stats, mode }: Props) => {
 
   if (!contest) return null; // no contest
 
-  const currentDaysInContest = daysInterval(DateTime.fromISO(contest.start_date), DateTime.fromISO(contest.end_date));
+  const maxConsecutive = Number(sortedStats[0]?.total_days);
 
   return (
     <>
@@ -47,7 +45,7 @@ export const LeaderboardTable = ({ stats, mode }: Props) => {
                   key={stat.user__display_name}
                   stat={stat}
                   idx={idx}
-                  max={currentDaysInContest}
+                  max={maxConsecutive}
                   currentUser={currentUser.display_name}
                 />
               );
