@@ -2,25 +2,36 @@ import { useContest } from '@/hooks';
 import { daysInterval } from '@/utils/dates';
 import { DateTime } from 'luxon';
 import { t } from 'i18next';
+import { CircularProgress } from '@mui/material';
 
 const RemainingDays = () => {
   const { contest } = useContest();
 
   if (!contest) return null;
 
-  const currentDay = 1 + daysInterval(DateTime.fromISO(contest.start_date), DateTime.now());
-  const remaining = daysInterval(DateTime.now(), DateTime.fromISO(contest.end_date));
+  const today = DateTime.now();
+
+  const currentDay = 1 + daysInterval(DateTime.fromISO(contest.start_date), today);
+  const remainingDays = Math.max(0, daysInterval(today, DateTime.fromISO(contest.end_date)));
+  const totalDays = remainingDays + currentDay;
+
+  const progressValue = Math.round(50 * (currentDay / totalDays));
 
   return (
     <>
       <div className="m-2 flex flex-col items-center">
-        <div className="grow items-center border-b p-1">
-          <div className="text-xs font-medium text-gray-500">Day</div>
-          <div className="text-4xl font-semibold">{currentDay}</div>
+        <div className="flex grow flex-col items-center">
+          <div className="absolute z-0 flex -rotate-90">
+            <CircularProgress size={150} variant="determinate" value={progressValue} />
+          </div>
+          <div className=" z-1 z-0 grow items-center border-b p-6">
+            <div className="text-xs font-medium text-gray-500">Day</div>
+            <div className="text-4xl font-semibold">{currentDay}</div>
+          </div>
         </div>
         <div className="text-base font-semibold ">{t('Leaderboard.RemainingDays.Stimulation')}</div>
         <div className="text-xs font-medium text-gray-500">
-          {t('Leaderboard.RemainingDays.ContestEnds', { contest: contest.name, remaining: remaining })}
+          {t('Leaderboard.RemainingDays.ContestEnds', { contest: contest.name, remaining: remainingDays })}
         </div>
       </div>
     </>
