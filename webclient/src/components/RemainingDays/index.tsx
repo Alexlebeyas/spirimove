@@ -4,9 +4,9 @@ import { DateTime } from 'luxon';
 import { t } from 'i18next';
 
 const RemainingDays = () => {
-  const { contest, isLoading } = useContest();
+  const { contest } = useContest();
 
-  if (isLoading || !contest) return null;
+  if (!contest) return null;
 
   const currentDay = 1 + daysInterval(DateTime.fromISO(contest.start_date), DateTime.now());
   const remaining = daysInterval(DateTime.now(), DateTime.fromISO(contest.end_date));

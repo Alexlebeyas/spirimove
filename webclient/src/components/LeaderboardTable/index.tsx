@@ -1,5 +1,4 @@
 import { useContest } from '@/hooks';
-import { Office } from '@/interfaces/Office';
 import { ILeaderboardStats } from '@/interfaces/leaderboardStats';
 import useUserStore from '@/stores/useUserStore';
 import { daysInterval } from '@/utils/dates';
