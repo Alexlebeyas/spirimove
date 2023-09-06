@@ -81,6 +81,7 @@
       "Success": "Operation performed successfully"
     },
     "Participation": {
+      "NoMoreToLoad": "No more participations to load !",
       "ActivityDate": "Activity Date",
       "ActivityType": "Activity Type",
       "ActivityDescription": "Description",

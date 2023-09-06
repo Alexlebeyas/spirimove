@@ -1,7 +1,19 @@
 import { create } from 'zustand';
-import { IParticipation } from '@/interfaces';
+import { IParticipation, ResponseParticipations } from '@/interfaces';
 import ApiService from '@/services/ApiService';
 import { IParticipationType } from '@/interfaces';
+
+interface PaginateParticipationState {
+  isLoading: boolean;
+  count: number;
+  next: string;
+  previous: string;
+  participations: Array<IParticipation>;
+  getParticipations: () => Promise<void>;
+  nextParticipations: (currParticipations:Array<IParticipation>, nextPage:string) => Promise<void>;
+  updateParticipations: (participations:Array<IParticipation>, participation: IParticipation, index: number) => Promise<void>;
+}
+
 
 interface ParticipationState {
   isLoading: boolean;
@@ -24,11 +36,34 @@ export const fetchMyParticipations  = create<ParticipationState>((set) => ({
   },
 }));
 
-export const fetchAllParticipations  = create<ParticipationState>((set) => ({
+export const fetchAllParticipations  = create<PaginateParticipationState>((set) => ({
   isLoading: true,
   participations: [] ,
+  count: 0 ,
+  next: '' ,
+  previous: '' ,
   getParticipations: async () => {
-    const participations: Array<IParticipation> = (await ApiService.get('/all/participations')).data;
+    const response: ResponseParticipations = (await ApiService.get('/all/participations')).data;
+    set({ 
+      isLoading: false, 
+      count: response.count, 
+      next: response.next?response.next.split("?")[1]:'', 
+      previous: response.previous?response.previous.split("?")[1]:'',
+      participations: response.results
+     });
+  },
+  nextParticipations: async (currParticipations, nextPage) => {
+    const response: ResponseParticipations = (await ApiService.get(`/all/participations/?${nextPage}`)).data;
+    set({ 
+      isLoading: false, 
+      count: response.count, 
+      next: response.next?response.next.split("?")[1]:'',
+      previous: response.previous?response.previous.split("?")[1]:'',
+      participations: currParticipations.concat(response.results),
+     });
+  },
+  updateParticipations: async (participations, participation, index) => {
+    participations[index].reactions=participation.reactions;
     set({ isLoading: false, participations });
   },
 }));

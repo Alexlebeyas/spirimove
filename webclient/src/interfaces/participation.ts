@@ -27,3 +27,10 @@ export interface IParticipation {
   is_organizer: boolean;
   status_display: 'In verification' | 'Approved' | 'Rejected';
 }
+
+export interface ResponseParticipations {
+  count: number;
+  next: string;
+  previous: string;
+  results: Array<IParticipation>;
+}

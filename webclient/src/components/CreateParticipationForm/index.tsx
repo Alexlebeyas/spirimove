@@ -59,6 +59,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
 
   const [canBeIntensive, setCanBeIntensive] = useState(participationsTypes.find((p) => p.id === participationData.type)?.can_be_intensive);
   const [canHaveOrganizer, setCanHaveOrganizer] = useState(participationsTypes.find((p) => p.id === participationData.type)?.can_have_organizer);
+  const [shouldSetImage, setShouldSetImage] = useState(participationsTypes.find((p) => p.id === participationData.type)?.should_set_image);
 
   const { t } = useTranslation();
 
@@ -103,6 +104,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
     const organizer = choosenType?.can_have_organizer ? participationData.isOrganizer : false;
     setCanBeIntensive(choosenType?.can_be_intensive ?? false);
     setCanHaveOrganizer(choosenType?.can_have_organizer ?? false);
+    setShouldSetImage(choosenType?.should_set_image ?? false);
     setParticipationData({
       ...participationData,
       type: val,
@@ -265,7 +267,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
             variant="contained"
             component="label"
             onClick={onSubmitHandler}
-            disabled={!(participationData.image || participationToEdit?.image) || participationData.description === '' || participationData.type === ''}
+            disabled={(shouldSetImage && !(participationData.image || participationToEdit?.image) ) || participationData.description === '' || participationData.type === ''}
           >
             {t('Button.Submit')}
           </Button>
