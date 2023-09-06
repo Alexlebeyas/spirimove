@@ -9,6 +9,7 @@ from rest_framework import status
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
+from spiri_move.pagination_settings import FeedPagination
 
 from .models import ParticipationTypeModel, ParticipationModel, ReactionModel, LevelModel, DrawModel
 from .serializers import AddParticipationModelSerializer, ParticipationTypeModelSerializer, ReactionsModelSerializer, \
@@ -42,8 +43,12 @@ class DrawResultAPIView(ListAPIView):
 
 class ListAllParticipationAPIView(ListAPIView):
     """List all database participations for active contests"""
-    queryset = ParticipationModel.objects.filter(contest__is_open=True)
+    queryset = ParticipationModel.objects.filter(
+        contest=ContestsModel.current_contest.first(),
+        type__shoul_be_display_on_feed=True
+    )
     serializer_class = ListParticipationModelSerializer
+    pagination_class = FeedPagination
 
 
 class ListMyParticipationAPIView(ListAPIView):
@@ -131,8 +136,8 @@ class UpdateParticipationAPIView(UpdateAPIView):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = get_object_or_404(ParticipationModel, pk=kwargs['pk'], user=request.user)
-        serializer = self.get_serializer(instance=instance, data=request.data, partial=partial, context={'user': request.user},
-                                         update_action=True)
+        serializer = self.get_serializer(instance=instance, data=request.data, partial=partial,
+                                         context={'user': request.user})
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
@@ -172,7 +177,6 @@ class ListleaderBoardAPIView(ListAPIView):
             contest=contest,
             contest__is_open=True,
             status=ParticipationModel.APPROVED,
-            is_to_considered_for_day=True,
         ).values('user__display_name', 'user__profile_picture', 'user__office', 'contest__name'). \
             order_by('user__display_name', 'contest__name'). \
             annotate(total_points=Sum('points'), total_days=Count('user__display_name'))
@@ -201,7 +205,6 @@ class ListMyOfficeleaderBoardAPIView(ListAPIView):
             user__office=request.user.office,
             contest__is_open=True,
             status=ParticipationModel.APPROVED,
-            is_to_considered_for_day=True,
         ).values('user__display_name', 'user__profile_picture', 'user__office', 'contest__name', ). \
             order_by('user__display_name', 'contest__name'). \
             annotate(total_points=Sum('points'), total_days=Count('user__display_name'))
@@ -236,7 +239,7 @@ class ListMyStatAPIView(ListAPIView):
     def get(self, request, *args, **kwargs):
         contest = get_object_or_404(ContestsModel, pk=kwargs['contest_id'])
         user_participations_data = ParticipationModel.objects. \
-            filter(contest=contest, user=request.user, is_to_considered_for_day=True, status=ParticipationModel.APPROVED). \
+            filter(contest=contest, user=request.user, status=ParticipationModel.APPROVED). \
             exclude(Q(user__office=None) | Q(user__is_active=False)). \
             values_list('contest__name', 'user__display_name', 'date', 'points')
 
@@ -274,7 +277,7 @@ class ListLevelAPIView(ListAPIView):
 
 def get_list_stats_date(contest, user=None):
     list_date = get_list_contest_date(contest)
-    stats_for_users = ParticipationModel.objects.filter(is_to_considered_for_day=True, status=ParticipationModel.APPROVED,). \
+    stats_for_users = ParticipationModel.objects.filter(status=ParticipationModel.APPROVED, ). \
         exclude(Q(user__office=None) | Q(user__is_active=False)). \
         values_list('user__pk', 'contest__name', 'user__office', 'user__display_name', 'date', 'points'). \
         order_by('user__display_name', 'contest__name', 'date'). \

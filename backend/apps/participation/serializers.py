@@ -9,44 +9,59 @@ from .models import ParticipationModel, ParticipationTypeModel, DrawModel, Level
 class AddParticipationModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParticipationModel
-        exclude = (
-            'is_to_considered_for_day', 'user', 'points', 'date_created', 'last_modified', 'status')
+        exclude = ('user', 'points', 'date_created', 'last_modified', 'status')
 
     def __init__(self, *args, **kwargs):
-        update_action = kwargs.pop('update_action', None)
         super(AddParticipationModelSerializer, self).__init__(*args, **kwargs)
-        instance = kwargs.get('instance')
-        if update_action:
-            self.fields['image'].required = False
+        participation_type = ParticipationTypeModel.objects.get(pk=self.initial_data.get("type"))
+        if participation_type.should_set_image and not (self.instance and self.instance.image):
+            self.fields['image'].required = True
 
     def validate(self, data):
         """
-            Check that the type of participation is active today.
+            Validate the paticipation data
         """
-        if 'type' in data and data['type']:
-            if (data['type'].from_date and data['type'].to_date) and not (
-                    data['type'].from_date <= data['date'] <= data['type'].to_date):
-                raise serializers.ValidationError(
-                    {"type": _("The type of participation chosen is not active on this date")})
+        self.validate_date_field(data)
+        self.validate_type_field(data)
+        self.validate_multiple_participations(data)
+        return data
 
-            user_part_with_same_type_for_a_day = ParticipationModel.objects.filter(user=self.context.get('user'),
-                                                                                   type=data['type'],
-                                                                                   date=data['date']). \
-                exclude(pk=None if not self.instance else self.instance.pk)
-
-            if not data['type'].can_add_more_by_day and user_part_with_same_type_for_a_day:
-                raise serializers.ValidationError(
-                    {"type": _("You can't enter multiple participations of this type on the same day.")})
-
+    def validate_date_field(self, data):
+        """
+            Check is the participation date correspond to contest period.
+        """
         if not (data['contest'].start_date <= data['date'] <= data['contest'].end_date and data['contest'].is_open):
             raise serializers.ValidationError({"date": _("The date does not match this Spiri-Move")})
-        return data
+
+    def validate_type_field(self, data):
+        """
+            Check is the participation date correspond to type period.
+            If the type doesn't have a defined period, it won't run.
+        """
+        if (data['type'].from_date and data['type'].to_date) and not (
+                data['type'].from_date <= data['date'] <= data['type'].to_date):
+            raise serializers.ValidationError(
+                {"type": _("The type of participation chosen is not active on this date")})
+
+    def validate_multiple_participations(self, data):
+        """
+            Check if it is a multiple participation for the same type
+            for the same day, and if the chosen type approves it.
+        """
+        user_part_with_same_type_for_a_day = ParticipationModel.objects.filter(user=self.context.get('user'),
+                                                                               type=data['type'], date=data['date']). \
+            exclude(pk=None if not self.instance else self.instance.pk)
+
+        if not data['type'].can_add_more_by_day and user_part_with_same_type_for_a_day:
+            raise serializers.ValidationError(
+                {"type": _("You can't enter multiple participations of this type on the same day.")})
 
 
 class ParticipationTypeModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParticipationTypeModel
-        fields = ('id', 'name', 'description', 'from_date', 'to_date', 'can_be_intensive', 'can_have_organizer')
+        fields = ('id', 'name', 'description', 'from_date', 'to_date', 'can_be_intensive', 'can_have_organizer',
+                  'should_set_image')
 
 
 class ReactionsModelSerializer(serializers.ModelSerializer):
@@ -66,7 +81,7 @@ class ListParticipationModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParticipationModel
         read_only_fields = ('user',)
-        exclude = ('is_to_considered_for_day', 'status', 'last_modified')
+        exclude = ('status', 'last_modified')
 
     def get_reactions(self, obj):
         return ReactionModel.objects.filter(participation__pk=obj.pk).values('user__display_name', 'reaction')

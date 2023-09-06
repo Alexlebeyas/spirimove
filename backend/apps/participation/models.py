@@ -34,6 +34,8 @@ class ParticipationTypeModel(models.Model):
     can_be_intensive = models.BooleanField(default=False)
     can_add_more_by_day = models.BooleanField(default=False)
     can_have_organizer = models.BooleanField(default=False)
+    shoul_be_display_on_feed = models.BooleanField(default=True)
+    should_set_image = models.BooleanField(default=True)
     date_created = models.DateField(auto_now_add=True)
     last_modified = models.DateField(auto_now=True)
 
@@ -62,10 +64,9 @@ class ParticipationModel(models.Model):
     description = models.TextField(null=True, blank=True)
     points = models.PositiveSmallIntegerField(null=False, blank=False, default=1)
     date = models.DateField(null=False, blank=False)
-    image = models.ImageField(upload_to=participation_picture_path, storage=get_storage(private=True), null=False,
-                              blank=False)
+    image = models.ImageField(upload_to=participation_picture_path, storage=get_storage(private=True), null=True,
+                              blank=True)
     contest = models.ForeignKey(ContestsModel, on_delete=models.CASCADE)
-    is_to_considered_for_day = models.BooleanField(default=False)
     is_intensive = models.BooleanField(default=False)
     is_organizer = models.BooleanField(default=False)
     status = models.CharField(_('Status'), choices=STATUS_CHOICES, default=IN_VERIFICATION, max_length=50)
