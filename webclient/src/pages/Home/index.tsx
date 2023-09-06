@@ -8,7 +8,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-
 const Home = () => {
   const { t } = useTranslation();
   const { isLoading, participations, getParticipations, nextParticipations, next } = fetchAllParticipations((state) => state);
@@ -17,7 +16,7 @@ const Home = () => {
   const contest = useContestStore((state) => state.contest);
 
   const [isOpen, setIsOpen] = useState(false);
-  if(isLoading){
+  if (isLoading) {
     getParticipations();
     getParticipationsTypes();
   }
@@ -30,7 +29,7 @@ const Home = () => {
     <PageContainer>
       <div className="flex flex-col items-center justify-center">
         <button
-          className="mb-6 w-full rounded-md bg-gray-800 py-5 text-xl text-white hover:bg-gray-700"
+          className="mb-6 w-full rounded-md bg-darkblue-800 py-5 text-xl text-white hover:bg-blue"
           onClick={() => setIsOpen(true)}
         >
           {t('Home.AddParticipation')}
