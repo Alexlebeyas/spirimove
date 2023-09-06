@@ -29,11 +29,14 @@
       "PointsMode": "Points",
       "PointsDisplay": "{{nb}} pts",
       "ConsecutiveDaysMode": "Jours consécutifs",
-      "DaysDisplay": "{{nb}} j",
+      "DaysDisplay": "{{nb}} jours",
       "RemainingDays": {
         "Title": "Progrès",
+        "CurrentDay": "Day",
         "Stimulation": "Continue!",
-        "ContestEnds": "{{contest}}: plus que {{remaining}} jours."
+        "ContestEnding": "{{contest}}: plus que {{remaining}} jours.",
+        "Congratulations": "Bravo!",
+        "ContestFinished": "{{contest}} est maintenant terminé."
       },
       "Cumulated": {
         "Title": "Cumulé",

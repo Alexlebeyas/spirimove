@@ -32,8 +32,11 @@
       "DaysDisplay": "{{nb}} days",
       "RemainingDays": {
         "Title": "Progress",
+        "CurrentDay": "Day",
         "Stimulation": "Don't give up!",
-        "ContestEnds": "{{contest}} ends in {{remaining}} days."
+        "ContestEnding": "{{contest}} ends in {{remaining}} days.",
+        "Congratulations": "Good job!",
+        "ContestFinished": "{{contest}} is now over."
       },
       "Cumulated": {
         "Title": "Cumulated",

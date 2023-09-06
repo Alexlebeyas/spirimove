@@ -14,24 +14,28 @@ const RemainingDays = () => {
   const currentDay = 1 + daysInterval(DateTime.fromISO(contest.start_date), today);
   const remainingDays = Math.max(0, daysInterval(today, DateTime.fromISO(contest.end_date)));
   const totalDays = remainingDays + currentDay;
-
+  const isOver = remainingDays == 0;
   const progressValue = Math.round(50 * (currentDay / totalDays));
 
   return (
     <>
       <div className="m-2 flex flex-col items-center">
         <div className="relative flex grow flex-col items-center">
-          <div className="absolute -bottom-[75px] z-0 flex -rotate-90">
-            <CircularProgress size={150} variant="determinate" value={progressValue} />
+          <div className="absolute -bottom-[87px] z-0 flex -rotate-90 pb-3">
+            <CircularProgress size={174} variant="determinate" value={progressValue} />
           </div>
-          <div className="z-10 mt-4 grow items-center border-b">
-            <div className="text-xs font-medium text-gray-500">Day</div>
+          <div className="z-10 mt-4 grow items-center border-b pb-3">
+            <div className="text-xs font-medium text-gray-500">{t('Leaderboard.RemainingDays.CurrentDay')}</div>
             <div className="text-4xl font-semibold">{currentDay}</div>
           </div>
         </div>
-        <div className="z-10 text-base font-semibold ">{t('Leaderboard.RemainingDays.Stimulation')}</div>
+        <div className="z-10 pt-3 text-base font-semibold ">
+          {t(isOver ? 'Leaderboard.RemainingDays.Congratulations' : 'Leaderboard.RemainingDays.Stimulation')}
+        </div>
         <div className="z-10 text-xs font-medium text-gray-500">
-          {t('Leaderboard.RemainingDays.ContestEnds', { contest: contest.name, remaining: remainingDays })}
+          {isOver
+            ? t('Leaderboard.RemainingDays.ContestFinished', { contest: contest.name })
+            : t('Leaderboard.RemainingDays.ContestEnding', { contest: contest.name, remaining: remainingDays })}
         </div>
       </div>
     </>
