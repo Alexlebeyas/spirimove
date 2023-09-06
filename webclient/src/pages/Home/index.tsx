@@ -10,7 +10,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Home = () => {
   const { t } = useTranslation();
-  const { isLoading, participations, getParticipations, nextParticipations, next } = fetchAllParticipations((state) => state);
+  const { isLoading, participations, getParticipations, nextParticipations, next } = fetchAllParticipations(
+    (state) => state
+  );
   const { getParticipationsTypes } = fetchParticipationsType((state) => state);
 
   const { contest } = useContest();
@@ -23,7 +25,7 @@ const Home = () => {
 
   const fetchNext = async () => {
     nextParticipations(participations, next);
-  }
+  };
 
   return (
     <PageContainer>
@@ -31,7 +33,7 @@ const Home = () => {
         <>
           <div className="flex flex-col items-center justify-center">
             <button
-              className="mb-6 w-full rounded-md bg-gray-800 py-5 text-xl text-white hover:bg-gray-700"
+              className="mb-6 w-full rounded-md bg-darkblue-800 py-5 text-xl text-white hover:bg-blue"
               onClick={() => setIsOpen(true)}
             >
               {t('Home.AddParticipation')}
