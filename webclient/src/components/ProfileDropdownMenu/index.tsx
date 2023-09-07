@@ -22,7 +22,7 @@ export const ProfileDropdownMenu = () => {
         <div>
           <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
             <span className="sr-only">Open user menu</span>
-            <ProfileImage name={user.display_name} image={user.profile_picture} size={45} fontSize={18} />
+            <ProfileImage name={user.display_name} image={user.profile_picture} size={40} fontSize={16} />
           </Menu.Button>
         </div>
         <Transition
