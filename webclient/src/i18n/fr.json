@@ -25,9 +25,27 @@
       "AddParticipation": "Ajouter une participation"
     },
     "Leaderboard": {
-      "AllOffices": "Tous les bureaux"
+      "ViewMore": "Voir plus",
+      "PointsMode": "Points",
+      "PointsDisplay": "{{nb}} pts",
+      "ConsecutiveDaysMode": "Jours consécutifs",
+      "DaysDisplay": "{{nb}} jours",
+      "RemainingDays": {
+        "Title": "Progrès",
+        "CurrentDay": "Day",
+        "Stimulation": "Continue!",
+        "ContestEnding": "{{contest}}: plus que {{remaining}} jours.",
+        "Congratulations": "Bravo!",
+        "ContestFinished": "{{contest}} est maintenant terminé."
+      },
+      "Cumulated": {
+        "Title": "Cumulé",
+        "Points": "Pts",
+        "Participants": "Participants"
+      }
     },
     "Office": {
+      "Global": "Global",
       "Montreal": "Montréal",
       "Gatineau": "Gatineau",
       "Toronto": "Toronto"

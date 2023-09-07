@@ -1,15 +1,12 @@
+import { useContest } from '@/hooks';
 import { useMyStats } from '@/hooks/useMyStats';
 import { CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-interface Props {
-  contestId: string;
-}
-
-const MyContestScore: React.FC<Props> = ({ contestId }) => {
+const MyContestScore = () => {
+  const { contest } = useContest();
   const { t } = useTranslation();
-
-  const stats = useMyStats(contestId);
+  const stats = useMyStats(contest);
 
   if (!stats) {
     return (
