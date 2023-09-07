@@ -10,11 +10,13 @@ export interface ToggleReactionsType {
   reaction: string;
 }
 
-export enum ParticipationStatus {
-  InVerification = 'In verification',
-  Approved = 'Approved',
-  Rejected = 'Rejected',
-}
+export const ParticipationStatus = {
+  InVerification: 'In verification',
+  Approved: 'Approved',
+  Rejected: 'Rejected',
+} as const;
+
+export type ParticipationStatus = typeof ParticipationStatus[keyof typeof ParticipationStatus];
 
 export interface IParticipation {
   id: number;

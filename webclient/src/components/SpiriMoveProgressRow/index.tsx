@@ -30,7 +30,7 @@ const getScore = (status: ParticipationStatus, points: number): string | number 
   }
 }
 
-const renderStatusIcon = (status: ParticipationStatus) => {
+const renderStatusIcon = (status: ParticipationStatus): JSX.Element | null => {
   switch (status) {
     case ParticipationStatus.Approved:
       return <DoneIcon style={{ color: 'green' }} />;
