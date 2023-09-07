@@ -42,7 +42,8 @@
       "ParticipationType": "Type de participation",
       "Description": "Description de l'activité",
       "Intensity": "Haute Intensité",
-      "Approved": "Status de la participation"
+      "Approved": "Status de la participation",
+      "Score": "Score"
     },
     "MySpiriMove": {
       "Stats": {

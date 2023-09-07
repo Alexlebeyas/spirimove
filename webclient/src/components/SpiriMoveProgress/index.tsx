@@ -70,6 +70,7 @@ export const SpiriMoveProgress: React.FC<Props> = ({ contest }) => {
                 <th className="p-3 text-left">{t('ContestCalendar.Description')}</th>
                 <th className="p-3 text-left">{t('ContestCalendar.Intensity')}</th>
                 <th className="p-3 text-left">{t('ContestCalendar.Approved')}</th>
+                <th className="p-3 text-left">{t('ContestCalendar.Score')}</th>
                 <th className="p-3 text-left">{t('Common.Actions')}</th>
               </tr>
             )}
