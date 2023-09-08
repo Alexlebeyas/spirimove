@@ -25,9 +25,27 @@
       "AddParticipation": "Ajouter une participation"
     },
     "Leaderboard": {
-      "AllOffices": "Tous les bureaux"
+      "ViewMore": "Voir plus",
+      "PointsMode": "Points",
+      "PointsDisplay": "{{nb}} pts",
+      "ConsecutiveDaysMode": "Jours consécutifs",
+      "DaysDisplay": "{{nb}} jours",
+      "RemainingDays": {
+        "Title": "Progrès",
+        "CurrentDay": "Day",
+        "Stimulation": "Continue!",
+        "ContestEnding": "{{contest}}: plus que {{remaining}} jours.",
+        "Congratulations": "Bravo!",
+        "ContestFinished": "{{contest}} est maintenant terminé."
+      },
+      "Cumulated": {
+        "Title": "Cumulé",
+        "Points": "Pts",
+        "Participants": "Participants"
+      }
     },
     "Office": {
+      "Global": "Global",
       "Montreal": "Montréal",
       "Gatineau": "Gatineau",
       "Toronto": "Toronto"
@@ -42,12 +60,14 @@
       "ParticipationType": "Type de participation",
       "Description": "Description de l'activité",
       "Intensity": "Haute Intensité",
-      "Approved": "Status de la participation"
+      "Approved": "Status de la participation",
+      "Score": "Score"
     },
     "MySpiriMove": {
       "Stats": {
         "Title": "Mon Spiri-Move: {{name}}",
-        "Points": "{{points}} Participations",
+        "Days": "Jours de participations : {{days}}",
+        "Points": "Points de participations : {{points}}",
         "Streak": "{{streak}} jours consécutifs, continue comme ca!",
         "RewardLevel": "Tu es éligible pour {{rewardLevel}} prix."
       }
