@@ -66,7 +66,8 @@
     "MySpiriMove": {
       "Stats": {
         "Title": "My Spiri-Move: {{name}}",
-        "Points": "{{points}} Participations",
+        "Days": "Participations days : {{days}}",
+        "Points": "Participations points : {{points}}",
         "Streak": "{{streak}} day streak, keep it up!",
         "RewardLevel": "You are eligible for {{rewardLevel}} prizes."
       }

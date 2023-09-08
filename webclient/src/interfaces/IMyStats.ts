@@ -1,6 +1,6 @@
 export interface IMyStats {
-  contest__name: string;
-  total_points: number;
+  contest_name: string;
+  nb_point: number;
+  nb_days: number;
   streak: number;
-  level: number[];
 }

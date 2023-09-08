@@ -110,4 +110,4 @@ class DrawModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DrawModel
-        fields = ('contest', 'winner', 'level')
+        fields = ('contest', 'winner', 'level', 'total_days')

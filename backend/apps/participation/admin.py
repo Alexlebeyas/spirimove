@@ -122,7 +122,7 @@ class UnapproveParticipationAdmin(ParticipationModelAdmin):
 
 @admin.register(DrawModel)
 class DrawModelAdmin(admin.ModelAdmin):
-    list_display = ['contest_name', 'winner_name', 'level_name', 'date_created', 'last_modified']
+    list_display = ['contest_name', 'winner_name', 'level_name', 'total_days', 'date_created', 'last_modified']
 
     def contest_name(self, obj):
         return obj.contest.name

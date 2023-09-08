@@ -130,6 +130,7 @@ class DrawModel(models.Model):
     contest = models.ForeignKey(ContestsModel, on_delete=models.CASCADE, null=True, blank=True)
     winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     level = models.ForeignKey(LevelModel, on_delete=models.CASCADE, null=True, blank=True)
+    total_days = models.PositiveSmallIntegerField(null=True, blank=True)
     date_created = models.DateTimeField(editable=False, null=True, blank=True)
     last_modified = models.DateTimeField(null=True, blank=True)
 
