@@ -10,6 +10,14 @@ export interface ToggleReactionsType {
   reaction: string;
 }
 
+export const ParticipationStatus = {
+  InVerification: 'In verification',
+  Approved: 'Approved',
+  Rejected: 'Rejected',
+} as const;
+
+export type ParticipationStatus = typeof ParticipationStatus[keyof typeof ParticipationStatus];
+
 export interface IParticipation {
   id: number;
   name: string;
@@ -25,7 +33,8 @@ export interface IParticipation {
   reactions: Array<ReactionsType>;
   is_intensive: boolean;
   is_organizer: boolean;
-  status_display: 'In verification' | 'Approved' | 'Rejected';
+  status_display: ParticipationStatus;
+  points: number;
 }
 
 export interface ResponseParticipations {
