@@ -18,6 +18,12 @@ export const ParticipationStatus = {
 
 export type ParticipationStatus = typeof ParticipationStatus[keyof typeof ParticipationStatus];
 
+export const ParticipationStatusColorMap = {
+  [ParticipationStatus.InVerification]: 'orange',
+  [ParticipationStatus.Approved]: 'green',
+  [ParticipationStatus.Rejected]: 'red',
+} as const;
+
 export interface IParticipation {
   id: number;
   name: string;
