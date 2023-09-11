@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import './index.css';
 import { IParticipation, ParticipationStatus, ParticipationStatusColorMap } from '@/interfaces';
@@ -25,6 +25,11 @@ interface CommonProps {
   status?: ParticipationStatus;
   score?: string | number;
   image?: string;
+}
+
+interface ActionButtonsProps {
+  handleRowEdit: () => void;
+  handleRowDelete: () => void;
 }
 
 const getScore = (status?: ParticipationStatus, points?: number): string | number => {
@@ -72,6 +77,19 @@ const EmptyCard: React.FC<{ currentDate: string, message: string }> = ({ current
   </div>
 );
 
+const ActionButtons: React.FC<ActionButtonsProps> = ({ handleRowEdit, handleRowDelete }) => {
+  return (
+    <>
+      <IconButton style={{ color: 'green' }} aria-label="edit" onClick={handleRowEdit}>
+        <EditIcon />
+      </IconButton>
+      <IconButton style={{ color: 'red' }} aria-label="delete" onClick={handleRowDelete}>
+        <DeleteIcon />
+      </IconButton>
+    </>
+  );
+};
+
 const SpiriMoveProgressItem: React.FC<Props> = ({
   currentDate,
   participation,
@@ -92,29 +110,21 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
     image: participation?.image,
   };
 
-  const handleRow = (action: Dispatch<SetStateAction<boolean>>) => {
+  const handleRow = useCallback((action: Dispatch<SetStateAction<boolean>>) => {
     if (participation) {
       setParticipationToHandle(participation);
       action(true);
     }
-  };
+  }, [participation, setParticipationToHandle]);
 
-  const ActionButtons = () => {
-    return (
-      <>
-        <IconButton
-          style={{ color: 'green' }}
-          aria-label="edit"
-          onClick={() => handleRow(setIsEditParticipationModalOpen)}
-        >
-          <EditIcon />
-        </IconButton>
-        <IconButton style={{ color: 'red' }} aria-label="delete" onClick={() => handleRow(setConfirmDeleteOpen)}>
-          <DeleteIcon />
-        </IconButton>
-      </>
-    );
-  };
+
+  const handleRowEdit = useCallback(() => {
+    handleRow(setIsEditParticipationModalOpen);
+  }, [setIsEditParticipationModalOpen, handleRow]);
+
+  const handleRowDelete = useCallback(() => {
+    handleRow(setConfirmDeleteOpen);
+  }, [setConfirmDeleteOpen, handleRow]);
 
   const CardView: React.FC<CommonProps> = ({
     currentDate,
@@ -153,7 +163,11 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
         <div>
           <b>{t('ContestCalendar.Score')}</b>: {score}
         </div>
-        <div>{status === ParticipationStatus.InVerification && <ActionButtons />}</div>
+        <div>
+          {status === ParticipationStatus.InVerification && (
+            <ActionButtons handleRowEdit={handleRowEdit} handleRowDelete={handleRowDelete} />
+          )}
+        </div>
       </div>
     </div>
   );
@@ -182,7 +196,9 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
         )}
       </td>
       <td className="border-grey-light border p-3">
-        {status === ParticipationStatus.InVerification && <ActionButtons />}
+        {status === ParticipationStatus.InVerification && (
+          <ActionButtons handleRowEdit={handleRowEdit} handleRowDelete={handleRowDelete} />
+        )}
       </td>
     </tr>
   );
