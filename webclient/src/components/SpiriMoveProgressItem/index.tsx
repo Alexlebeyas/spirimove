@@ -44,16 +44,16 @@ const renderStatus = (status?: ParticipationStatus): JSX.Element | null => {
   const color = ParticipationStatusColorMap[status];
   if (!color) return null;
   return (
-    <>
+    <span>
       <FiberManualRecordIcon style={{ color, fontSize: '17px' }} /> {status}
-    </>
+    </span>
   );
 };
 
 const EmptyRow: React.FC<{ currentDate: string }> = ({ currentDate }) => (
   <tr className="flex-no wrap mb-2 flex flex-col hover:bg-gray-100 sm:mb-0 sm:table-row">
     <td className="border-grey-light border p-3">{currentDate}</td>
-    {Array(7)
+    {Array(8)
       .fill(null)
       .map((_, id) => (
         <td key={id} className="border-grey-light border p-3">
@@ -61,6 +61,15 @@ const EmptyRow: React.FC<{ currentDate: string }> = ({ currentDate }) => (
         </td>
       ))}
   </tr>
+);
+
+const EmptyCard: React.FC<{ currentDate: string, message: string }> = ({ currentDate, message }) => (
+  <div className="m-2 rounded border bg-white p-4 shadow-md">
+    <div className="flex items-center justify-between">
+      <div className="font-bold">{currentDate}</div>
+    </div>
+    <div className="mt-2">{message}</div>
+  </div>
 );
 
 const SpiriMoveProgressItem: React.FC<Props> = ({
@@ -74,8 +83,8 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
   const { t } = useTranslation();
 
   const commonValues = {
-    is_intensive: t('Common.Yes'),
-    is_organizer: t('Common.Yes'),
+    is_intensive: participation?.is_intensive ? t('Common.Yes'): t('Common.No'),
+    is_organizer: participation?.is_organizer ? t('Common.Yes'): t('Common.No'),
     description: participation?.description,
     type: participation?.type?.name,
     status: participation?.status_display,
@@ -89,15 +98,6 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
       action(true);
     }
   };
-
-  const EmptyCard: React.FC<{ currentDate: string }> = ({ currentDate }) => (
-    <div className="m-2 rounded border bg-white p-4 shadow-md">
-      <div className="flex items-center justify-between">
-        <div className="font-bold">{currentDate}</div>
-      </div>
-      <div className="mt-2">{t('ContestCalendar.NoData')}</div>
-    </div>
-  );
 
   const ActionButtons = () => {
     return (
@@ -191,7 +191,7 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
     return participation ? (
       <CardView {...commonValues} currentDate={currentDate} />
     ) : (
-      <EmptyCard currentDate={currentDate} />
+      <EmptyCard currentDate={currentDate} message={t('ContestCalendar.NoData')} />
     );
   } else if (viewMode === 'row') {
     return participation ? (
