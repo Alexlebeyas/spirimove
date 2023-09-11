@@ -24,13 +24,13 @@ const Leaderboard = () => {
   return (
     <PageContainer>
       {/* Office filters */}
-      <div className="flex flex-col items-center justify-center">
-        <ul className="mb-4 flex flex-nowrap text-center text-sm font-medium">
+      <div className="items-center justify-center overflow-x-auto pl-4 sm:pl-0 md:flex md:flex-col">
+        <ul className="mb-6 flex flex-nowrap text-center font-medium text-darkblue-800 antialiased">
           {getOffices().map((office) => (
-            <li className="mr-2" key={office.id}>
+            <li className="mx-0" key={office.id}>
               <button
-                className={`inline-block rounded-t-lg border-gray-900 p-4 ${
-                  office.id === officeFilter.id ? 'border-b-4' : ''
+                className={`inline-block border-darkblue-800 px-5 pb-1.5 ${
+                  office.id === officeFilter.id ? 'border-b-4 font-bold' : ''
                 }`}
                 onClick={() => setOfficeFilter(office)}
               >
@@ -40,18 +40,18 @@ const Leaderboard = () => {
           ))}
         </ul>
       </div>
-      <div className="mb-3 flex flex-col lg:flex-row">
+      <div className="flex flex-col antialiased lg:flex-row">
         {/* Leaderboard */}
-        <div className="mr-3 w-full lg:w-2/3">
-          <div className="mb-2 max-h-[540px] rounded-md bg-white p-4 shadow-md">
-            <h3 className="mb-2 text-lg font-bold">Leaderboard</h3>
+        <div className="mb-5 w-full lg:mr-5 lg:w-2/3">
+          <div className="max-h-[540px] rounded-md bg-white px-4 py-5 shadow-md sm:px-5">
+            <h3 className="mb-3 text-xl font-bold text-darkblue-800 lg:text-lg">Leaderboard</h3>
             {/* Stat selection */}
-            <div className="mb-2 flex justify-center">
-              <div className="rounded-full bg-slate-100 py-0">
+            <div className="mb-4 flex justify-center">
+              <div className="rounded-full bg-lightgrey py-0">
                 <button
                   className={
-                    'mx-1 rounded-full px-4 py-1 text-xs font-medium ' +
-                    (sortingMode == 'pts' ? 'bg-gray-700 text-slate-200' : '')
+                    'rounded-full px-5 py-1 text-sm font-medium text-darkblue-800 sm:text-xs ' +
+                    (sortingMode == 'pts' ? 'bg-darkblue-800 text-white' : '')
                   }
                   onClick={() => setSortingMode('pts')}
                 >
@@ -59,8 +59,8 @@ const Leaderboard = () => {
                 </button>
                 <button
                   className={
-                    'mx-1 rounded-full px-4 py-1 text-xs font-medium ' +
-                    (sortingMode == 'days' ? 'bg-gray-700 text-slate-200' : '')
+                    'rounded-full px-5 py-1 text-sm font-medium text-darkblue-800 sm:text-xs ' +
+                    (sortingMode == 'days' ? 'bg-darkblue-800 text-white' : '')
                   }
                   onClick={() => setSortingMode('days')}
                 >
@@ -72,15 +72,17 @@ const Leaderboard = () => {
             {filteredStats && <LeaderboardTable stats={filteredStats} mode={sortingMode} />}
           </div>
         </div>
-        <div className="mr-3 w-full lg:w-1/3">
+        <div className="w-full lg:w-1/3">
           {/* Cumulated stats */}
-          <div className="mb-2 w-full rounded-md bg-white p-4 shadow-md">
-            <h3 className="mb-3 text-lg font-bold">{t('Leaderboard.Cumulated.Title')}</h3>
+          <div className="mb-5 w-full rounded-md bg-white px-4 py-5 shadow-md sm:px-5">
+            <h3 className="mb-3 text-xl font-bold text-darkblue-800 lg:text-lg">{t('Leaderboard.Cumulated.Title')}</h3>
             {filteredStats && <Cumulated stats={filteredStats} />}
           </div>
           {/* Spirimove progress */}
-          <div className="mb-2 w-full rounded-md bg-white p-4 shadow-md">
-            <h3 className="mb-3 text-lg font-bold">{t('Leaderboard.RemainingDays.Title')}</h3>
+          <div className="mb-5 w-full rounded-md bg-white px-4 py-5 shadow-md sm:px-5">
+            <h3 className="mb-3 text-xl font-bold text-darkblue-800 lg:text-lg">
+              {t('Leaderboard.RemainingDays.Title')}
+            </h3>
             <RemainingDays />
           </div>
         </div>
