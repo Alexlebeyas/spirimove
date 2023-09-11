@@ -11,7 +11,7 @@ const MobileView: React.FC<ViewProps> = ({
     <div className="my-5 flex w-full flex-col overflow-hidden rounded-lg sm:bg-white sm:shadow-lg">
       {participations.map((currentParticipation, index) => (
         <SpiriMoveProgressItem
-          key={index}
+          key={`${currentParticipation.contestDate}-${index}`}
           currentDate={currentParticipation.contestDate}
           participation={currentParticipation.participation}
           setConfirmDeleteOpen={setConfirmDelOpen}

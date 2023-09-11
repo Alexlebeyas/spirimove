@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 interface Props {
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
-    participation: IParticipation | null;
+    participation?: IParticipation | null;
     handleDeleteParticipation: () => void;
 }
   

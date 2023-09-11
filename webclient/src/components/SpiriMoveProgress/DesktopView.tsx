@@ -27,15 +27,15 @@ const DesktopView: React.FC<ViewProps> = ({
     <table className="my-5 w-full overflow-hidden rounded-lg sm:bg-white sm:shadow-lg">
       <thead className="text-white">
         <tr className="rounded-l-lg bg-gray-800">
-          {Object.values(headers).map((header, index) => (
-            <th key={index} className="p-3 text-left">{header}</th>
+        {Object.entries(headers).map(([key, header]) => (
+            <th key={key} className="p-3 text-left">{header}</th>
           ))}
         </tr>
       </thead>
       <tbody>
         {participations.map(({ contestDate, participation }, index) => (
           <SpiriMoveProgressItem
-            key={index}
+            key={`${contestDate}-${index}`}
             currentDate={contestDate}
             participation={participation}
             setConfirmDeleteOpen={setConfirmDelOpen}
