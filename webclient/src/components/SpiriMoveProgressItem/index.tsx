@@ -24,6 +24,7 @@ interface CommonProps {
   is_organizer?: string;
   status?: ParticipationStatus;
   score?: string | number;
+  image?: string;
 }
 
 const getScore = (status?: ParticipationStatus, points?: number): string | number => {
@@ -79,6 +80,7 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
     type: participation?.type?.name,
     status: participation?.status_display,
     score: getScore(participation?.status_display, participation?.points),
+    image: participation?.image,
   };
 
   const handleRow = (action: Dispatch<SetStateAction<boolean>>) => {
@@ -122,12 +124,19 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
     is_organizer,
     status,
     score,
+    image,
   }) => (
     <div className="m-2 rounded border bg-white p-4 shadow-md">
       <div className="flex items-center justify-between">
         <div className="font-bold">{currentDate}</div>
         <div>{renderStatus(status)}</div>
       </div>
+      {image && (
+        <div className="mt-4">
+          <img className="max-h-[100px] max-w-[100px] object-cover" src={image} alt="Activity Image" loading="lazy" />
+        </div>
+      )}
+
       <div className="mt-2">
         {t('ContestCalendar.Description')}: {description}
       </div>
@@ -157,6 +166,7 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
     is_organizer,
     status,
     score,
+    image,
   }) => (
     <tr className="flex-no wrap mb-2 flex flex-col hover:bg-gray-100 sm:mb-0 sm:table-row">
       <td className="border-grey-light border p-3">{currentDate}</td>
@@ -166,6 +176,11 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
       <td className="border-grey-light border p-3">{description}</td>
       <td className="border-grey-light border p-3">{renderStatus(status)}</td>
       <td className="border-grey-light border p-3">{score}</td>
+      <td className="border-grey-light border p-3">
+        {image && (
+          <img className="max-h-[50px] max-w-[50px] object-cover" src={image} alt="Activity Image" loading="lazy" />
+        )}
+      </td>
       <td className="border-grey-light border p-3">
         {status === ParticipationStatus.InVerification && <ActionButtons />}
       </td>
