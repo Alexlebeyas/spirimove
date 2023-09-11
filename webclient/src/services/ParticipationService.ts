@@ -27,7 +27,9 @@ class ParticipationService {
     formData.set('contest', data.contestId.toString());
     formData.set('description', data.description);
     formData.set('date', data.date);
-    formData.set('image', data.image as Blob);
+    if(data.image){
+      formData.set('image', data.image as Blob);
+    }
     formData.set('is_intensive', data.isIntensive.toString());
     formData.set('is_organizer', data.isOrganizer.toString());
     formData.set('type', data.type.toString());

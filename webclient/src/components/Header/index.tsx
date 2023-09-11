@@ -21,7 +21,7 @@ export const Header = () => {
   ];
 
   return (
-    <Disclosure as="nav" className="fixed left-0 top-0 z-[999] w-full bg-gray-800">
+    <Disclosure as="nav" className="fixed left-0 top-0 z-[999] w-full bg-darkblue-800">
       {({ open, close }) => (
         <>
           <div className="mx-auto w-[85%]">
@@ -29,7 +29,7 @@ export const Header = () => {
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
                 {isAuth && (
-                  <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                  <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-darkblue-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                     <span className="sr-only">Open main menu</span>
                     {open ? <CloseIcon /> : <MenuIcon />}
                   </Disclosure.Button>
@@ -47,10 +47,10 @@ export const Header = () => {
                           key={item.name}
                           to={item.to}
                           target={item.target}
-                          className={`rounded-md px-3 py-2 text-sm font-medium ${
+                          className={`rounded-md px-3 py-2 text-sm antialiased ${
                             location.pathname === item.to
-                              ? 'bg-gray-900 text-white'
-                              : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                              ? 'bg-darkblue-600 font-bold text-yellow'
+                              : 'font-medium text-lightgrey hover:bg-darkblue-800 hover:text-blue'
                           }`}
                           aria-current={location.pathname === item.to ? 'page' : undefined}
                         >

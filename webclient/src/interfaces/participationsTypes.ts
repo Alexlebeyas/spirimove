@@ -6,4 +6,5 @@ export interface IParticipationType {
     to_date: string;
     can_be_intensive: boolean;
     can_have_organizer: boolean;
+    should_set_image: boolean;
 }

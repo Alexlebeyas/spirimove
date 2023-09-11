@@ -1,7 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from apps.contest.models import ContestsModel
-from django.db.models import Sum, Count, Q
+from apps.users.models import User, Role
+from django.db.models import Sum, Count
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -9,6 +10,7 @@ from rest_framework import status
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
+from spiri_move.pagination_settings import FeedPagination
 
 from .models import ParticipationTypeModel, ParticipationModel, ReactionModel, LevelModel, DrawModel
 from .serializers import AddParticipationModelSerializer, ParticipationTypeModelSerializer, ReactionsModelSerializer, \
@@ -42,8 +44,12 @@ class DrawResultAPIView(ListAPIView):
 
 class ListAllParticipationAPIView(ListAPIView):
     """List all database participations for active contests"""
-    queryset = ParticipationModel.objects.filter(contest__is_open=True)
+    queryset = ParticipationModel.objects.filter(
+        contest=ContestsModel.current_contest.first(),
+        type__shoul_be_display_on_feed=True
+    )
     serializer_class = ListParticipationModelSerializer
+    pagination_class = FeedPagination
 
 
 class ListMyParticipationAPIView(ListAPIView):
@@ -131,8 +137,8 @@ class UpdateParticipationAPIView(UpdateAPIView):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = get_object_or_404(ParticipationModel, pk=kwargs['pk'], user=request.user)
-        serializer = self.get_serializer(instance=instance, data=request.data, partial=partial, context={'user': request.user},
-                                         update_action=True)
+        serializer = self.get_serializer(instance=instance, data=request.data, partial=partial,
+                                         context={'user': request.user})
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
@@ -172,7 +178,6 @@ class ListleaderBoardAPIView(ListAPIView):
             contest=contest,
             contest__is_open=True,
             status=ParticipationModel.APPROVED,
-            is_to_considered_for_day=True,
         ).values('user__display_name', 'user__profile_picture', 'user__office', 'contest__name'). \
             order_by('user__display_name', 'contest__name'). \
             annotate(total_points=Sum('points'), total_days=Count('user__display_name'))
@@ -201,7 +206,6 @@ class ListMyOfficeleaderBoardAPIView(ListAPIView):
             user__office=request.user.office,
             contest__is_open=True,
             status=ParticipationModel.APPROVED,
-            is_to_considered_for_day=True,
         ).values('user__display_name', 'user__profile_picture', 'user__office', 'contest__name', ). \
             order_by('user__display_name', 'contest__name'). \
             annotate(total_points=Sum('points'), total_days=Count('user__display_name'))
@@ -227,36 +231,14 @@ class ListStatAPIView(ListAPIView):
     """
 
     def get(self, request, *args, **kwargs):
-        return Response(get_list_stats_date(get_object_or_404(ContestsModel, pk=kwargs['contest_id'])))
+        return Response(get_list_stats(get_object_or_404(ContestsModel, pk=kwargs['contest_id'])))
 
 
 class ListMyStatAPIView(ListAPIView):
     """ My Stats data"""
 
     def get(self, request, *args, **kwargs):
-        contest = get_object_or_404(ContestsModel, pk=kwargs['contest_id'])
-        user_participations_data = ParticipationModel.objects. \
-            filter(contest=contest, user=request.user, is_to_considered_for_day=True, status=ParticipationModel.APPROVED). \
-            exclude(Q(user__office=None) | Q(user__is_active=False)). \
-            values_list('contest__name', 'user__display_name', 'date', 'points')
-
-        list_date = list(user_participations_data.values_list('date', flat=True).distinct())
-
-        users_data_with_total_points = user_participations_data.values('contest__name', 'user__display_name'). \
-            order_by('user__display_name', 'contest__name').annotate(total_points=Sum('points'))
-
-        yesterday = datetime.now() - timedelta(1)
-        streak = 0
-        while yesterday.date() in list_date:
-            streak += 1
-            yesterday = yesterday - timedelta(1)
-
-        user_stats = []
-        if users_data_with_total_points.count():
-            user_stats = list(users_data_with_total_points)[0]
-            user_stats.setdefault('streak', streak)
-
-        return Response(user_stats)
+        return Response(get_list_stats(get_object_or_404(ContestsModel, pk=kwargs['contest_id']), request.user)[0])
 
 
 class ListDateForContestAPIView(ListAPIView):
@@ -272,27 +254,27 @@ class ListLevelAPIView(ListAPIView):
     serializer_class = LevelModelSerializer
 
 
-def get_list_stats_date(contest, user=None):
-    list_date = get_list_contest_date(contest)
-    stats_for_users = ParticipationModel.objects.filter(is_to_considered_for_day=True, status=ParticipationModel.APPROVED,). \
-        exclude(Q(user__office=None) | Q(user__is_active=False)). \
-        values_list('user__pk', 'contest__name', 'user__office', 'user__display_name', 'date', 'points'). \
-        order_by('user__display_name', 'contest__name', 'date'). \
-        annotate(total_points=Sum('points'))
+def get_list_stats(current_contest, user=None):
+    result_final = []
+    list_users = User.objects.all() if not user else User.objects.filter(pk=user.pk)
 
-    if user:
-        stats_for_users = stats_for_users.filter(user__pk=user.pk)
+    for participant in list_users.filter(groups__name=Role.PARTICIPANT).order_by('display_name'):
+        data_user = list(ParticipationModel.objects
+                         .filter(contest=current_contest, user=participant, status=ParticipationModel.APPROVED)
+                         .extra(select={'day': 'date( date )'}).values('day')
+                         .order_by('day').annotate(total_points=Sum('points')))
 
-    result = {}
-    for element in stats_for_users:
-        result.setdefault(element[3], {}).setdefault(element[4], element[6])
-
-    for el in result:
-        # Set points to 0 on all dates where the user did not participate
-        result[el].update({x: 0 for x in list_date if x not in result[el]})
-        # Sort by date
-        result[el] = sorted(result[el].items(), key=lambda x: x[0])
-    return result
+        result = {str(data['day']): data['total_points'] for data in data_user}
+        result_final.append({
+            'user_id': participant.pk,
+            'display_name': participant.display_name,
+            'contest_name': current_contest.name,
+            'office_name': participant.office,
+            'stats': result,
+            'nb_days': len(result.keys()),
+            'nb_point': sum(result.values()),
+        })
+    return result_final
 
 
 def get_list_contest_date(contest):

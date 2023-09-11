@@ -1,8 +1,9 @@
+from apps.contest.models import ContestsModel
 from django.contrib import admin
 from django.contrib import messages
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
-from apps.contest.models import ContestsModel
+
 from .models import ParticipationModel, DrawModel, ParticipationTypeModel, LevelModel
 
 
@@ -24,7 +25,6 @@ def make_unapprove(modeladmin, request, queryset):
     messages.success(request, _("Participation(s) sélectionnée(s) Marquée(s) comme non approuvée(s) !!"))
 
 
-
 @admin.register(ParticipationModel)
 class ParticipationModelAdmin(admin.ModelAdmin):
     list_display = ['user', 'contest_name', 'description', 'type_name', 'points', 'is_intensive', 'is_organizer',
@@ -42,8 +42,10 @@ class ParticipationModelAdmin(admin.ModelAdmin):
         return obj.type.name if obj.type else "/"
 
     def image_displayed(self, obj):
-        return format_html(
-            f"<a target='_blank' href='{obj.image.url}'><img height='100px' width='100px' src='{obj.image.url}'></a>")
+        if obj.image:
+            return format_html(
+                f"<a target='_blank' href='{obj.image.url}'><img height='100px' width='100px' src='{obj.image.url}'></a>")
+        return "/"
 
     def has_delete_permission(self, request, obj=None):
         return False
@@ -64,7 +66,8 @@ class ApproveParticipation(ParticipationModel):
 
 @admin.register(ApproveParticipation)
 class ApprovedParticipationAdmin(ParticipationModelAdmin):
-    actions = [make_approve,]
+    actions = [make_approve, ]
+
     def get_queryset(self, request):
         return self.model.objects.filter(
             status=self.model.IN_VERIFICATION,
@@ -85,6 +88,7 @@ class RejectParticipation(ParticipationModel):
 @admin.register(RejectParticipation)
 class RejecteParticipationAdmin(ParticipationModelAdmin):
     actions = [make_rejected, ]
+
     def get_queryset(self, request):
         return self.model.objects.filter(
             status=self.model.IN_VERIFICATION,
@@ -105,6 +109,7 @@ class UnapproveParticipation(ParticipationModel):
 @admin.register(UnapproveParticipation)
 class UnapproveParticipationAdmin(ParticipationModelAdmin):
     actions = [make_unapprove, ]
+
     def get_queryset(self, request):
         return self.model.objects.filter(
             status__in=[self.model.APPROVED, self.model.REJECTED],
@@ -117,7 +122,7 @@ class UnapproveParticipationAdmin(ParticipationModelAdmin):
 
 @admin.register(DrawModel)
 class DrawModelAdmin(admin.ModelAdmin):
-    list_display = ['contest_name', 'winner_name', 'level_name', 'date_created', 'last_modified']
+    list_display = ['contest_name', 'winner_name', 'level_name', 'total_days', 'date_created', 'last_modified']
 
     def contest_name(self, obj):
         return obj.contest.name
@@ -143,8 +148,8 @@ class DrawModelAdmin(admin.ModelAdmin):
 
 @admin.register(ParticipationTypeModel)
 class ParticipationTypeModelAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description', 'can_be_intensive', 'can_add_more_by_day', 'can_have_organizer', 'points',
-                    'date_created']
+    list_display = ['name', 'description', 'can_be_intensive', 'can_add_more_by_day', 'can_have_organizer',
+                    'shoul_be_display_on_feed', 'should_set_image', 'points', 'date_created']
 
     def has_module_permission(self, request):
         return request.user.is_admin() if request.user.is_authenticated else False

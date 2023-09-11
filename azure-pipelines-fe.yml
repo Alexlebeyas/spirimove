@@ -19,4 +19,4 @@ steps:
       npm ci
       npm run build
     workingDirectory: "$(build.sourcesdirectory)/webclient"
-    displayName: "npm install and build"
+    displayName: "Install dependencies and build app"

@@ -11,5 +11,9 @@ export const PageContainer: React.FC<Props> = ({ children }) => {
     return <div className="mx-auto w-[90%] md:w-[500px]">{children}</div>;
   }
 
+  if (location.pathname === '/leaderboard') {
+    return <div className="mx-auto w-[90%] md:w-[800px]">{children}</div>;
+  }
+
   return <div className="mx-auto w-[90%] md:w-[80%]">{children}</div>;
 };
