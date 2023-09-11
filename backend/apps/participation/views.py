@@ -1,4 +1,7 @@
+from collections import namedtuple
 from datetime import timedelta
+
+from django.db import connection
 
 from apps.contest.models import ContestsModel
 from apps.users.models import User, Role
@@ -170,54 +173,11 @@ class DeleteParticipationAPIView(DestroyAPIView):
 
 
 class ListleaderBoardAPIView(ListAPIView):
-    """ Leaderboard list """
+    """Leaderboard list"""
 
     def list(self, request, *args, **kwargs):
-        contest = get_object_or_404(ContestsModel, pk=kwargs['contest_id'])
-        list_leaderboard = ParticipationModel.objects.filter(
-            contest=contest,
-            contest__is_open=True,
-            status=ParticipationModel.APPROVED,
-        ).values('user__display_name', 'user__profile_picture', 'user__office', 'contest__name'). \
-            order_by('user__display_name', 'contest__name'). \
-            annotate(total_points=Sum('points'), total_days=Count('user__display_name'))
-
-        queryset = list_leaderboard.order_by('-total_points')[:contest.nb_element_leaderboard] \
-            if contest.nb_element_leaderboard else list_leaderboard.order_by('-total_points')
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True, context=request)
-        return Response(serializer.data)
-
-    serializer_class = LeaderBoardSerializer
-
-
-class ListMyOfficeleaderBoardAPIView(ListAPIView):
-    """ Leaderboard for my office """
-
-    def list(self, request, *args, **kwargs):
-        contest = get_object_or_404(ContestsModel, pk=kwargs['contest_id'])
-        liste_leaderboard = ParticipationModel.objects.filter(
-            contest=contest,
-            user__office=request.user.office,
-            contest__is_open=True,
-            status=ParticipationModel.APPROVED,
-        ).values('user__display_name', 'user__profile_picture', 'user__office', 'contest__name', ). \
-            order_by('user__display_name', 'contest__name'). \
-            annotate(total_points=Sum('points'), total_days=Count('user__display_name'))
-
-        queryset = liste_leaderboard.order_by('-total_points')[:contest.nb_element_leaderboard] \
-            if contest.nb_element_leaderboard else liste_leaderboard.order_by('-total_points')
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True, context=request)
-            return self.get_paginated_response(serializer.data)
-
+        contest = get_object_or_404(ContestsModel, pk=kwargs["contest_id"])
+        queryset = get_leaderboard_stats(contest)
         serializer = self.get_serializer(queryset, many=True, context=request)
         return Response(serializer.data)
 
@@ -252,6 +212,98 @@ class ListLevelAPIView(ListAPIView):
     """List all active level"""
     queryset = LevelModel.objects.filter(is_active=True)
     serializer_class = LevelModelSerializer
+
+
+Stat = namedtuple(
+    "Stat",
+    [
+        "user__email",
+        "user__display_name",
+        "user__profile_picture",
+        "user__office",
+        "total_points",
+        "total_days",
+        "max_consecutive_days",
+    ],
+)
+
+
+def get_leaderboard_stats(contest):
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """
+WITH starter AS (
+    SELECT
+        date,
+        contest_id,
+        status,
+        user_id,
+        points,
+        type_id
+    FROM participation_participationmodel
+    WHERE
+        contest_id = %s
+        AND status = 'APPROVED'
+)
+,pbt as (
+    SELECT date,
+        user_id,
+        type_id,
+        MAX(points) as points_by_type
+    FROM starter
+    GROUP BY date, user_id, type_id
+)
+,pbd as (
+    SELECT date,
+        user_id,
+        SUM(points_by_type) as points_by_day
+    FROM pbt
+    GROUP BY date, user_id
+)
+,lagged as (
+    SELECT *,
+        LAG(date, 1) OVER (partition by user_id order by date) as previous_date
+    FROM pbd
+)
+,streak_change as (
+    SELECT *,
+        CASE WHEN (date - previous_date) = 1 THEN 0 ELSE 1 END as streak_changed
+    FROM lagged
+)
+,streak_identified as (
+    SELECT *,
+        SUM(streak_changed) OVER (partition by user_id order by date) AS streak_id
+    FROM streak_change
+)
+,streak_counts as (
+    SELECT *,
+        ROW_NUMBER() OVER (partition by user_id, streak_id order by date) as streak_length
+    FROM streak_identified
+)
+,ranked as (
+    SELECT *,
+        ROW_NUMBER() over (partition by user_id ORDER BY streak_length DESC) as by_user_rank,
+        RANK() OVER (partition by user_id, streak_id ORDER BY streak_length DESC) AS rank,
+        SUM(points_by_day) over (partition by user_id) as total_points,
+        COUNT(date) over (partition by user_id) as total_days
+    FROM streak_counts
+)
+
+SELECT
+    uu.email as user__email,
+    uu.display_name as user__display_name,
+    uu.profile_picture as user__profile_picture,
+    uu.office as user__office,
+    r.total_points,
+    r.total_days,
+    r.streak_length as max_consecutive_days
+FROM ranked r
+    INNER JOIN users_user uu ON r.user_id = uu.id
+WHERE rank = 1 AND by_user_rank = 1
+        """,
+            [contest.id],
+        )
+        return [Stat(*row) for row in cursor.fetchall()]
 
 
 def get_list_stats(current_contest, user=None):

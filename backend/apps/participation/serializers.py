@@ -99,9 +99,9 @@ class LeaderBoardSerializer(serializers.Serializer):
     user__display_name = serializers.CharField(max_length=500)
     user__profile_picture = serializers.CharField(max_length=500)
     user__office = serializers.CharField(max_length=200)
-    contest__name = serializers.CharField(max_length=200)
     total_points = serializers.CharField(max_length=200)
     total_days = serializers.CharField(max_length=200)
+    max_consecutive_days = serializers.CharField(max_length=200)
 
     def to_representation(self, instance):        
         data = super().to_representation(instance)
