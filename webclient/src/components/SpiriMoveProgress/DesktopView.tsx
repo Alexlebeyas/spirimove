@@ -19,6 +19,7 @@ const DesktopView: React.FC<ViewProps> = ({
     description: t('ContestCalendar.Description'),
     status: t('ContestCalendar.Status'),
     score: t('ContestCalendar.Score'),
+    image: t('ContestCalendar.Image'),
     actions: t('Common.Actions'),
   };
 

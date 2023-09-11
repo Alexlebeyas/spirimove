@@ -63,7 +63,8 @@
       "Status": "Status",
       "Score": "Score",
       "Initiator": "Initiateur",
-      "NoData": "Aucune donnée pour cette date."
+      "NoData": "Aucune donnée pour cette date.",
+      "Image": "Image"
     },
     "MySpiriMove": {
       "Stats": {
