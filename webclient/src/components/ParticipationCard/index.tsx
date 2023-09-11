@@ -6,7 +6,6 @@ import ParticipationService from '@/services/ParticipationService';
 import { IParticipation } from '@/interfaces';
 import { fetchAllParticipations } from '@/stores/useParticipationStore';
 
-
 interface Props {
   participation: IParticipation;
 }
@@ -20,17 +19,16 @@ export const ParticipationCard: React.FC<Props> = ({ participation }) => {
   const { t } = useTranslation();
   const updateAllParticipations = fetchAllParticipations((state) => state.getParticipations);
 
-
-  const onEmojiClick2 = (key:string) => {
-    ParticipationService.toggleReactionParticipation(
-      { participation: participation.id, reaction: key}
-    ).then(()=>{
+  const onEmojiClick2 = (key: string) => {
+    ParticipationService.toggleReactionParticipation({ participation: participation.id, reaction: key }).then(() => {
       updateAllParticipations();
     });
   };
 
   const renderCreationTime = () => {
-    const diff = DateTime.now().diff(DateTime.fromISO(participation.date_created), ['day', 'hour', 'minute', 'second']).toObject();
+    const diff = DateTime.now()
+      .diff(DateTime.fromISO(participation.date_created), ['day', 'hour', 'minute', 'second'])
+      .toObject();
 
     if (diff.days !== 0) {
       return `${diff.days}${t('Time.DayShortName')}`;
@@ -49,7 +47,7 @@ export const ParticipationCard: React.FC<Props> = ({ participation }) => {
 
   const reactionsCounters: ReactionsEmoji[] = [];
   participation.reactions.forEach((reaction) => {
-    reactionsCounters.push({emoji:reaction.reaction, by:reaction.user__display_name})
+    reactionsCounters.push({ emoji: reaction.reaction, by: reaction.user__display_name });
   });
 
   return (
@@ -57,7 +55,12 @@ export const ParticipationCard: React.FC<Props> = ({ participation }) => {
       <div className="p-3">
         <div className="flex items-center">
           <div className="mr-2">
-          <ProfileImage name={participation.user.display_name} image={participation.user.profile_picture} size={45} fontSize={18} />
+            <ProfileImage
+              name={participation.user.display_name}
+              image={participation.user.profile_picture}
+              size={45}
+              fontSize={18}
+            />
           </div>
           <div>
             <div className=" text-base font-semibold">{participation.user.display_name}</div>
@@ -65,7 +68,7 @@ export const ParticipationCard: React.FC<Props> = ({ participation }) => {
           </div>
         </div>
       </div>
-      <img className="max-h-[450px] w-full object-cover" src={participation.image} />
+      <img className="max-h-[450px] w-full object-contain" src={participation.image} />
       <div className="bg-white p-3">
         <div className="mb-1 text-sm font-semibold">{participation.date}</div>
         <p>{participation.description}</p>
