@@ -1,20 +1,20 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { getDates } from '@/utils/dates';
 import { CircularProgress } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { IContest, IParticipation } from '@/interfaces';
+import { IParticipation } from '@/interfaces';
 import { IMySpiriMoveProgress } from '@/interfaces/IMySpiriMoveProgress';
 import ParticipationService from '@/services/ParticipationService';
 import { fetchMyParticipations, fetchAllParticipations } from '@/stores/useParticipationStore';
 import { ConfirmBox, ParticipateModal } from '@/components';
+import { useContest } from '@/hooks/useContest';
 import MobileView from './MobileView';
 import DesktopView from './DesktopView';
-interface Props {
-  contest: IContest;
-}
 
-export const SpiriMoveProgress: React.FC<Props> = ({ contest }) => {
+export const SpiriMoveProgress = () => {
+  const { contest } = useContest();
+  const { start_date = '', end_date = '', id: contestId = 0 } = contest || {};
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { isLoading, participations, getParticipations: getMyParticipations } = fetchMyParticipations();
@@ -25,7 +25,7 @@ export const SpiriMoveProgress: React.FC<Props> = ({ contest }) => {
   const [isEditParticipationModalOpen, setIsEditParticipationModalOpen] = useState(false);
 
   const contestParticipations: IMySpiriMoveProgress[] = useMemo(() => {
-    const datesArray = getDates(contest.start_date, contest.end_date);
+    const datesArray = getDates(start_date, end_date);
     return datesArray
       .map((date) => {
         const dailyParticipations = participations?.filter((p) => p.date === date);
@@ -34,7 +34,7 @@ export const SpiriMoveProgress: React.FC<Props> = ({ contest }) => {
           : { contestDate: date };
       })
       .flat();
-  }, [contest.start_date, contest.end_date, participations]);
+  }, [start_date, end_date, participations]);
 
   const viewProps = {
     participations: contestParticipations,
@@ -44,11 +44,9 @@ export const SpiriMoveProgress: React.FC<Props> = ({ contest }) => {
   };
 
   useEffect(() => {
-    if (isLoading) {
-      getMyParticipations();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading]);
+    getMyParticipations();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleDeleteParticipation = async () => {
     if (!participationToHandle) return;
@@ -80,8 +78,8 @@ export const SpiriMoveProgress: React.FC<Props> = ({ contest }) => {
         participation={participationToHandle}
       />
       <ParticipateModal
-        contestId={contest.id}
-        startDate={contest.start_date}
+        contestId={contestId}
+        startDate={start_date}
         open={isEditParticipationModalOpen}
         setOpen={setIsEditParticipationModalOpen}
         participationToEdit={participationToHandle}
