@@ -4,6 +4,9 @@ import { fetchAllParticipations, fetchParticipationsType } from '@/stores/usePar
 import CircularProgress from '@mui/material/CircularProgress';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import AddIcon from '@mui/icons-material/Add';
+
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -33,9 +36,10 @@ const Home = () => {
         <>
           <div className="flex flex-col items-center justify-center">
             <button
-              className="mb-6 w-full rounded-md bg-darkblue-800 py-5 text-xl text-white hover:bg-blue"
+              className="mb-7 w-full rounded-md bg-darkblue-800 py-4 text-base font-bold text-white antialiased hover:bg-blue"
               onClick={() => setIsOpen(true)}
             >
+              {<AddIcon className="mr-3" />}
               {t('Home.AddParticipation')}
             </button>
             {isLoading && <CircularProgress color="inherit" />}
