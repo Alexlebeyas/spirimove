@@ -43,7 +43,7 @@ const Leaderboard = () => {
       <div className="flex flex-col antialiased lg:flex-row">
         {/* Leaderboard */}
         <div className="mb-5 w-full lg:mr-5 lg:w-2/3">
-          <div className="max-h-[540px] rounded-md bg-white px-4 py-5 shadow-md sm:px-5">
+          <div className="h-auto rounded-md bg-white px-4 py-5 shadow-md sm:px-5">
             <h3 className="mb-3 text-xl font-bold text-darkblue-800 lg:text-lg">Leaderboard</h3>
             {/* Stat selection */}
             <div className="mb-4 flex justify-center">
