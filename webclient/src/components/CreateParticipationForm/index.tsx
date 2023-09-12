@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState, useCallback } from 'react';
 import { ICreateParticipationForm } from '@/interfaces/ICreateParticipationForm';
 import moment from 'moment';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -38,6 +38,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
   if (isLoading) {
     getParticipationsTypes();
   }
+  const emptyIconRenderer = useCallback(() => null, []);
 
   const [participationData, setParticipationData] = useState<ICreateParticipationForm>({
     contestId: contestId,
@@ -173,7 +174,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
               variant="outlined"
               label="Activity Type"
               onChange={onParticipationTypeChange}
-              IconComponent={() => null}
+              IconComponent={emptyIconRenderer}
             >
               {participationsTypes?.map((participationType) => (
                 <MenuItem key={participationType.id} value={participationType.id}>
