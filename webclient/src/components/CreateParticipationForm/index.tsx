@@ -20,6 +20,7 @@ import {
   SelectChangeEvent,
   TextField,
   Tooltip,
+  InputAdornment,
 } from '@mui/material';
 
 import { IParticipation } from '@/interfaces';
@@ -53,6 +54,8 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
   const [intensiveTooltipVisibility, setIntensiveTooltipVisibility] = useState(false);
   const [organizerTooltipVisibility, setOrganizerTooltipVisibility] = useState(false);
   const [showActivityTypeTooltip, setShowActivityTypeTooltip] = useState(false);
+  const [showDescriptionTooltip, setShowDescriptionTooltip] = useState(false);
+
 
   const [fileUrl, setfileUrl] = useState(participationToEdit?.image ?? '');
 
@@ -184,7 +187,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
             <div style={{ position: 'absolute', top: '50%', right: 12, transform: 'translateY(-50%)' }}>
               <ClickAwayListener onClickAway={() => setShowActivityTypeTooltip(false)}>
                 <Tooltip open={showActivityTypeTooltip} title={t('Participation.ActivityType.Tooltip')}>
-                  <HelpIcon onClick={() => setShowActivityTypeTooltip(!showActivityTypeTooltip)} />
+                  <HelpIcon color="action" onClick={() => setShowActivityTypeTooltip(!showActivityTypeTooltip)} />
                 </Tooltip>
               </ClickAwayListener>
             </div>
@@ -195,7 +198,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
             required={true}
             className="mb-6 w-full"
             id="outlined-basic"
-            label="Activity Description"
+            label={t('Participation.ActivityDescription.Label')}
             variant="outlined"
             value={participationData.description}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -204,6 +207,15 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                 description: e.target.value,
               })
             }
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                 <Tooltip open={showDescriptionTooltip} title={t('Participation.ActivityDescription.Tooltip')}>
+                   <HelpIcon color="action" onClick={() => setShowDescriptionTooltip(!showDescriptionTooltip)} />
+                  </Tooltip>
+                </InputAdornment>
+              ),
+            }}
           />
         </div>
 
@@ -235,7 +247,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                 disableTouchListener
                 title={t('Participation.HighIntensity.Tooltip')}
               >
-                <HelpIcon onClick={() => setIntensiveTooltipVisibility(true)} />
+                <HelpIcon color="action" onClick={() => setIntensiveTooltipVisibility(true)} />
               </Tooltip>
             </ClickAwayListener>
           </div>

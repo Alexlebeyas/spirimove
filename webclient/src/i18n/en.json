@@ -92,7 +92,10 @@
         "Label": "Activity Type",
         "Tooltip": "Activity Type Selector"
       },
-      "ActivityDescription": "Description",
+      "ActivityDescription": {
+        "Label": "Activity Description",
+        "Tooltip": "Activity Description"
+      },
       "DeleteMessageConfirm": "Are you sure you want to delete the following participation :",
       "HighIntensity": {
         "Label": "High Intensity",
