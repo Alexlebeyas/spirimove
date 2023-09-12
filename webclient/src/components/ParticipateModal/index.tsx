@@ -35,7 +35,7 @@ interface Props {
   startDate: string;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  participationToEdit?: IParticipation|undefined;
+  participationToEdit?: IParticipation| null;
 }
 
 export const ParticipateModal: React.FC<Props> = ({ contestId, startDate, open, setOpen, participationToEdit }) => {

@@ -5,7 +5,6 @@ import { CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import useLevelStore from '@/stores/useLevelStore';
 
-
 const MyContestScore = () => {
   const { contest } = useContest();
   const { t } = useTranslation();
