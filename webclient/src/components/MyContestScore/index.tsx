@@ -24,8 +24,14 @@ const MyContestScore = () => {
       </div>
     );
   }
+  const sortedLevel = levels.sort((levelA, levelB) => levelA.participation_day - levelB.participation_day);
+  const rewardLevel = levels.filter(({ participation_day }) => participation_day <= stats.nb_days).length;
 
-  const rewardLevel = levels.filter(({ participation_day }) => participation_day < stats.nb_days).length;
+  const currentEligibleLevel = sortedLevel.filter(({ participation_day }) => participation_day <= stats.nb_days);
+  const nextEligibleLevel = sortedLevel.filter(({ participation_day }) => participation_day > stats.nb_days);
+  
+  const currentEligibleLevelMessage = currentEligibleLevel.length > 0 ? `Current Eligibility :  ${currentEligibleLevel.map(x => x.name+' ('+x.participation_day+' Jours, '+ x.price+')')}`:'';
+  const nextEligibleLevelMessage = nextEligibleLevel.length > 0 ? `Next level objective : ${nextEligibleLevel[0].name+' ('+nextEligibleLevel[0].participation_day+' Jours, '+ nextEligibleLevel[0].price+')' }` : '';
 
   const streakText = stats.streak > 1 ? t('MySpiriMove.Stats.Streak', { streak: stats.streak }) : '';
 
@@ -48,6 +54,8 @@ const MyContestScore = () => {
         <p className="font-normal text-gray-700 dark:text-gray-400">
           {t('MySpiriMove.Stats.RewardLevel', { rewardLevel: rewardLevel })}
         </p>
+        <p className="font-normal text-gray-700 dark:text-gray-400">{currentEligibleLevelMessage}</p>
+        <p className="font-normal text-gray-700 dark:text-gray-400">{nextEligibleLevelMessage}</p>
       </a>
     </div>
   );
