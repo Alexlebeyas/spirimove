@@ -25,12 +25,12 @@ const Leaderboard = () => {
     <PageContainer>
       {/* Office filters */}
       <div className="items-center justify-center overflow-x-auto pl-4 sm:pl-0 md:flex md:flex-col">
-        <ul className="mb-6 flex flex-nowrap text-center font-medium text-darkblue-800 antialiased">
+        <ul className="mb-6 flex flex-nowrap text-center font-medium text-darkblue-800 antialiased ">
           {getOffices().map((office) => (
             <li className="mx-0" key={office.id}>
               <button
                 className={`inline-block border-darkblue-800 px-5 pb-1.5 ${
-                  office.id === officeFilter.id ? 'border-b-4 font-bold' : ''
+                  office.id === officeFilter.id ? 'border-b-4 font-bold' : 'hover:text-slate-500'
                 }`}
                 onClick={() => setOfficeFilter(office)}
               >
@@ -51,7 +51,7 @@ const Leaderboard = () => {
                 <button
                   className={
                     'rounded-full px-5 py-1 text-sm font-medium text-darkblue-800 sm:text-xs ' +
-                    (sortingMode == 'pts' ? 'bg-darkblue-800 text-white' : '')
+                    (sortingMode == 'pts' ? 'bg-darkblue-800 text-white' : 'hover:text-slate-500')
                   }
                   onClick={() => setSortingMode('pts')}
                 >
@@ -60,7 +60,7 @@ const Leaderboard = () => {
                 <button
                   className={
                     'rounded-full px-5 py-1 text-sm font-medium text-darkblue-800 sm:text-xs ' +
-                    (sortingMode == 'days' ? 'bg-darkblue-800 text-white' : '')
+                    (sortingMode == 'days' ? 'bg-darkblue-800 text-white' : 'hover:text-slate-500')
                   }
                   onClick={() => setSortingMode('days')}
                 >

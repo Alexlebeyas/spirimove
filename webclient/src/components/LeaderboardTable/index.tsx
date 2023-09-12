@@ -27,7 +27,7 @@ export const LeaderboardTable = ({ stats, mode }: Props) => {
   return (
     <>
       {/* First entries */}
-      <div className="divide-grey-300 h-auto divide-y overflow-y-auto border-b">
+      <div className="h-auto divide-y divide-slate-200 overflow-y-auto border-b">
         {sortedStats.map((stat, idx) => {
           switch (mode) {
             case 'pts':
@@ -56,7 +56,7 @@ export const LeaderboardTable = ({ stats, mode }: Props) => {
       <div className="mt-3 flex justify-center">
         <div className="py-2">
           <button
-            className="inline-flex items-center px-4 py-1 text-base font-bold text-darkblue-800"
+            className="inline-flex items-center px-4 py-1 text-base font-bold text-darkblue-800 lg:hover:text-blue"
             onClick={() => setTopEntries((top) => top + 5)}
           >
             {t('Leaderboard.ViewMore')}
@@ -95,7 +95,7 @@ const TotalPointsRenderer = ({ stat, idx, currentUser }: TotalPointsProps) => {
           'flex items-center px-1 py-3 sm:px-3' + (stat.user__display_name === currentUser ? ' bg-gray-50' : '')
         }
       >
-        <div className="mr-3 flex-none text-sm text-gray-600 sm:mr-4">{idx + 1}</div>
+        <div className="mr-3 flex-none text-sm text-slate-600 sm:mr-4">{idx + 1}</div>
         <div className="flex grow items-center">
           <div className="flex grow items-center">
             <div className="mr-3">
@@ -103,7 +103,7 @@ const TotalPointsRenderer = ({ stat, idx, currentUser }: TotalPointsProps) => {
             </div>
             <div>
               <div className="text-[15px] font-medium text-darkblue-800 sm:text-sm">{stat.user__display_name}</div>
-              <div className="text-[13px] font-medium text-gray-500  sm:text-xs">{stat.user__office}</div>
+              <div className="text-[13px] font-medium text-slate-500  sm:text-xs">{stat.user__office}</div>
             </div>
           </div>
           <div className="flex-none text-sm font-bold text-darkblue-800">
@@ -129,10 +129,10 @@ const TotalDaysRenderer = ({ stat, idx, max, currentUser }: TotalDaysProps) => {
       <div
         id={stat.user__display_name}
         className={
-          'flex items-center px-1 py-3 sm:px-3' + (stat.user__display_name === currentUser ? ' bg-gray-50' : '')
+          'flex items-center px-1 py-3 sm:px-3' + (stat.user__display_name === currentUser ? ' bg-slate-50' : '')
         }
       >
-        <div className="mr-3 flex-none text-sm text-gray-600 sm:mr-4">{idx + 1}</div>
+        <div className="mr-3 flex-none text-sm text-slate-600 sm:mr-4">{idx + 1}</div>
         <div className="grow">
           <div className="flex grow items-center">
             <div className="flex grow items-center">
@@ -141,7 +141,7 @@ const TotalDaysRenderer = ({ stat, idx, max, currentUser }: TotalDaysProps) => {
               </div>
               <div>
                 <div className="text-[15px] font-medium text-darkblue-800 sm:text-sm">{stat.user__display_name}</div>
-                <div className="text-[13px] font-medium leading-[14px] text-gray-500 sm:text-xs">
+                <div className="text-[13px] font-medium leading-[14px] text-slate-500 sm:text-xs">
                   {stat.user__office}
                 </div>
               </div>
