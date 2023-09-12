@@ -6,7 +6,8 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
-
+import { useContest } from '@/hooks';
+import { isContestOver } from '@/utils/contest';
 interface Props {
   currentDate: string;
   participation?: IParticipation;
@@ -30,6 +31,7 @@ interface CommonProps {
 interface ActionButtonsProps {
   handleRowEdit: () => void;
   handleRowDelete: () => void;
+  canEdit: boolean;
 }
 
 const getScore = (status?: ParticipationStatus, points?: number): string | number => {
@@ -68,7 +70,7 @@ const EmptyRow: React.FC<{ currentDate: string }> = ({ currentDate }) => (
   </tr>
 );
 
-const EmptyCard: React.FC<{ currentDate: string, message: string }> = ({ currentDate, message }) => (
+const EmptyCard: React.FC<{ currentDate: string; message: string }> = ({ currentDate, message }) => (
   <div className="m-2 rounded border bg-white p-4 shadow-md">
     <div className="flex items-center justify-between">
       <div className="font-bold">{currentDate}</div>
@@ -77,12 +79,14 @@ const EmptyCard: React.FC<{ currentDate: string, message: string }> = ({ current
   </div>
 );
 
-const ActionButtons: React.FC<ActionButtonsProps> = ({ handleRowEdit, handleRowDelete }) => {
+const ActionButtons: React.FC<ActionButtonsProps> = ({ handleRowEdit, handleRowDelete, canEdit }) => {
   return (
     <>
-      <IconButton style={{ color: 'green' }} aria-label="edit" onClick={handleRowEdit}>
-        <EditIcon />
-      </IconButton>
+      {canEdit && (
+        <IconButton style={{ color: 'green' }} aria-label="edit" onClick={handleRowEdit}>
+          <EditIcon />
+        </IconButton>
+      )}
       <IconButton style={{ color: 'red' }} aria-label="delete" onClick={handleRowDelete}>
         <DeleteIcon />
       </IconButton>
@@ -99,10 +103,12 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
   setParticipationToHandle,
 }) => {
   const { t } = useTranslation();
+  const { contest } = useContest();
+  const isContestOngoing = contest?.end_date && !isContestOver(contest.end_date);
 
   const commonValues = {
-    is_intensive: participation?.is_intensive ? t('Common.Yes'): t('Common.No'),
-    is_organizer: participation?.is_organizer ? t('Common.Yes'): t('Common.No'),
+    is_intensive: participation?.is_intensive ? t('Common.Yes') : t('Common.No'),
+    is_organizer: participation?.is_organizer ? t('Common.Yes') : t('Common.No'),
     description: participation?.description,
     type: participation?.type?.name,
     status: participation?.status_display,
@@ -110,13 +116,15 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
     image: participation?.image,
   };
 
-  const handleRow = useCallback((action: Dispatch<SetStateAction<boolean>>) => {
-    if (participation) {
-      setParticipationToHandle(participation);
-      action(true);
-    }
-  }, [participation, setParticipationToHandle]);
-
+  const handleRow = useCallback(
+    (action: Dispatch<SetStateAction<boolean>>) => {
+      if (participation) {
+        setParticipationToHandle(participation);
+        action(true);
+      }
+    },
+    [participation, setParticipationToHandle]
+  );
 
   const handleRowEdit = useCallback(() => {
     handleRow(setIsEditParticipationModalOpen);
@@ -164,8 +172,12 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
           <b>{t('ContestCalendar.Score')}</b>: {score}
         </div>
         <div>
-          {status === ParticipationStatus.InVerification && (
-            <ActionButtons handleRowEdit={handleRowEdit} handleRowDelete={handleRowDelete} />
+          {isContestOngoing && (
+            <ActionButtons
+              handleRowEdit={handleRowEdit}
+              handleRowDelete={handleRowDelete}
+              canEdit={status === ParticipationStatus.InVerification}
+            />
           )}
         </div>
       </div>
@@ -196,8 +208,12 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
         )}
       </td>
       <td className="border-grey-light border p-3">
-        {status === ParticipationStatus.InVerification && (
-          <ActionButtons handleRowEdit={handleRowEdit} handleRowDelete={handleRowDelete} />
+        {isContestOngoing && (
+          <ActionButtons
+            handleRowEdit={handleRowEdit}
+            handleRowDelete={handleRowDelete}
+            canEdit={status === ParticipationStatus.InVerification}
+          />
         )}
       </td>
     </tr>
