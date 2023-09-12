@@ -30,12 +30,12 @@ interface Props {
   endDate: string;
   contestId: number;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  participationToEdit?: IParticipation| null;
+  participationToEdit?: IParticipation | null;
 }
 
 const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDate, setOpen, participationToEdit }) => {
-  const {isLoading, participationsTypes, getParticipationsTypes} = fetchParticipationsType((state) => state);
-  if(isLoading){
+  const { isLoading, participationsTypes, getParticipationsTypes } = fetchParticipationsType((state) => state);
+  if (isLoading) {
     getParticipationsTypes();
   }
 
@@ -45,33 +45,41 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
     description: participationToEdit ? participationToEdit.description : '',
     date: participationToEdit ? participationToEdit.date : moment().format(DATE_FORMAT),
     image: undefined,
-    isIntensive: participationToEdit ? participationToEdit.is_intensive : false, 
-    isOrganizer: participationToEdit ? participationToEdit.is_organizer : false, 
+    isIntensive: participationToEdit ? participationToEdit.is_intensive : false,
+    isOrganizer: participationToEdit ? participationToEdit.is_organizer : false,
     type: participationToEdit?.type?.id ?? participationsTypes[0]?.id,
   });
 
   const [intensiveTooltipVisibility, setIntensiveTooltipVisibility] = useState(false);
   const [organizerTooltipVisibility, setOrganizerTooltipVisibility] = useState(false);
-  const [fileUrl, setfileUrl] = useState( participationToEdit?.image ?? '');
+  const [showActivityTypeTooltip, setShowActivityTypeTooltip] = useState(false);
+
+  const [fileUrl, setfileUrl] = useState(participationToEdit?.image ?? '');
 
   const updateMyParticipations = fetchMyParticipations((state) => state.getParticipations);
   const updateAllParticipations = fetchAllParticipations((state) => state.getParticipations);
 
-  const [canBeIntensive, setCanBeIntensive] = useState(participationsTypes.find((p) => p.id === participationData.type)?.can_be_intensive);
-  const [canHaveOrganizer, setCanHaveOrganizer] = useState(participationsTypes.find((p) => p.id === participationData.type)?.can_have_organizer);
-  const [shouldSetImage, setShouldSetImage] = useState(participationsTypes.find((p) => p.id === participationData.type)?.should_set_image);
+  const [canBeIntensive, setCanBeIntensive] = useState(
+    participationsTypes.find((p) => p.id === participationData.type)?.can_be_intensive
+  );
+  const [canHaveOrganizer, setCanHaveOrganizer] = useState(
+    participationsTypes.find((p) => p.id === participationData.type)?.can_have_organizer
+  );
+  const [shouldSetImage, setShouldSetImage] = useState(
+    participationsTypes.find((p) => p.id === participationData.type)?.should_set_image
+  );
 
   const { t } = useTranslation();
 
   const onSubmitHandler = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    if(participationToEdit){
-      ParticipationService.updateParticipation(participationData, participationToEdit?.id).then(()=>{
+    if (participationToEdit) {
+      ParticipationService.updateParticipation(participationData, participationToEdit?.id).then(() => {
         updateMyParticipations();
         updateAllParticipations();
       });
-    }else{
-      ParticipationService.submitParticipation(participationData).then(()=>{
+    } else {
+      ParticipationService.submitParticipation(participationData).then(() => {
         updateMyParticipations();
         updateAllParticipations();
       });
@@ -88,7 +96,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
   const handleImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const file = e.target?.files != undefined ? e.target.files[0] : undefined;
-    const filePath = file != undefined ? URL.createObjectURL(file):'';
+    const filePath = file != undefined ? URL.createObjectURL(file) : '';
     setfileUrl(filePath);
 
     setParticipationData({
@@ -97,9 +105,9 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
     });
   };
 
-  const onParticipationTypeChange = (e: SelectChangeEvent<number|string>) => {
-    const val = e.target.value ? Number(e.target.value) : "";
-    const choosenType = participationsTypes?.find((type) => type.id === val)
+  const onParticipationTypeChange = (e: SelectChangeEvent<number | string>) => {
+    const val = e.target.value ? Number(e.target.value) : '';
+    const choosenType = participationsTypes?.find((type) => type.id === val);
     const intensive = choosenType?.can_be_intensive ? participationData.isIntensive : false;
     const organizer = choosenType?.can_have_organizer ? participationData.isOrganizer : false;
     setCanBeIntensive(choosenType?.can_be_intensive ?? false);
@@ -115,7 +123,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
 
   return (
     <>
-      <h1 className="mb-6">{!participationToEdit ? t('Participation.NewTitle'): t('Participation.EditTitle')}</h1>
+      <h1 className="mb-6">{!participationToEdit ? t('Participation.NewTitle') : t('Participation.EditTitle')}</h1>
       <form>
         <div className="mb-6">
           <div data-te-datepicker-init data-te-inline="true" data-te-input-wrapper-init>
@@ -153,11 +161,11 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
               {t('Participation.SelectImage')}
             </Button>
           </label>
-          {fileUrl ? <img src={fileUrl} style={{ height:200}}/> : ''}
+          {fileUrl ? <img src={fileUrl} style={{ height: 200 }} /> : ''}
         </div>
         <div className="mb-6 md:flex md:items-center">
           <FormControl className="w-full" variant="outlined" style={{ width: '100%' }}>
-            <InputLabel id="activity-type-label">{t('Participation.ActivityType')}</InputLabel>
+            <InputLabel id="activity-type-label">{t('Participation.ActivityType.Label')}</InputLabel>
             <Select
               className={'w-full'}
               labelId="activity-type-label"
@@ -165,11 +173,21 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
               variant="outlined"
               label="Activity Type"
               onChange={onParticipationTypeChange}
+              IconComponent={() => null}
             >
-            { participationsTypes?.map((participationType) => (
-                <MenuItem key={participationType.id} value={participationType.id}>{participationType.name}</MenuItem>
-            ))}
+              {participationsTypes?.map((participationType) => (
+                <MenuItem key={participationType.id} value={participationType.id}>
+                  {participationType.name}
+                </MenuItem>
+              ))}
             </Select>
+            <div style={{ position: 'absolute', top: '50%', right: 12, transform: 'translateY(-50%)' }}>
+              <ClickAwayListener onClickAway={() => setShowActivityTypeTooltip(false)}>
+                <Tooltip open={showActivityTypeTooltip} title={t('Participation.ActivityType.Tooltip')}>
+                  <HelpIcon onClick={() => setShowActivityTypeTooltip(!showActivityTypeTooltip)} />
+                </Tooltip>
+              </ClickAwayListener>
+            </div>
           </FormControl>
         </div>
         <div className="mb-6 md:flex md:items-center">
@@ -267,7 +285,11 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
             variant="contained"
             component="label"
             onClick={onSubmitHandler}
-            disabled={(shouldSetImage && !(participationData.image || participationToEdit?.image) ) || participationData.description === '' || participationData.type === ''}
+            disabled={
+              (shouldSetImage && !(participationData.image || participationToEdit?.image)) ||
+              participationData.description === '' ||
+              participationData.type === ''
+            }
           >
             {t('Button.Submit')}
           </Button>
