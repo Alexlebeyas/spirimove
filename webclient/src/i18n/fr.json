@@ -72,7 +72,9 @@
         "Days": "Days",
         "Points": "Pts",
         "Streak": "{{streak}} jours consécutifs, continue comme ca!",
-        "RewardLevel": "Tu es éligible pour {{rewardLevel}} prix."
+        "RewardLevel_one": "Bon travail ! Vous avez débloqué un prix!",
+        "RewardLevel_other": "Effort incroyable ! {{count}} prix vous attendent.",
+        "RewardLevel_zero": "Continuez comme ça ! Aucun prix n'a encore été gagné."
       }
     },
     "Time": {
