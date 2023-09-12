@@ -30,7 +30,7 @@ interface Props {
   endDate: string;
   contestId: number;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  participationToEdit?: IParticipation;
+  participationToEdit?: IParticipation| null;
 }
 
 const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDate, setOpen, participationToEdit }) => {

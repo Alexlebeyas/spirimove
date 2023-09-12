@@ -59,9 +59,12 @@
       "Date": "Date",
       "ParticipationType": "Type",
       "Description": "Description",
-      "Intensity": "Intensity",
-      "Approved": "Participation Status",
-      "Score": "Score"
+      "Intensity": "High Intensity",
+      "Status": "Status",
+      "Score": "Score",
+      "Initiator": "Initiator",
+      "NoData": "No data for this date.",
+      "Image": "Image"
     },
     "MySpiriMove": {
       "Stats": {
