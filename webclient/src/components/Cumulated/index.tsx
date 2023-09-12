@@ -10,15 +10,17 @@ const Cumulated = ({ stats }: CumulatedProps) => {
   const { totalPts, totalParticipants } = getCumulatedStats(stats);
 
   return (
-    <div className="m-2 flex flex-row ">
-      <div className="flex grow justify-stretch">
-        <div className="grow p-1">
-          <div className="justify-center text-4xl font-semibold">{totalPts}</div>
-          <div className="text-xs font-medium leading-[14px] text-gray-500">{t('Leaderboard.Cumulated.Points')}</div>
+    <div className="mx-5 my-2 flex flex-row sm:mx-2">
+      <div className="flex divide-x-2 divide-slate-200">
+        <div className="mr-6 p-1">
+          <div className="justify-center text-4xl font-semibold text-darkblue-800">{totalPts}</div>
+          <div className="pt-0.5 text-[13px] font-medium leading-[14px] text-darkblue-800 sm:text-xs">
+            {t('Leaderboard.Cumulated.Points')}
+          </div>
         </div>
-        <div className="grow border-l p-1 pl-7">
-          <div className="text-4xl font-semibold">{totalParticipants}</div>
-          <div className="text-xs font-medium leading-[14px] text-gray-500">
+        <div className="p-1 pl-6">
+          <div className="text-4xl font-semibold text-darkblue-800">{totalParticipants}</div>
+          <div className="pt-0.5 text-[13px] font-medium leading-[14px] text-darkblue-800 sm:text-xs">
             {t('Leaderboard.Cumulated.Participants')}
           </div>
         </div>
