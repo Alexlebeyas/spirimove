@@ -20,7 +20,6 @@ import {
   SelectChangeEvent,
   TextField,
   Tooltip,
-  InputAdornment,
 } from '@mui/material';
 
 import { IParticipation } from '@/interfaces';
@@ -54,8 +53,6 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
   const [intensiveTooltipVisibility, setIntensiveTooltipVisibility] = useState(false);
   const [organizerTooltipVisibility, setOrganizerTooltipVisibility] = useState(false);
   const [showActivityTypeTooltip, setShowActivityTypeTooltip] = useState(false);
-  const [showDescriptionTooltip, setShowDescriptionTooltip] = useState(false);
-
 
   const [fileUrl, setfileUrl] = useState(participationToEdit?.image ?? '');
 
@@ -207,15 +204,6 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                 description: e.target.value,
               })
             }
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                 <Tooltip open={showDescriptionTooltip} title={t('Participation.ActivityDescription.Tooltip')}>
-                   <HelpIcon color="action" onClick={() => setShowDescriptionTooltip(!showDescriptionTooltip)} />
-                  </Tooltip>
-                </InputAdornment>
-              ),
-            }}
           />
         </div>
 
