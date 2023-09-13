@@ -5,7 +5,6 @@ import { CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import useLevelStore from '@/stores/useLevelStore';
 
-
 const MyContestScore = () => {
   const { contest } = useContest();
   const { t } = useTranslation();
@@ -31,24 +30,15 @@ const MyContestScore = () => {
 
   return (
     <div className="mb-6 w-full overflow-hidden rounded-md bg-white shadow-md">
-      <a
-        href="#"
-        className="block rounded-lg border border-gray-200 bg-white p-6 shadow hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
-      >
-        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+      <div className="block rounded-lg border border-gray-200 bg-white p-6 shadow ">
+        <h5 className="mb-2 text-xl font-bold text-darkblue-800 lg:text-lg">
           {t('MySpiriMove.Stats.Title', { name: stats.contest_name })}
         </h5>
-        <p className="font-normal text-gray-700 dark:text-gray-400">
-          {t('MySpiriMove.Stats.Points', { points: stats.nb_point })}
-        </p>
-        <p className="font-normal text-gray-700 dark:text-gray-400">
-          {t('MySpiriMove.Stats.Days', { days: stats.nb_days })}
-        </p>
-        <p className="font-normal text-gray-700 dark:text-gray-400">{streakText}</p>
-        <p className="font-normal text-gray-700 dark:text-gray-400">
-          {t('MySpiriMove.Stats.RewardLevel', { rewardLevel: rewardLevel })}
-        </p>
-      </a>
+        <p className="font-normal text-gray-700">{t('MySpiriMove.Stats.Points', { points: stats.nb_point })}</p>
+        <p className="font-normal text-gray-700">{t('MySpiriMove.Stats.Days', { days: stats.nb_days })}</p>
+        <p className="font-normal text-gray-700">{streakText}</p>
+        <p className="font-normal text-gray-700">{t('MySpiriMove.Stats.RewardLevel', { rewardLevel: rewardLevel })}</p>
+      </div>
     </div>
   );
 };

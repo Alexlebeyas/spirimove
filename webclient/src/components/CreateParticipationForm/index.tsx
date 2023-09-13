@@ -40,6 +40,12 @@ interface FieldErrors {
   type: string;
 }
 
+interface FieldErrors {
+  description: string;
+  image: string;
+  type: string;
+}
+
 const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDate, setOpen, participationToEdit }) => {
   const { isLoading, participationsTypes, getParticipationsTypes } = fetchParticipationsType((state) => state);
   if (isLoading) {

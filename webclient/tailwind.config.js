@@ -7,10 +7,10 @@ export default {
         sans: ['Inter', 'sans-serif'],
       },
       fontWeight: {
-        'regular': 400,
-        'medium': 500,
-        'semibold': 600,
-        'bold': 700,
+        regular: 400,
+        medium: 500,
+        semibold: 600,
+        bold: 700,
       },
       colors: {
         darkblue: {
@@ -20,6 +20,7 @@ export default {
         red: '#E0303B',
         yellow: '#FFD233',
         blue: '#708EF4',
+        lightblue: '#F5F7FF',
         lightgrey: '#EFF1F5',
         lightergrey: '#F6F7FA',
       },
