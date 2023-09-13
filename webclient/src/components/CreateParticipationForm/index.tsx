@@ -14,6 +14,7 @@ import {
   ClickAwayListener,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   InputLabel,
   MenuItem,
   Select,
@@ -31,6 +32,12 @@ interface Props {
   contestId: number;
   setOpen: Dispatch<SetStateAction<boolean>>;
   participationToEdit?: IParticipation | null;
+}
+
+interface FieldErrors {
+  description: string;
+  image: string;
+  type: string;
 }
 
 const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDate, setOpen, participationToEdit }) => {
@@ -56,6 +63,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
   const [showActivityTypeTooltip, setShowActivityTypeTooltip] = useState(false);
 
   const [fileUrl, setfileUrl] = useState(participationToEdit?.image ?? '');
+  const [typeError, setTypeError] = useState<FieldErrors | undefined>(undefined);
 
   const updateMyParticipations = fetchMyParticipations((state) => state.getParticipations);
   const updateAllParticipations = fetchAllParticipations((state) => state.getParticipations);
@@ -74,19 +82,28 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
 
   const onSubmitHandler = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
+    setTypeError(undefined);
     if (participationToEdit) {
-      ParticipationService.updateParticipation(participationData, participationToEdit?.id).then(() => {
-        updateMyParticipations();
-        updateAllParticipations();
-      });
+      ParticipationService.updateParticipation(participationData, participationToEdit?.id)
+        .then(() => {
+          updateMyParticipations();
+          updateAllParticipations();
+          setOpen(false);
+        })
+        .catch(function (error) {
+          setTypeError(error);
+        });
     } else {
-      ParticipationService.submitParticipation(participationData).then(() => {
-        updateMyParticipations();
-        updateAllParticipations();
-      });
+      ParticipationService.submitParticipation(participationData)
+        .then(() => {
+          updateMyParticipations();
+          updateAllParticipations();
+          setOpen(false);
+        })
+        .catch(function (error) {
+          setTypeError(error);
+        });
     }
-
-    setOpen(false);
   };
 
   const onCancelHandler = (e: React.MouseEvent<HTMLElement>) => {
@@ -149,20 +166,24 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
         </div>
 
         <div className="mb-6">
-          <input
-            accept="image/*"
-            hidden
-            id="raised-button-file"
-            type="file"
-            onChange={handleImageFile}
-            style={{ display: 'none' }}
-          />
-          <label htmlFor="raised-button-file">
-            <Button className="w-full" variant="outlined" component="span" onChange={handleImageFile}>
-              {t('Participation.SelectImage')}
-            </Button>
-          </label>
-          {fileUrl ? <img src={fileUrl} style={{ height: 200 }} /> : ''}
+          <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.image}>
+            <input
+              accept="image/*"
+              hidden
+              id="raised-button-file"
+              type="file"
+              onChange={handleImageFile}
+              style={{ display: 'none' }}
+              required={shouldSetImage}
+            />
+            <label htmlFor="raised-button-file">
+              <Button className="w-full" variant="outlined" component="span" onChange={handleImageFile}>
+                {t('Participation.SelectImage')}
+              </Button>
+            </label>
+            {fileUrl ? <img src={fileUrl} style={{ height: 200 }} /> : ''}
+            <FormHelperText>{typeError?.image}</FormHelperText>
+          </FormControl>
         </div>
         <div className="mb-6 md:flex md:items-center">
           <FormControl className="w-full" variant="outlined" style={{ width: '100%' }}>
@@ -175,6 +196,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
               label="Activity Type"
               onChange={onParticipationTypeChange}
               IconComponent={emptyIconRenderer}
+              required={true}
             >
               {participationsTypes?.map((participationType) => (
                 <MenuItem key={participationType.id} value={participationType.id}>
@@ -182,6 +204,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                 </MenuItem>
               ))}
             </Select>
+            <FormHelperText>{typeError?.type}</FormHelperText>
             <div style={{ position: 'absolute', top: '50%', right: 12, transform: 'translateY(-50%)' }}>
               <ClickAwayListener onClickAway={() => setShowActivityTypeTooltip(false)}>
                 <Tooltip open={showActivityTypeTooltip} title={t('Participation.ActivityType.Tooltip')}>
@@ -192,20 +215,23 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
           </FormControl>
         </div>
         <div className="mb-6 md:flex md:items-center">
-          <TextField
-            required={true}
-            className="mb-6 w-full"
-            id="outlined-basic"
-            label={t('Participation.ActivityDescription.Label')}
-            variant="outlined"
-            value={participationData.description}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setParticipationData({
-                ...participationData,
-                description: e.target.value,
-              })
-            }
-          />
+          <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.description}>
+            <TextField
+              required={true}
+              className="mb-6 w-full"
+              id="outlined-basic"
+              label="Activity Description"
+              variant="outlined"
+              value={participationData.description}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setParticipationData({
+                  ...participationData,
+                  description: e.target.value,
+                })
+              }
+            />
+            <FormHelperText>{typeError?.description}</FormHelperText>
+          </FormControl>
         </div>
 
         {canBeIntensive ? (
