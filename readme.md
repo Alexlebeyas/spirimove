@@ -8,7 +8,7 @@ This project is divided in two applications:
 
 ## High-level architecture
 
-[Click here for SVG](.assets/context-diagram.svg)
+[Click here for PNG](.assets/context-diagram.png)
 
 ```plantuml
     !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
