@@ -127,9 +127,9 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
   };
 
   return (
-    <>
+    <div className="max-h-[calc(100vh-200px)] overflow-y-auto pb-6">
       <h1 className="mb-6">{!participationToEdit ? t('Participation.NewTitle'): t('Participation.EditTitle')}</h1>
-      <div className="max-h-[calc(100vh-200px)] overflow-y-auto pb-6">  
+      <div>  
         <form>
           <div className="mb-6 mt-5">
             <div data-te-datepicker-init data-te-inline="true" data-te-input-wrapper-init>
@@ -301,7 +301,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 
