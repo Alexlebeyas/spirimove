@@ -28,8 +28,12 @@
       "ViewMore": "View more",
       "PointsMode": "Points",
       "PointsDisplay": "{{nb}} pts",
+      "PrizeDisplay": "{{nb}} $",
       "ConsecutiveDaysMode": "Consecutive days",
       "DaysDisplay": "{{nb}} days",
+      "WinnersLabel": "Winners",
+      "WinnersPerOfficeLabel": "Per Office",
+      "WinnersNotFound": "No winners to display.",
       "RemainingDays": {
         "Title": "Progress",
         "CurrentDay": "Day",
