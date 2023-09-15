@@ -22,7 +22,9 @@
       "Logout": "Se déconnecter"
     },
     "Home": {
-      "AddParticipation": "Ajouter une participation"
+      "AddParticipation": "Ajouter une participation",
+      "ContestStatusOver": "Le concours est terminé!",
+      "ViewResults": "Voir les résultats"
     },
     "Leaderboard": {
       "ViewMore": "Voir plus",
