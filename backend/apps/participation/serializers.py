@@ -90,7 +90,7 @@ class ListParticipationModelSerializer(serializers.ModelSerializer):
 class LevelModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = LevelModel
-        read_only_fields = ('name', 'price', 'participation_day', 'order')
+        read_only_fields = ('name', 'price', 'participation_day', 'order', 'is_for_office')
         exclude = ('is_active', 'date_created', 'last_modified')
 
 

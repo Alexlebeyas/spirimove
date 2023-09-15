@@ -122,7 +122,7 @@ class UnapproveParticipationAdmin(ParticipationModelAdmin):
 
 @admin.register(DrawModel)
 class DrawModelAdmin(admin.ModelAdmin):
-    list_display = ['contest_name', 'winner_name', 'level_name', 'total_days', 'date_created', 'last_modified']
+    list_display = ['contest_name', 'winner_name', 'level_name', 'office', 'total_days', 'date_created', 'last_modified']
 
     def contest_name(self, obj):
         return obj.contest.name
@@ -157,8 +157,8 @@ class ParticipationTypeModelAdmin(admin.ModelAdmin):
 
 @admin.register(LevelModel)
 class LevelModelAdmin(admin.ModelAdmin):
-    list_display = ['name', 'price', 'participation_day', 'order', 'is_active', 'date_created']
-    fields = ['name', 'price', 'participation_day', 'order', 'is_active']
+    list_display = ['name', 'price', 'participation_day', 'order', 'is_for_office', 'is_active', 'date_created']
+    fields = list_display[:-1]
 
     def has_module_permission(self, request):
         return request.user.is_admin() if request.user.is_authenticated else False

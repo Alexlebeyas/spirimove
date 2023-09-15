@@ -1,39 +1,46 @@
-import { ConfirmBox, ParticipateModal } from '@/components';
-import { SpiriMoveProgressRow } from '@/components/SpiriMoveProgressRow';
-import { useContest } from '@/hooks';
+import { useState } from 'react';
+import { CircularProgress } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { IParticipation } from '@/interfaces';
-import { IMySpiriMoveProgress } from '@/interfaces/IMySpiriMoveProgress';
 import ParticipationService from '@/services/ParticipationService';
 import { fetchAllParticipations, fetchMyParticipations } from '@/stores/useParticipationStore';
-import { getDates } from '@/utils/dates';
-import { CircularProgress } from '@mui/material';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import './index.css';
+import { ConfirmBox, ParticipateModal } from '@/components';
+import { useContestParticipations } from '@/hooks/useContestParticipations';
+import MobileView from './MobileView';
+import DesktopView from './DesktopView';
 
 export const SpiriMoveProgress = () => {
-  const { contest } = useContest();
-
-  const { t } = useTranslation();
-  const { isLoading, participations, getParticipations } = fetchMyParticipations((state) => state);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { isLoading, contestParticipations, contestId, start_date } = useContestParticipations();
+  const { getParticipations: getMyParticipations } = fetchMyParticipations();
+  const { getParticipations: getAllParticipations } = fetchAllParticipations();
 
   const [isConfirmDelOpen, setConfirmDelOpen] = useState(false);
-  const [participationToHandle, setParticipationToHandle] = useState({} as IParticipation);
+  const [participationToHandle, setParticipationToHandle] = useState<IParticipation | null>(null);
   const [isEditParticipationModalOpen, setIsEditParticipationModalOpen] = useState(false);
 
-  const updateMyParticipations = fetchMyParticipations((state) => state.getParticipations);
-  const updateAllParticipations = fetchAllParticipations((state) => state.getParticipations);
+  const viewProps = {
+    participations: contestParticipations,
+    setConfirmDelOpen,
+    setIsEditParticipationModalOpen,
+    setParticipationToHandle,
+  };
 
-  const handleDeleteParticipation = () => {
-    ParticipationService.deleteParticipation(participationToHandle).then(() => {
-      updateMyParticipations();
-      updateAllParticipations();
-    });
-    setParticipationToHandle({} as IParticipation);
+  const handleDeleteParticipation = async () => {
+    if (!participationToHandle) return;
+
+    try {
+      await ParticipationService.deleteParticipation(participationToHandle);
+      await Promise.all([getMyParticipations(), getAllParticipations()]);
+      setParticipationToHandle(null);
+    } catch (error) {
+      console.error('There was an error deleting the participation:', error); // TODO: use an error notification service
+    }
   };
 
   if (isLoading) {
-    getParticipations();
     return (
       <div className="flex items-center justify-center">
         <CircularProgress />
@@ -41,54 +48,9 @@ export const SpiriMoveProgress = () => {
     );
   }
 
-  if (!contest) return null; // no context
-
-  const datesArray = getDates(contest.start_date, contest.end_date);
-
-  const contestParticipations: IMySpiriMoveProgress[] = [];
-
-  datesArray.forEach((currentDate) => {
-    const currentDayParticipations = participations?.filter((p) => p.date === currentDate);
-    if (currentDayParticipations?.length === 0) {
-      contestParticipations.push({ contestDate: currentDate });
-    } else {
-      currentDayParticipations?.forEach((participation) => {
-        contestParticipations.push({ contestDate: currentDate, participation });
-      });
-    }
-  });
-
   return (
     <div className="flex items-center justify-center">
-      <div className="container">
-        <table className="flex-no-wrap my-5 flex w-full flex-row overflow-hidden rounded-lg sm:bg-white sm:shadow-lg">
-          <thead className="text-white">
-            {contestParticipations && (
-              <tr className="flex-no wrap mb-2 flex flex-col rounded-l-lg bg-gray-800 sm:mb-0 sm:table-row sm:rounded-none">
-                <th className="p-3 text-left">{t('ContestCalendar.Date')}</th>
-                <th className="p-3 text-left">{t('ContestCalendar.ParticipationType')}</th>
-                <th className="p-3 text-left">{t('ContestCalendar.Description')}</th>
-                <th className="p-3 text-left">{t('ContestCalendar.Intensity')}</th>
-                <th className="p-3 text-left">{t('ContestCalendar.Approved')}</th>
-                <th className="p-3 text-left">{t('ContestCalendar.Score')}</th>
-                <th className="p-3 text-left">{t('Common.Actions')}</th>
-              </tr>
-            )}
-          </thead>
-          <tbody className="flex-1 sm:flex-none">
-            {contestParticipations.map((currentParticipation, index) => (
-              <SpiriMoveProgressRow
-                key={index}
-                currentDate={currentParticipation.contestDate}
-                participation={currentParticipation.participation}
-                setConfirmDeleteOpen={setConfirmDelOpen}
-                setIsEditParticipationModalOpen={setIsEditParticipationModalOpen}
-                setParticipationToHandle={setParticipationToHandle}
-              />
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {isMobile ? <MobileView {...viewProps} /> : <DesktopView {...viewProps} />}
       <ConfirmBox
         open={isConfirmDelOpen}
         setOpen={setConfirmDelOpen}
@@ -96,8 +58,8 @@ export const SpiriMoveProgress = () => {
         participation={participationToHandle}
       />
       <ParticipateModal
-        contestId={contest.id}
-        startDate={contest.start_date}
+        contestId={contestId}
+        startDate={start_date}
         open={isEditParticipationModalOpen}
         setOpen={setIsEditParticipationModalOpen}
         participationToEdit={participationToHandle}
