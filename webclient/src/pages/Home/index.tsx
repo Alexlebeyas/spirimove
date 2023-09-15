@@ -4,9 +4,10 @@ import { fetchAllParticipations, fetchParticipationsType } from '@/stores/usePar
 import CircularProgress from '@mui/material/CircularProgress';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import AddIcon from '@mui/icons-material/Add';
-
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -30,18 +31,35 @@ const Home = () => {
     nextParticipations(participations, next);
   };
 
+  const AddParticipationButton = () => (
+    <button
+      className="mb-7 w-full rounded-md bg-darkblue-800 py-4 text-base font-bold text-white antialiased hover:bg-blue"
+      onClick={() => setIsOpen(true)}
+    >
+      <AddIcon className="mr-3" />
+      {t('Home.AddParticipation')}
+    </button>
+  );
+
+  const ContestOverView = () => (
+    <div className="mb-2">
+      <h4 className="mb-3">{t('Home.ContestStatusOver')}</h4>
+      <Link
+        to="/leaderboard"
+        className="text-md mb-7 flex items-center justify-center rounded-md bg-yellow px-3 py-4 font-bold antialiased hover:bg-yellow"
+      >
+       {t('Home.ViewResults')} <ArrowForwardIcon className="ml-2" />
+      </Link>
+    </div>
+  );
+
   return (
     <PageContainer>
       {contest ? (
         <>
           <div className="flex flex-col items-center justify-center">
-            <button
-              className="mb-7 w-full rounded-md bg-darkblue-800 py-4 text-base font-bold text-white antialiased hover:bg-blue"
-              onClick={() => setIsOpen(true)}
-            >
-              {<AddIcon className="mr-3" />}
-              {t('Home.AddParticipation')}
-            </button>
+            {contest?.show_winners ? <ContestOverView />: <AddParticipationButton />}
+
             {isLoading && <CircularProgress color="inherit" />}
             <InfiniteScroll
               dataLength={participations.length}
