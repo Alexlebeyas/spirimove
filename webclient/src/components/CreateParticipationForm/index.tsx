@@ -59,6 +59,8 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
 
   const [intensiveTooltipVisibility, setIntensiveTooltipVisibility] = useState(false);
   const [organizerTooltipVisibility, setOrganizerTooltipVisibility] = useState(false);
+  const [showActivityTypeTooltip, setShowActivityTypeTooltip] = useState(false);
+
   const [fileUrl, setfileUrl] = useState( participationToEdit?.image ?? '');
   const [typeError, setTypeError] = useState<FieldErrors | undefined>(undefined);
 
@@ -190,6 +192,13 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
               ))}
               </Select>
               <FormHelperText>{typeError?.type}</FormHelperText>
+              <div style={{ position: 'absolute', top: '50%', right: 12, transform: 'translateY(-50%)' }}>
+                <ClickAwayListener onClickAway={() => setShowActivityTypeTooltip(false)}>
+                  <Tooltip open={showActivityTypeTooltip} title={t('Participation.ActivityType.Tooltip')}>
+                    <HelpIcon color="action" onClick={() => setShowActivityTypeTooltip(!showActivityTypeTooltip)} />
+                  </Tooltip>
+                </ClickAwayListener>
+            </div>
             </FormControl>
           </div>
           <div className="mb-6 md:flex md:items-center">
@@ -240,7 +249,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   disableTouchListener
                   title={t('Participation.HighIntensity.Tooltip')}
                 >
-                  <HelpIcon onClick={() => setIntensiveTooltipVisibility(true)} />
+                  <HelpIcon color="action" onClick={() => setIntensiveTooltipVisibility(true)} />
                 </Tooltip>
               </ClickAwayListener>
             </div>
