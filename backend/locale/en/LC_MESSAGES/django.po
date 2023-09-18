@@ -1,0 +1,220 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-12 11:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: apps/contest/models.py:12
+msgid "Contest"
+msgstr ""
+
+#: apps/contest/models.py:13
+msgid "Contests"
+msgstr "Contests"
+
+#: apps/participation/admin.py:10
+msgid "Approuver les participations selectionnées"
+msgstr "Approve selected participations"
+
+#: apps/participation/admin.py:13
+msgid "Participation(s) sélectionnée(s) Marqué(s) comme approuvé(s) avec succès !!"
+msgstr "Selected participation(s) Marked as successfully approved !!"
+
+#: apps/participation/admin.py:16
+msgid "Rejeter les participations selectionnées"
+msgstr "Reject selected participations"
+
+#: apps/participation/admin.py:19
+msgid "Participation(s) sélectionnée(s) Marquée(s) comme rejetée(s) !!"
+msgstr "Selected participation(s) Marked as rejected!!"
+
+#: apps/participation/admin.py:22
+msgid "Désapprouver les participations selectionnées"
+msgstr "Disapprove selected participations"
+
+#: apps/participation/admin.py:25
+msgid "Participation(s) sélectionnée(s) Marquée(s) comme non approuvée(s) !!"
+msgstr "Selected participation(s) Marked as not approved!!"
+
+#: apps/participation/admin.py:63
+msgid "Participation to approve"
+msgstr "Participation to approve"
+
+#: apps/participation/admin.py:64
+msgid "Participations to approve"
+msgstr "Participation to approve"
+
+#: apps/participation/admin.py:84
+msgid "Participation to reject"
+msgstr "Participation to reject"
+
+#: apps/participation/admin.py:85
+msgid "Participations to reject"
+msgstr "Participations to reject"
+
+#: apps/participation/admin.py:105
+msgid "Participation to unapproved"
+msgstr "Participation to unapproved"
+
+#: apps/participation/admin.py:106
+msgid "Participations to unapproved"
+msgstr "Participations to unapproved"
+
+#: apps/participation/models.py:25
+msgid "Participation type"
+msgstr "Participation type"
+
+#: apps/participation/models.py:26
+msgid "Participations type"
+msgstr "Participations type"
+
+#: apps/participation/models.py:48
+msgid "Participation"
+msgstr "Participation"
+
+#: apps/participation/models.py:49
+msgid "Participations"
+msgstr "Participations"
+
+#: apps/participation/models.py:56
+msgid "In verification"
+msgstr ""
+
+#: apps/participation/models.py:57
+msgid "Rejected"
+msgstr ""
+
+#: apps/participation/models.py:58
+msgid "Approved"
+msgstr ""
+
+#: apps/participation/models.py:72
+msgid "Status"
+msgstr ""
+
+#: apps/participation/models.py:96
+msgid "Reaction"
+msgstr "Reaction"
+
+#: apps/participation/models.py:97 apps/participation/models.py:103
+msgid "Reactions"
+msgstr "Reactions"
+
+#: apps/participation/models.py:112
+msgid "Level"
+msgstr "Level"
+
+#: apps/participation/models.py:113
+msgid "Levels"
+msgstr "Levels"
+
+#: apps/participation/models.py:127 apps/participation/models.py:128
+msgid "Draw"
+msgstr "Draw"
+
+#: apps/participation/serializers.py:34
+msgid "The date does not match this Spiri-Move"
+msgstr "The date does not match this Spiri-Move"
+
+#: apps/participation/serializers.py:44
+msgid "The type of participation chosen is not active on this date"
+msgstr "The type of participation chosen is not active on this date"
+
+#: apps/participation/serializers.py:57
+msgid ""
+"You have already entered a participation with type {data['type'].name} for "
+"this day."
+msgstr ""
+
+#: apps/users/admin.py:16
+msgid "Personal info"
+msgstr ""
+
+#: apps/users/admin.py:17
+msgid "Permissions"
+msgstr ""
+
+#: apps/users/admin.py:18
+msgid "Important dates"
+msgstr ""
+
+#: apps/users/auth.py:46
+msgid "Invalid basic header. No credentials provided."
+msgstr ""
+
+#: apps/users/auth.py:49
+msgid "Invalid basic header. Credentials string should not contain spaces."
+msgstr ""
+
+#: apps/users/auth.py:60 apps/users/auth.py:77
+msgid "No such user"
+msgstr ""
+
+#: apps/users/models.py:29
+msgid "The given email must be set"
+msgstr ""
+
+#: apps/users/models.py:48
+msgid "Superuser must have is_staff=True."
+msgstr ""
+
+#: apps/users/models.py:50
+msgid "Superuser must have is_superuser=True."
+msgstr ""
+
+#: apps/users/models.py:57 apps/users/models.py:72
+msgid "Role"
+msgstr ""
+
+#: apps/users/models.py:58
+msgid "Roles"
+msgstr ""
+
+#: apps/users/models.py:64
+msgid "Admin"
+msgstr ""
+
+#: apps/users/models.py:65
+msgid "Moderator"
+msgstr ""
+
+#: apps/users/models.py:66
+msgid "Partcipant"
+msgstr ""
+
+#: apps/users/models.py:87
+msgid "email address"
+msgstr ""
+
+#: apps/users/models.py:88
+msgid "Phone"
+msgstr ""
+
+#: apps/users/models.py:89
+msgid "Office"
+msgstr ""
+
+#: apps/users/models.py:90
+msgid "Display Name"
+msgstr ""
+
+#: spiri_move/urls.py:68
+msgid "admin/"
+msgstr ""
+
+#: apps/contest/admin.py:27
+msgid "Run Drawn"
+msgstr ""

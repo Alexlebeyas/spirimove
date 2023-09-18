@@ -2,29 +2,46 @@ import { PageContainer, ParticipateModal, ParticipationCard } from '@/components
 import { useContest } from '@/hooks';
 import { fetchAllParticipations, fetchParticipationsType } from '@/stores/useParticipationStore';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import AddIcon from '@mui/icons-material/Add';
 
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useLocation } from 'react-router-dom';
 
 import 'react-toastify/dist/ReactToastify.css';
 
 const Home = () => {
   const { t } = useTranslation();
-  const { isLoading, participations, getParticipations, nextParticipations, next } = fetchAllParticipations(
-    (state) => state
-  );
-  const { getParticipationsTypes } = fetchParticipationsType((state) => state);
+
+  const { isLoading: isLoadingParticipationsType, getParticipationsTypes } = fetchParticipationsType();
+
+  const {
+    isLoading: isLoadingParticipations,
+    participations,
+    getParticipations,
+    nextParticipations,
+    next,
+  } = fetchAllParticipations();
+
+  const location = useLocation();
 
   const { contest } = useContest();
 
   const [isOpen, setIsOpen] = useState(false);
-  if (isLoading) {
+
+  useEffect(() => {
+    if (isLoadingParticipationsType) {
+      getParticipationsTypes();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoadingParticipationsType]);
+
+  useEffect(() => {
     getParticipations();
-    getParticipationsTypes();
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location]);
 
   const fetchNext = async () => {
     nextParticipations(participations, next);
@@ -42,7 +59,7 @@ const Home = () => {
               {<AddIcon className="mr-3" />}
               {t('Home.AddParticipation')}
             </button>
-            {isLoading && <CircularProgress color="inherit" />}
+            {isLoadingParticipations && <CircularProgress color="inherit" />}
             <InfiniteScroll
               dataLength={participations.length}
               next={fetchNext}
@@ -50,7 +67,7 @@ const Home = () => {
               loader={<CircularProgress color="inherit" />}
               endMessage={<p>{t('Participation.NoMoreToLoad')}</p>}
             >
-              {!isLoading &&
+              {!isLoadingParticipations &&
                 participations?.length !== 0 &&
                 participations?.map((participation) => (
                   <ParticipationCard key={participation.id} participation={participation} />

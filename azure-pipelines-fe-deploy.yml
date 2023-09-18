@@ -90,4 +90,4 @@ stages:
               slotName: ${{parameters.deployEnv}}
               appName: $(AZ_WEB_APP_NAME)
               package: "$(System.ArtifactsDirectory)/$(AZ_WEB_APP_NAME)-$(Build.BuildId)"
-              startUpCommand: "pm2 serve /home/site/wwwroot --no-daemon"
+              startUpCommand: "pm2 serve /home/site/wwwroot --no-daemon --spa"

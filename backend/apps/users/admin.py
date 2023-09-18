@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.contrib.auth.models import Group
-from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 from rest_framework.authtoken.models import TokenProxy
 
 from .models import User, Role
@@ -28,6 +28,7 @@ class UserAdmin(DjangoUserAdmin):
                     'image_displayed', 'is_superuser']
     search_fields = ('email', 'first_name', 'last_name')
     ordering = ('email',)
+    readonly_fields = ('last_login', 'date_joined')
 
     def image_displayed(self, obj):
         if obj.profile_picture:
