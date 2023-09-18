@@ -108,7 +108,7 @@ class LeaderBoardSerializer(serializers.Serializer):
         request = self.context
         data['user__profile_picture'] = request.build_absolute_uri(
             default_storage.url(data['user__profile_picture'])) if data['user__profile_picture'] else None
-        return data 
+        return data
 
 
 class DrawModelSerializer(serializers.ModelSerializer):

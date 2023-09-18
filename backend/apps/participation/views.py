@@ -229,6 +229,17 @@ Stat = namedtuple(
 
 
 def get_leaderboard_stats(contest):
+    """
+    Compute statistics for the leaderboard.
+    Most notably the maximum consecutive days a user submitted a participation.
+    The logic for the query looks something like:
+    - start from all approved participations for a contest
+    - only count one participation per (user / day / type), keeping the one with most points
+    - sum the points per user for each day
+    - identify the streaks per user (consecutive days with a participation) and count their length
+    - keep only longest streak for each user and sort results by streak length DESC, 
+    - aggregate all the statistics per user (total_days, total_points, max_consecutive_days)
+    """
     with connection.cursor() as cursor:
         cursor.execute(
             """
