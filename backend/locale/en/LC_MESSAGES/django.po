@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-12 11:38+0000\n"
+"POT-Creation-Date: 2023-09-18 15:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,20 +17,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: apps/contest/models.py:12
+
+#: apps/contest/models.py:13
 msgid "Contest"
 msgstr ""
 
-#: apps/contest/models.py:13
+#: apps/contest/models.py:14
 msgid "Contests"
 msgstr "Contests"
+
+#: apps/contest/models.py:18
+msgid "Only one contest can be set to open at a time"
+msgstr ""
 
 #: apps/participation/admin.py:10
 msgid "Approuver les participations selectionnées"
 msgstr "Approve selected participations"
 
 #: apps/participation/admin.py:13
-msgid "Participation(s) sélectionnée(s) Marqué(s) comme approuvé(s) avec succès !!"
+msgid ""
+"Participation(s) sélectionnée(s) Marqué(s) comme approuvé(s) avec succès !!"
 msgstr "Selected participation(s) Marked as successfully approved !!"
 
 #: apps/participation/admin.py:16
@@ -121,7 +127,7 @@ msgstr "Level"
 msgid "Levels"
 msgstr "Levels"
 
-#: apps/participation/models.py:127 apps/participation/models.py:128
+#: apps/participation/models.py:128 apps/participation/models.py:129
 msgid "Draw"
 msgstr "Draw"
 
@@ -134,9 +140,7 @@ msgid "The type of participation chosen is not active on this date"
 msgstr "The type of participation chosen is not active on this date"
 
 #: apps/participation/serializers.py:57
-msgid ""
-"You have already entered a participation with type {data['type'].name} for "
-"this day."
+msgid "You have already entered a participation with type {} for this day."
 msgstr ""
 
 #: apps/users/admin.py:16
@@ -209,12 +213,4 @@ msgstr ""
 
 #: apps/users/models.py:90
 msgid "Display Name"
-msgstr ""
-
-#: spiri_move/urls.py:68
-msgid "admin/"
-msgstr ""
-
-#: apps/contest/admin.py:27
-msgid "Run Drawn"
 msgstr ""

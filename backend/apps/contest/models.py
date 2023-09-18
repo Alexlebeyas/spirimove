@@ -15,7 +15,7 @@ class ContestsModel(models.Model):
         ordering = ['-pk']
         constraints = [
             UniqueConstraint(fields=('is_open',), condition=Q(is_open=True),
-                             name=_('Only one contest can be set to True at a time')),
+                             name=_('Only one contest can be set to open at a time')),
         ]
 
     name = models.CharField(max_length=200, null=False, blank=False)
