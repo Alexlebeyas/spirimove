@@ -1,25 +1,49 @@
+import React, { useMemo, useState } from 'react';
 import { ProfileImage } from '@/components';
 import { DateTime } from 'luxon';
 import { useTranslation } from 'react-i18next';
-import { FacebookSelector, FacebookCounter } from '@charkour/react-reactions';
+import { ReactionBarSelector, ReactionCounter, ReactionCounterObject } from '@charkour/react-reactions';
 import ParticipationService from '@/services/ParticipationService';
 import { IParticipation } from '@/interfaces';
 import { fetchAllParticipations } from '@/stores/useParticipationStore';
+import AddReactionOutlinedIcon from '@mui/icons-material/AddReactionOutlined';
+import './index.css';
 
 interface Props {
   participation: IParticipation;
 }
 
-interface ReactionsEmoji {
-  emoji: string;
-  by: string;
+interface EmojiProps {
+  label: string;
+  node: JSX.Element;
+  key: string;
 }
+const emojies: EmojiProps[] = [
+  { label: 'like', node: <div>👍</div>, key: 'like' },
+  { label: 'love', node: <div>💖</div>, key: 'love' },
+  { label: 'haha', node: <div>😆</div>, key: 'haha' },
+  { label: 'wow', node: <div>😱</div>, key: 'wow' },
+  { label: 'bravo', node: <div>🙌</div>, key: 'bravo' },
+  { label: 'muscle', node: <div>💪</div>, key: 'muscle' },
+];
 
 export const ParticipationCard: React.FC<Props> = ({ participation }) => {
   const { t } = useTranslation();
   const updateAllParticipations = fetchAllParticipations((state) => state.getParticipations);
+  const reactionsCounters: ReactionCounterObject[] = useMemo(() => {
+    return participation.reactions
+      .map((reaction) => {
+        const emojiNode = emojies.find((emoji) => reaction.reaction === emoji.key)?.node || <>👻</>;
+        return {
+          label: reaction.reaction,
+          node: emojiNode,
+          by: reaction.user__display_name,
+        };
+      })
+      .filter(Boolean);
+  }, [participation.reactions]);
 
-  const onEmojiClick2 = (key: string) => {
+  const onEmojiClick = (key: string) => {
     ParticipationService.toggleReactionParticipation({ participation: participation.id, reaction: key }).then(() => {
       updateAllParticipations();
     });
@@ -44,14 +68,10 @@ export const ParticipationCard: React.FC<Props> = ({ participation }) => {
 
     return `${diff.seconds?.toFixed()}s`;
   };
-
-  const reactionsCounters: ReactionsEmoji[] = [];
-  participation.reactions.forEach((reaction) => {
-    reactionsCounters.push({ emoji: reaction.reaction, by: reaction.user__display_name });
-  });
+  const [emojiSelector, setEmojiSelector] = useState(false);
 
   return (
-    <div className="mb-6 w-full overflow-hidden rounded-md bg-white shadow-md">
+    <div className="mb-6 w-full overflow-hidden rounded-md bg-white text-darkblue-800 antialiased shadow-md">
       <div className="p-3">
         <div className="flex items-center">
           <div className="mr-2">
@@ -64,17 +84,42 @@ export const ParticipationCard: React.FC<Props> = ({ participation }) => {
           </div>
           <div>
             <div className=" text-base font-semibold">{participation.user.display_name}</div>
-            <div className="text-xs font-medium leading-[14px] text-gray-700">{renderCreationTime()}</div>
+            <div className="text-xs font-medium leading-[14px] text-slate-600">{renderCreationTime()}</div>
           </div>
         </div>
       </div>
       <img className="max-h-[450px] w-full object-contain" src={participation.image} />
-      <div className="bg-white p-3">
-        <div className="mb-1 text-sm font-semibold">{participation.date}</div>
-        <p>{participation.description}</p>
+
+      <div className="p-3">
+        <div className="mb-1 text-sm font-medium text-slate-600">{participation.date}</div>
+        <p className="font-medium">{participation.description}</p>
+        <div className="mt-2 text-slate-600">
+          <ReactionCounter
+            className="space-x-0.5"
+            reactions={reactionsCounters}
+            showTotalOnly={true}
+            iconSize={22}
+            bg="transparent"
+            style={{ cursor: 'default' }}
+          />
+        </div>
       </div>
-      <FacebookCounter counters={reactionsCounters} />
-      <FacebookSelector onSelect={onEmojiClick2} reactions={['like', 'love', 'haha', 'wow', 'sad', 'angry']} />
+      <div className="relative z-20 flex flex-row border-t border-slate-200 px-2 py-1">
+        <button
+          className="w-9 text-slate-600 hover:text-slate-500 focus:outline-none"
+          onClick={() => setEmojiSelector(!emojiSelector)}
+        >
+          {<AddReactionOutlinedIcon color="inherit" />}
+        </button>
+        <div className={emojiSelector ? 'Selector_Active' : 'Selector_Idle'}>
+          <ReactionBarSelector
+            onSelect={onEmojiClick}
+            reactions={emojies}
+            iconSize={28}
+            style={{ boxShadow: 'none' }}
+          />
+        </div>
+      </div>
     </div>
   );
 };
