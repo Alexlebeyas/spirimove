@@ -75,10 +75,12 @@
     "MySpiriMove": {
       "Stats": {
         "Title": "My Spiri-Move: {{name}}",
-        "Days": "Participations days : {{days}}",
-        "Points": "Participations points : {{points}}",
+        "Days": "Days",
+        "Points": "Pts",
         "Streak": "{{streak}} day streak, keep it up!",
-        "RewardLevel": "You are eligible for {{rewardLevel}} prizes."
+        "RewardLevel_one": "Great job! You've unlocked a prize!",
+        "RewardLevel_other": "Incredible effort! {{count}} prizes await your claim.",
+        "RewardLevel_zero": "Keep going! No prizes earned just yet."
       }
     },
     "Time": {
