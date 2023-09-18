@@ -30,7 +30,7 @@
       "ViewMore": "Voir plus",
       "PointsMode": "Points",
       "PointsDisplay": "{{nb}} pts",
-      "PrizeDisplay": "{{nb}} $",
+      "PrizeDisplay": "${{nb}}",
       "ConsecutiveDaysMode": "Jours consécutifs",
       "DaysDisplay": "{{nb}} jours",
       "WinnersLabel": "Gagnants",
