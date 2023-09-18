@@ -87,6 +87,15 @@ make test
 docker compose down
 ```
 
+### Handle Translation
+
+```
+# To generate a translation message (files will be displayed under backend/locale/):  
+python manage.py makemessages -l en -l fr
+# After the translation, you will need to compile them :  
+python manage.py compilemessages
+```
+
 ### Flush database
 
 If you want to start from a clean database, you will need to delete you database container and volume, then rebuild the images and restart

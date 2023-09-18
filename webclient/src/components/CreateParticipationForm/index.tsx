@@ -129,7 +129,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
   return (
    <div className="my-5">
     <h1 className="mb-6">{!participationToEdit ? t('Participation.NewTitle'): t('Participation.EditTitle')}</h1>
-      <div>  
+      <div>
         <form>
           <div className="mb-6 mt-5">
             <div data-te-datepicker-init data-te-inline="true" data-te-input-wrapper-init>
@@ -153,26 +153,26 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
             </div>
           </div>
 
-          <div className="mb-6">
-          <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.image} >
-            <input
-              accept="image/*"
-              hidden
-              id="raised-button-file"
-              type="file"
-              onChange={handleImageFile}
-              style={{ display: 'none' }}
-              required={shouldSetImage}
-            />
-            <label htmlFor="raised-button-file">
-              <Button className="w-full" variant="outlined" component="span" onChange={handleImageFile}>
-                {t('Participation.SelectImage')}
-              </Button>
-            </label>
-            {fileUrl ? <img src={fileUrl} style={{ height:200}}/> : ''}
-            <FormHelperText>{typeError?.image}</FormHelperText>
-            </FormControl>
-          </div>
+          {shouldSetImage && <div className="mb-6">
+        <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.image} >
+          <input
+            accept="image/*"
+            hidden
+            id="raised-button-file"
+            type="file"
+            onChange={handleImageFile}
+            style={{ display: 'none' }}
+            required={shouldSetImage}
+          />
+          <label htmlFor="raised-button-file">
+            <Button className="w-full" variant="outlined" component="span" onChange={handleImageFile}>
+              {t('Participation.SelectImage')}
+            </Button>
+          </label>
+          {fileUrl ? <img src={fileUrl} style={{ height:200}}/> : ''}
+          <FormHelperText>{typeError?.image}</FormHelperText>
+          </FormControl>
+        </div>}
           <div className="mb-6 md:flex md:items-center">
             <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.type} >
               <InputLabel id="activity-type-label">{t('Participation.ActivityType')}</InputLabel>

@@ -141,4 +141,3 @@ class DrawModel(models.Model):
             self.date_created = timezone.now()
         self.last_modified = timezone.now()
         super().save(*args, **kwargs)
-

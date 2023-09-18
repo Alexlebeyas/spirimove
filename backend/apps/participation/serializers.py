@@ -54,7 +54,8 @@ class AddParticipationModelSerializer(serializers.ModelSerializer):
 
         if not data['type'].can_add_more_by_day and user_part_with_same_type_for_a_day:
             raise serializers.ValidationError(
-                {"type": _(f"You have already entered a participation with type {data['type'].name} for this day.")})
+                {"type": _("You have already entered a participation with type {} for this day.").format(
+                    data['type'].name)})
 
 
 class ParticipationTypeModelSerializer(serializers.ModelSerializer):
@@ -91,7 +92,7 @@ class LevelModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = LevelModel
         read_only_fields = ('name', 'price', 'participation_day', 'order', 'is_for_office')
-        exclude = ('is_active', 'date_created', 'last_modified')
+        exclude = ('name_fr', 'name_en', 'is_active', 'date_created', 'last_modified')
 
 
 class LeaderBoardSerializer(serializers.Serializer):
