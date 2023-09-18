@@ -15,7 +15,13 @@ const sortByPriceDescending = (a: WinnerInfo, b: WinnerInfo) => b.price - a.pric
 
 const categorizeWinners = (acc: { winners: WinnerInfo[]; perOfficeWinners: WinnerInfo[] }, item: ContestResult) => {
   const winner = createWinnerObject(item);
-  item.level.is_for_office ? acc.perOfficeWinners.push(winner) : acc.winners.push(winner);
+
+  if (item.level.is_for_office) {
+    acc.perOfficeWinners.push(winner);
+  } else {
+    acc.winners.push(winner);
+  }
+
   return acc;
 };
 
