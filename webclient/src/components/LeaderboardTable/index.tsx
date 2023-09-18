@@ -99,7 +99,7 @@ const TotalPointsRenderer = ({ stat, idx, currentUser }: TotalPointsProps) => {
         <div className="flex grow items-center">
           <div className="flex grow items-center">
             <div className="mr-3">
-              <ProfileImage name={stat.user__display_name} size={32} fontSize={14} />
+            <ProfileImage name={stat.user__display_name} image={stat.user__profile_picture} size={32} fontSize={14} />
             </div>
             <div>
               <div className="text-[15px] font-medium text-darkblue-800 sm:text-sm">{stat.user__display_name}</div>

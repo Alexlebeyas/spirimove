@@ -9,20 +9,23 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import path, reverse
 from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 
 from .models import ContestsModel
 
 
 @admin.register(ContestsModel)
 class ActivitiesModelAdmin(admin.ModelAdmin):
-    list_display = ['name', 'start_date', 'end_date', 'is_open', 'date_created', 'last_modified', 'draw_action']
-    fields = ['name', 'start_date', 'end_date', 'is_open']
+    list_display = ['name', 'name_en', 'name_fr', 'start_date', 'end_date', 'is_open', 'date_created', 'last_modified',
+                    'draw_action']
+    exclude = ['date_created', 'last_modified', ]
 
     def has_module_permission(self, request):
         return request.user.is_admin() if request.user.is_authenticated else False
 
     def draw_action(self, obj):
-        return format_html(f"<a type='button' href='{reverse('admin:run_draw', args=[obj.id])}' > Run Drawn </a>")
+        return format_html(
+            f"<a type='button' href='{reverse('admin:run_draw', args=[obj.id])}' > {_('Run Drawn')} </a>")
 
     def get_urls(self):
         urls = super().get_urls()

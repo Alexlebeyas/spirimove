@@ -14,6 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-x&z31ih$!*6noe*rbt5bzjx-45-p_$oj9hkpb1y(p^k&)i$(_$')
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'djangocms_admin_style',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -57,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
@@ -125,7 +127,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
-LANGUAGE_CODE = 'fr'
+MODELTRANSLATION_DEFAULT_LANGUAGE = LANGUAGE_CODE = 'en'
 LANGUAGES = [
     ('fr', 'Francais'),
     ('en', 'English'),
@@ -133,6 +135,8 @@ LANGUAGES = [
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
+
+LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale/'),)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
