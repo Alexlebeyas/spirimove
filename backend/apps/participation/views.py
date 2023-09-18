@@ -190,7 +190,7 @@ class ListleaderBoardAPIView(ListAPIView):
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True)
+        serializer = self.get_serializer(queryset, many=True, context=request)
         return Response(serializer.data)
 
     serializer_class = LeaderBoardSerializer
@@ -215,10 +215,10 @@ class ListMyOfficeleaderBoardAPIView(ListAPIView):
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = self.get_serializer(page, many=True)
+            serializer = self.get_serializer(page, many=True, context=request)
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True)
+        serializer = self.get_serializer(queryset, many=True, context=request)
         return Response(serializer.data)
 
     serializer_class = LeaderBoardSerializer

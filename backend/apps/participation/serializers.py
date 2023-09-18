@@ -2,9 +2,9 @@ from apps.contest.serializers import ContestsModelSerializer
 from apps.users.serializers import UserModelSerializer
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
+from django.core.files.storage import default_storage
 
 from .models import ParticipationModel, ParticipationTypeModel, DrawModel, LevelModel, ReactionModel
-
 
 class AddParticipationModelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -101,6 +101,13 @@ class LeaderBoardSerializer(serializers.Serializer):
     contest__name = serializers.CharField(max_length=200)
     total_points = serializers.CharField(max_length=200)
     total_days = serializers.CharField(max_length=200)
+
+    def to_representation(self, instance):        
+        data = super().to_representation(instance)
+        request = self.context
+        data['user__profile_picture'] = request.build_absolute_uri(
+            default_storage.url(data['user__profile_picture'])) if data['user__profile_picture'] else None
+        return data 
 
 
 class DrawModelSerializer(serializers.ModelSerializer):
