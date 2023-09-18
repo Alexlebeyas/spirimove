@@ -96,8 +96,14 @@
     "Participation": {
       "NoMoreToLoad": "Plus de participations à charger !",
       "ActivityDate": "Date de l'activité",
-      "ActivityType": "Type",
-      "ActivityDescription": "Description",
+      "ActivityType": {
+        "Label": "Type d'activité",
+        "Tooltip": "Sélecteur de type d'activité"
+      },
+      "ActivityDescription": {
+        "Label": "Description de l'activité",
+        "Tooltip": "Description de l'activité"
+      },
       "DeleteMessageConfirm": "Êtes-vous sûr de vouloir supprimer la participation suivante :",
       "HighIntensity": {
         "Label": "Haute Intensité",
