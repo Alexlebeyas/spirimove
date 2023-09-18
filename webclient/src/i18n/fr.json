@@ -22,14 +22,20 @@
       "Logout": "Se déconnecter"
     },
     "Home": {
-      "AddParticipation": "Ajouter une participation"
+      "AddParticipation": "Ajouter une participation",
+      "ContestStatusOver": "Le concours est terminé!",
+      "ViewResults": "Voir les résultats"
     },
     "Leaderboard": {
       "ViewMore": "Voir plus",
       "PointsMode": "Points",
       "PointsDisplay": "{{nb}} pts",
+      "PrizeDisplay": "${{nb}}",
       "ConsecutiveDaysMode": "Jours consécutifs",
       "DaysDisplay": "{{nb}} jours",
+      "WinnersLabel": "Gagnants",
+      "WinnersPerOfficeLabel": "Par bureau",      
+      "WinnersNotFound": "Aucun gagnant à afficher.",
       "RemainingDays": {
         "Title": "Progrès",
         "CurrentDay": "Day",
