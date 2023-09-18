@@ -26,7 +26,6 @@ const WinnerDetails: React.FC<WinnerDetailsProps> = ({ name, idx, profile_pictur
       <div className="mr-3 flex-none text-sm text-slate-600 sm:mr-4">{idx + 1}</div>
       <div className="flex flex-grow items-center">
         <div className="mr-3">
-          {' '}
           <ProfileImage name={name} image={profile_picture} size={32} fontSize={14} />
         </div>
         <div>
@@ -50,7 +49,7 @@ const WinnersList: React.FC<WinnersListProps> = ({ winners }) => {
   return (
     <div className="h-auto divide-y divide-slate-200 overflow-y-auto">
       {winners.map((winner, idx) => (
-        <WinnerDetails key={winner.name} idx={idx} {...winner} />
+        <WinnerDetails key={`${winner.name}_${idx}`} idx={idx} {...winner} />
       ))}
     </div>
   );
