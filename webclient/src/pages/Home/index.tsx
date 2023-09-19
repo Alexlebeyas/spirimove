@@ -10,7 +10,6 @@ import AddIcon from '@mui/icons-material/Add';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import 'react-toastify/dist/ReactToastify.css';
-import './index.css';
 
 const Home = () => {
   const { t } = useTranslation();
