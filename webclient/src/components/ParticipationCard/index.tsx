@@ -18,13 +18,13 @@ interface EmojiProps {
   node: JSX.Element;
   key: string;
 }
-const emojies: EmojiProps[] = [
-  { label: 'like', node: <div>👍</div>, key: 'like' },
-  { label: 'love', node: <div>💖</div>, key: 'love' },
-  { label: 'haha', node: <div>😆</div>, key: 'haha' },
-  { label: 'wow', node: <div>😱</div>, key: 'wow' },
-  { label: 'bravo', node: <div>🙌</div>, key: 'bravo' },
-  { label: 'muscle', node: <div>💪</div>, key: 'muscle' },
+const emojis: EmojiProps[] = [
+  { label: 'like', node: <span>👍</span>, key: 'like' },
+  { label: 'love', node: <span>💖</span>, key: 'love' },
+  { label: 'haha', node: <span>😆</span>, key: 'haha' },
+  { label: 'wow', node: <span>😱</span>, key: 'wow' },
+  { label: 'bravo', node: <span>🙌</span>, key: 'bravo' },
+  { label: 'muscle', node: <span>💪</span>, key: 'muscle' },
 ];
 
 export const ParticipationCard: React.FC<Props> = ({ participation }) => {
@@ -33,7 +33,7 @@ export const ParticipationCard: React.FC<Props> = ({ participation }) => {
   const reactionsCounters: ReactionCounterObject[] = useMemo(() => {
     return participation.reactions
       .map((reaction) => {
-        const emojiNode = emojies.find((emoji) => reaction.reaction === emoji.key)?.node || <>👻</>;
+        const emojiNode = emojis.find((emoji) => reaction.reaction === emoji.key)?.node || <span>👻</span>;
         return {
           label: reaction.reaction,
           node: emojiNode,
@@ -112,12 +112,7 @@ export const ParticipationCard: React.FC<Props> = ({ participation }) => {
           {<AddReactionOutlinedIcon color="inherit" />}
         </button>
         <div className={emojiSelector ? 'Selector_Active' : 'Selector_Idle'}>
-          <ReactionBarSelector
-            onSelect={onEmojiClick}
-            reactions={emojies}
-            iconSize={28}
-            style={{ boxShadow: 'none' }}
-          />
+          <ReactionBarSelector onSelect={onEmojiClick} reactions={emojis} iconSize={28} style={{ boxShadow: 'none' }} />
         </div>
       </div>
     </div>
