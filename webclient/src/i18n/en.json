@@ -22,14 +22,20 @@
       "Logout": "Logout"
     },
     "Home": {
-      "AddParticipation": "Add participation"
+      "AddParticipation": "Add participation",
+      "ContestStatusOver": "The Contest is over!",
+      "ViewResults": "View Results"
     },
     "Leaderboard": {
       "ViewMore": "View more",
       "PointsMode": "Points",
       "PointsDisplay": "{{nb}} pts",
+      "PrizeDisplay": "{{nb}} $",
       "ConsecutiveDaysMode": "Consecutive days",
       "DaysDisplay": "{{nb}} days",
+      "WinnersLabel": "Winners",
+      "WinnersPerOfficeLabel": "Per Office",
+      "WinnersNotFound": "No winners to display.",
       "RemainingDays": {
         "Title": "Progress",
         "CurrentDay": "Day",
@@ -90,8 +96,14 @@
     "Participation": {
       "NoMoreToLoad": "No more participations to load !",
       "ActivityDate": "Activity Date",
-      "ActivityType": "Activity Type",
-      "ActivityDescription": "Description",
+      "ActivityType": {
+        "Label": "Activity Type",
+        "Tooltip": "Activity Type Selector"
+      },
+      "ActivityDescription": {
+        "Label": "Activity Description",
+        "Tooltip": "Activity Description"
+      },
       "DeleteMessageConfirm": "Are you sure you want to delete the following participation :",
       "HighIntensity": {
         "Label": "High Intensity",
