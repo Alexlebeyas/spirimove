@@ -1,11 +1,13 @@
 import MSALClientService from '@/services/MSALClientService';
 import axios, { AxiosRequestHeaders } from 'axios';
+import { getCurrentLanguage } from '@/utils/languages';
 
 const { VITE_SPIRI_MOVE_API_URL } = import.meta.env;
 
 class ApiService {
+
   api = axios.create({
-    baseURL: VITE_SPIRI_MOVE_API_URL,
+    baseURL: String(new URL(getCurrentLanguage(), VITE_SPIRI_MOVE_API_URL)),
     withCredentials: true,
   });
 

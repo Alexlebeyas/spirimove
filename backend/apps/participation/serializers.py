@@ -2,9 +2,9 @@ from apps.contest.serializers import ContestsModelSerializer
 from apps.users.serializers import UserModelSerializer
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
+from django.core.files.storage import default_storage
 
 from .models import ParticipationModel, ParticipationTypeModel, DrawModel, LevelModel, ReactionModel
-
 
 class AddParticipationModelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -54,7 +54,8 @@ class AddParticipationModelSerializer(serializers.ModelSerializer):
 
         if not data['type'].can_add_more_by_day and user_part_with_same_type_for_a_day:
             raise serializers.ValidationError(
-                {"type": _(f"You have already entered a participation with type {data['type'].name} for this day.")})
+                {"type": _("You have already entered a participation with type {} for this day.").format(
+                    data['type'].name)})
 
 
 class ParticipationTypeModelSerializer(serializers.ModelSerializer):
@@ -90,17 +91,24 @@ class ListParticipationModelSerializer(serializers.ModelSerializer):
 class LevelModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = LevelModel
-        read_only_fields = ('name', 'price', 'participation_day', 'order')
-        exclude = ('is_active', 'date_created', 'last_modified')
+        read_only_fields = ('name', 'price', 'participation_day', 'order', 'is_for_office')
+        exclude = ('name_fr', 'name_en', 'is_active', 'date_created', 'last_modified')
 
 
 class LeaderBoardSerializer(serializers.Serializer):
     user__display_name = serializers.CharField(max_length=500)
     user__profile_picture = serializers.CharField(max_length=500)
     user__office = serializers.CharField(max_length=200)
-    contest__name = serializers.CharField(max_length=200)
     total_points = serializers.CharField(max_length=200)
     total_days = serializers.CharField(max_length=200)
+    max_consecutive_days = serializers.CharField(max_length=200)
+
+    def to_representation(self, instance):        
+        data = super().to_representation(instance)
+        request = self.context
+        data['user__profile_picture'] = request.build_absolute_uri(
+            default_storage.url(data['user__profile_picture'])) if data['user__profile_picture'] else None
+        return data
 
 
 class DrawModelSerializer(serializers.ModelSerializer):

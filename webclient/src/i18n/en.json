@@ -22,14 +22,20 @@
       "Logout": "Logout"
     },
     "Home": {
-      "AddParticipation": "Add participation"
+      "AddParticipation": "Add participation",
+      "ContestStatusOver": "The Contest is over!",
+      "ViewResults": "View Results"
     },
     "Leaderboard": {
       "ViewMore": "View more",
       "PointsMode": "Points",
       "PointsDisplay": "{{nb}} pts",
+      "PrizeDisplay": "{{nb}} $",
       "ConsecutiveDaysMode": "Consecutive days",
       "DaysDisplay": "{{nb}} days",
+      "WinnersLabel": "Winners",
+      "WinnersPerOfficeLabel": "Per Office",
+      "WinnersNotFound": "No winners to display.",
       "RemainingDays": {
         "Title": "Progress",
         "CurrentDay": "Day",
@@ -69,10 +75,12 @@
     "MySpiriMove": {
       "Stats": {
         "Title": "My Spiri-Move: {{name}}",
-        "Days": "Participations days : {{days}}",
-        "Points": "Participations points : {{points}}",
+        "Days": "Days",
+        "Points": "Pts",
         "Streak": "{{streak}} day streak, keep it up!",
-        "RewardLevel": "You are eligible for {{rewardLevel}} prizes."
+        "RewardLevel_one": "Great job! You've unlocked a prize!",
+        "RewardLevel_other": "Incredible effort! {{count}} prizes await your claim.",
+        "RewardLevel_zero": "Keep going! No prizes earned just yet."
       }
     },
     "Time": {
@@ -88,8 +96,14 @@
     "Participation": {
       "NoMoreToLoad": "No more participations to load !",
       "ActivityDate": "Activity Date",
-      "ActivityType": "Activity Type",
-      "ActivityDescription": "Description",
+      "ActivityType": {
+        "Label": "Activity Type",
+        "Tooltip": "Activity Type Selector"
+      },
+      "ActivityDescription": {
+        "Label": "Activity Description",
+        "Tooltip": "Activity Description"
+      },
       "DeleteMessageConfirm": "Are you sure you want to delete the following participation :",
       "HighIntensity": {
         "Label": "High Intensity",

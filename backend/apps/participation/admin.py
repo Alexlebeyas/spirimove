@@ -122,7 +122,8 @@ class UnapproveParticipationAdmin(ParticipationModelAdmin):
 
 @admin.register(DrawModel)
 class DrawModelAdmin(admin.ModelAdmin):
-    list_display = ['contest_name', 'winner_name', 'level_name', 'total_days', 'date_created', 'last_modified']
+    list_display = ['contest_name', 'winner_name', 'level_name', 'office', 'total_days', 'date_created',
+                    'last_modified']
 
     def contest_name(self, obj):
         return obj.contest.name
@@ -148,8 +149,9 @@ class DrawModelAdmin(admin.ModelAdmin):
 
 @admin.register(ParticipationTypeModel)
 class ParticipationTypeModelAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description', 'can_be_intensive', 'can_add_more_by_day', 'can_have_organizer',
+    list_display = ['pk', 'name', 'name_fr', 'name_en', 'can_be_intensive', 'can_add_more_by_day', 'can_have_organizer',
                     'shoul_be_display_on_feed', 'should_set_image', 'points', 'date_created']
+    exclude = ['description', ]
 
     def has_module_permission(self, request):
         return request.user.is_admin() if request.user.is_authenticated else False
@@ -157,8 +159,8 @@ class ParticipationTypeModelAdmin(admin.ModelAdmin):
 
 @admin.register(LevelModel)
 class LevelModelAdmin(admin.ModelAdmin):
-    list_display = ['name', 'price', 'participation_day', 'order', 'is_active', 'date_created']
-    fields = ['name', 'price', 'participation_day', 'order', 'is_active']
+    list_display = ['pk', 'name', 'price', 'participation_day', 'order', 'is_active', 'date_created']
+    exclude = ['last_modified', ]
 
     def has_module_permission(self, request):
         return request.user.is_admin() if request.user.is_authenticated else False

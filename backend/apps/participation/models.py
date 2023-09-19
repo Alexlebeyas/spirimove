@@ -47,7 +47,7 @@ class ParticipationModel(models.Model):
     class Meta:
         verbose_name = _('Participation')
         verbose_name_plural = _('Participations')
-        ordering = ['-pk']
+        ordering = ['date']
 
     IN_VERIFICATION = 'IN_VERIFICATION'
     REJECTED = 'REJECTED'
@@ -61,7 +61,7 @@ class ParticipationModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # This field could be use to check if it's extra activity
     type = models.ForeignKey(ParticipationTypeModel, on_delete=models.CASCADE, null=False, blank=False)
-    description = models.TextField(null=True, blank=True)
+    description = models.TextField(null=False, blank=False)
     points = models.PositiveSmallIntegerField(null=False, blank=False, default=1)
     date = models.DateField(null=False, blank=False)
     image = models.ImageField(upload_to=participation_picture_path, storage=get_storage(private=True), null=True,
@@ -117,6 +117,7 @@ class LevelModel(models.Model):
     price = models.CharField(max_length=200, null=False, blank=False, default=1)
     participation_day = models.PositiveSmallIntegerField(null=False, blank=False, default=1)
     order = models.PositiveSmallIntegerField(null=False, blank=False, default=1)
+    is_for_office = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_created = models.DateTimeField(editable=False, null=True, blank=True)
     last_modified = models.DateTimeField(null=True, blank=True)
@@ -131,6 +132,7 @@ class DrawModel(models.Model):
     winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     level = models.ForeignKey(LevelModel, on_delete=models.CASCADE, null=True, blank=True)
     total_days = models.PositiveSmallIntegerField(null=True, blank=True)
+    office = models.CharField(max_length=200, null=True, blank=True, default="")
     date_created = models.DateTimeField(editable=False, null=True, blank=True)
     last_modified = models.DateTimeField(null=True, blank=True)
 

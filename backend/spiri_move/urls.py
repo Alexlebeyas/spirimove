@@ -41,7 +41,6 @@ def root_redirect(request):
 
 # urlpatterns required for settings values
 required_urlpatterns = (
-    path('admin/', admin.site.urls),
     re_path(r'^auth/', include('djoser.urls')),
     re_path(r"^auth/", include("djoser.urls.base")),
     re_path(r"^auth/", include("djoser.urls.authtoken")),
@@ -65,6 +64,6 @@ urlpatterns = i18n_patterns(
 
     path('accounts/', include('rest_framework.urls', namespace='rest_framework')),
 
-    path(_('admin/'), admin.site.urls),
-    prefix_default_language=False,
+    path('admin/', admin.site.urls),
+    prefix_default_language=True,
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT, show_indexes=True)

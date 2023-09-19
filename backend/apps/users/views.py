@@ -47,5 +47,9 @@ class AllOffices(ListAPIView):
     """Diplay list of offices"""
 
     def list(self, request, *args, **kwargs):
-        list_office = User.objects.exclude(office=None).values_list('office', flat=True).distinct()
+        list_office = list_all_office()
         return Response(list_office)
+
+
+def list_all_office():
+    return User.objects.exclude(office=None).values_list('office', flat=True).distinct()

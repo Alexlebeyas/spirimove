@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState, useCallback } from 'react';
 import { ICreateParticipationForm } from '@/interfaces/ICreateParticipationForm';
 import moment from 'moment';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -14,6 +14,7 @@ import {
   ClickAwayListener,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   InputLabel,
   MenuItem,
   Select,
@@ -33,12 +34,18 @@ interface Props {
   participationToEdit?: IParticipation| null;
 }
 
+interface FieldErrors {
+  description: string;
+  image: string;
+  type: string;
+}
+
 const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDate, setOpen, participationToEdit }) => {
   const {isLoading, participationsTypes, getParticipationsTypes} = fetchParticipationsType((state) => state);
   if(isLoading){
     getParticipationsTypes();
   }
-
+  const emptyIconRenderer = useCallback(() => null, []);
   const [participationData, setParticipationData] = useState<ICreateParticipationForm>({
     contestId: contestId,
     name: 'name',
@@ -52,7 +59,10 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
 
   const [intensiveTooltipVisibility, setIntensiveTooltipVisibility] = useState(false);
   const [organizerTooltipVisibility, setOrganizerTooltipVisibility] = useState(false);
+  const [showActivityTypeTooltip, setShowActivityTypeTooltip] = useState(false);
+
   const [fileUrl, setfileUrl] = useState( participationToEdit?.image ?? '');
+  const [typeError, setTypeError] = useState<FieldErrors | undefined>(undefined);
 
   const updateMyParticipations = fetchMyParticipations((state) => state.getParticipations);
   const updateAllParticipations = fetchAllParticipations((state) => state.getParticipations);
@@ -65,19 +75,24 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
 
   const onSubmitHandler = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
+    setTypeError(undefined);
     if(participationToEdit){
       ParticipationService.updateParticipation(participationData, participationToEdit?.id).then(()=>{
         updateMyParticipations();
         updateAllParticipations();
+        setOpen(false);
+      }).catch(function (error) {
+        setTypeError(error);
       });
     }else{
       ParticipationService.submitParticipation(participationData).then(()=>{
         updateMyParticipations();
         updateAllParticipations();
+        setOpen(false);
+      }).catch(function (error) {
+        setTypeError(error);
       });
     }
-
-    setOpen(false);
   };
 
   const onCancelHandler = (e: React.MouseEvent<HTMLElement>) => {
@@ -114,32 +129,34 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
   };
 
   return (
-    <>
-      <h1 className="mb-6">{!participationToEdit ? t('Participation.NewTitle'): t('Participation.EditTitle')}</h1>
-      <form>
-        <div className="mb-6">
-          <div data-te-datepicker-init data-te-inline="true" data-te-input-wrapper-init>
-            <LocalizationProvider dateAdapter={AdapterMoment}>
-              <DatePicker
-                className="w-full"
-                label={t('Participation.ActivityDate')}
-                value={moment(participationData.date)}
-                minDate={moment(startDate, DATE_FORMAT)}
-                maxDate={moment(endDate, DATE_FORMAT)}
-                onChange={(newValue) => {
-                  if (newValue !== null) {
-                    setParticipationData({
-                      ...participationData,
-                      date: newValue?.format(DATE_FORMAT),
-                    });
-                  }
-                }}
-              />
-            </LocalizationProvider>
+   <div className="my-5">
+    <h1 className="mb-6">{!participationToEdit ? t('Participation.NewTitle'): t('Participation.EditTitle')}</h1>
+      <div>
+        <form>
+          <div className="mb-6 mt-5">
+            <div data-te-datepicker-init data-te-inline="true" data-te-input-wrapper-init>
+              <LocalizationProvider dateAdapter={AdapterMoment}>
+                <DatePicker
+                  className="w-full"
+                  label={t('Participation.ActivityDate')}
+                  value={moment(participationData.date)}
+                  minDate={moment(startDate, DATE_FORMAT)}
+                  maxDate={moment(endDate, DATE_FORMAT)}
+                  onChange={(newValue) => {
+                    if (newValue !== null) {
+                      setParticipationData({
+                        ...participationData,
+                        date: newValue?.format(DATE_FORMAT),
+                      });
+                    }
+                  }}
+                />
+              </LocalizationProvider>
+            </div>
           </div>
-        </div>
 
-        <div className="mb-6">
+          {shouldSetImage && <div className="mb-6">
+        <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.image} >
           <input
             accept="image/*"
             hidden
@@ -147,6 +164,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
             type="file"
             onChange={handleImageFile}
             style={{ display: 'none' }}
+            required={shouldSetImage}
           />
           <label htmlFor="raised-button-file">
             <Button className="w-full" variant="outlined" component="span" onChange={handleImageFile}>
@@ -154,131 +172,146 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
             </Button>
           </label>
           {fileUrl ? <img src={fileUrl} style={{ height:200}}/> : ''}
-        </div>
-        <div className="mb-6 md:flex md:items-center">
-          <FormControl className="w-full" variant="outlined" style={{ width: '100%' }}>
-            <InputLabel id="activity-type-label">{t('Participation.ActivityType')}</InputLabel>
-            <Select
-              className={'w-full'}
-              labelId="activity-type-label"
-              value={participationData.type}
-              variant="outlined"
-              label="Activity Type"
-              onChange={onParticipationTypeChange}
-            >
-            { participationsTypes?.map((participationType) => (
-                <MenuItem key={participationType.id} value={participationType.id}>{participationType.name}</MenuItem>
-            ))}
-            </Select>
+          <FormHelperText>{typeError?.image}</FormHelperText>
           </FormControl>
-        </div>
-        <div className="mb-6 md:flex md:items-center">
-          <TextField
-            required={true}
-            className="mb-6 w-full"
-            id="outlined-basic"
-            label="Activity Description"
-            variant="outlined"
-            value={participationData.description}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setParticipationData({
-                ...participationData,
-                description: e.target.value,
-              })
-            }
-          />
-        </div>
-
-        {canBeIntensive ? (
-          <div className="mb-6">
-            <FormControlLabel
-              label={t('Participation.HighIntensity.Label')}
-              control={
-                <Checkbox
-                  checked={participationData.isIntensive}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setParticipationData({
-                      ...participationData,
-                      isIntensive: e.target.checked,
-                    })
-                  }
-                />
+        </div>}
+          <div className="mb-6 md:flex md:items-center">
+            <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.type} >
+              <InputLabel id="activity-type-label">{t('Participation.ActivityType')}</InputLabel>
+              <Select
+                className={'w-full'}
+                labelId="activity-type-label"
+                value={participationData.type}
+                variant="outlined"
+                label="Activity Type"
+                onChange={onParticipationTypeChange}
+                IconComponent={emptyIconRenderer}
+                required={true}
+              >
+              { participationsTypes?.map((participationType) => (
+                  <MenuItem key={participationType.id} value={participationType.id}>{participationType.name}</MenuItem>
+              ))}
+              </Select>
+              <FormHelperText>{typeError?.type}</FormHelperText>
+              <div style={{ position: 'absolute', top: '50%', right: 12, transform: 'translateY(-50%)' }}>
+                <ClickAwayListener onClickAway={() => setShowActivityTypeTooltip(false)}>
+                  <Tooltip open={showActivityTypeTooltip} title={t('Participation.ActivityType.Tooltip')}>
+                    <HelpIcon color="action" onClick={() => setShowActivityTypeTooltip(!showActivityTypeTooltip)} />
+                  </Tooltip>
+                </ClickAwayListener>
+            </div>
+            </FormControl>
+          </div>
+          <div className="mb-6 md:flex md:items-center">
+          <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.description} >
+            <TextField
+              required={true}
+              className="mb-6 w-full"
+              id="outlined-basic"
+              label="Activity Description"
+              variant="outlined"
+              value={participationData.description}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setParticipationData({
+                  ...participationData,
+                  description: e.target.value,
+                })
               }
             />
-            <ClickAwayListener onClickAway={() => setIntensiveTooltipVisibility(false)}>
-              <Tooltip
-                PopperProps={{
-                  disablePortal: true,
-                }}
-                onClose={() => setIntensiveTooltipVisibility(false)}
-                open={intensiveTooltipVisibility}
-                disableFocusListener
-                disableHoverListener
-                disableTouchListener
-                title={t('Participation.HighIntensity.Tooltip')}
-              >
-                <HelpIcon onClick={() => setIntensiveTooltipVisibility(true)} />
-              </Tooltip>
-            </ClickAwayListener>
+            <FormHelperText>{typeError?.description}</FormHelperText>
+            </FormControl>
           </div>
-        ) : (
-          ''
-        )}
 
-        {canHaveOrganizer ? (
-          <div className="mb-6">
-            <FormControlLabel
-              label={t('Participation.Organizer.Label')}
-              control={
-                <Checkbox
-                  checked={participationData.isOrganizer}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setParticipationData({
-                      ...participationData,
-                      isOrganizer: e.target.checked,
-                    })
-                  }
-                />
-              }
-            />
-            <ClickAwayListener onClickAway={() => setOrganizerTooltipVisibility(false)}>
-              <Tooltip
-                PopperProps={{
-                  disablePortal: true,
-                }}
-                onClose={() => setOrganizerTooltipVisibility(false)}
-                open={organizerTooltipVisibility}
-                disableFocusListener
-                disableHoverListener
-                disableTouchListener
-                title={t('Participation.Organizer.Tooltip')}
-              >
-                <HelpIcon onClick={() => setOrganizerTooltipVisibility(true)} />
-              </Tooltip>
-            </ClickAwayListener>
+          {canBeIntensive ? (
+            <div className="mb-6">
+              <FormControlLabel
+                label={t('Participation.HighIntensity.Label')}
+                control={
+                  <Checkbox
+                    checked={participationData.isIntensive}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setParticipationData({
+                        ...participationData,
+                        isIntensive: e.target.checked,
+                      })
+                    }
+                  />
+                }
+              />
+              <ClickAwayListener onClickAway={() => setIntensiveTooltipVisibility(false)}>
+                <Tooltip
+                  PopperProps={{
+                    disablePortal: true,
+                  }}
+                  onClose={() => setIntensiveTooltipVisibility(false)}
+                  open={intensiveTooltipVisibility}
+                  disableFocusListener
+                  disableHoverListener
+                  disableTouchListener
+                  title={t('Participation.HighIntensity.Tooltip')}
+                >
+                  <HelpIcon color="action" onClick={() => setIntensiveTooltipVisibility(true)} />
+                </Tooltip>
+              </ClickAwayListener>
+            </div>
+          ) : (
+            ''
+          )}
+
+          {canHaveOrganizer ? (
+            <div className="mb-6">
+              <FormControlLabel
+                label={t('Participation.Organizer.Label')}
+                control={
+                  <Checkbox
+                    checked={participationData.isOrganizer}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setParticipationData({
+                        ...participationData,
+                        isOrganizer: e.target.checked,
+                      })
+                    }
+                  />
+                }
+              />
+              <ClickAwayListener onClickAway={() => setOrganizerTooltipVisibility(false)}>
+                <Tooltip
+                  PopperProps={{
+                    disablePortal: true,
+                  }}
+                  onClose={() => setOrganizerTooltipVisibility(false)}
+                  open={organizerTooltipVisibility}
+                  disableFocusListener
+                  disableHoverListener
+                  disableTouchListener
+                  title={t('Participation.Organizer.Tooltip')}
+                >
+                  <HelpIcon onClick={() => setOrganizerTooltipVisibility(true)} />
+                </Tooltip>
+              </ClickAwayListener>
+            </div>
+          ) : (
+            ''
+          )}
+
+          <div className="mb-6 md:flex md:items-center">
+            <Button
+              className="w-full"
+              variant="contained"
+              component="label"
+              onClick={onSubmitHandler}
+            >
+              {t('Button.Submit')}
+            </Button>
           </div>
-        ) : (
-          ''
-        )}
-
-        <div className="mb-6 md:flex md:items-center">
-          <Button
-            className="w-full"
-            variant="contained"
-            component="label"
-            onClick={onSubmitHandler}
-            disabled={(shouldSetImage && !(participationData.image || participationToEdit?.image) ) || participationData.description === '' || participationData.type === ''}
-          >
-            {t('Button.Submit')}
-          </Button>
-        </div>
-        <div className="mb-6 md:flex md:items-center">
-          <Button className="w-full" variant="contained" component="label" onClick={onCancelHandler}>
-            {t('Button.Cancel')}
-          </Button>
-        </div>
-      </form>
-    </>
+          <div className="mb-6 md:flex md:items-center">
+            <Button className="w-full" variant="contained" component="label" onClick={onCancelHandler}>
+              {t('Button.Cancel')}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 

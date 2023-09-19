@@ -14,6 +14,14 @@ class UserService {
     return await ApiService.put('/update/profile/', formData);
   }
 
+  async deleteProfileImage() {
+    const formData = new FormData();
+
+    formData.append('profile_picture', '');
+
+    return await ApiService.put('/update/profile/', formData);
+  }
+
   async updateOffice(office: string) {
     const formData = new FormData();
 

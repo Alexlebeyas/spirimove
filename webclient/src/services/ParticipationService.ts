@@ -20,6 +20,11 @@ const ToastDisplay = (response:AxiosResponse<{ errors: {detail: string}[] }>, re
   }
 };
 
+interface FormEntryError {
+  attr: string,
+  detail: string
+}
+
 class ParticipationService {
   static submitParticipation(data: ICreateParticipationForm) {
     const formData = new FormData();
@@ -40,6 +45,7 @@ class ParticipationService {
       })
       .catch(function (error) {
         ToastDisplay(error.response, 'error');
+        return Promise.reject(Object.fromEntries(error.response.data.errors.map((x: FormEntryError) => [x.attr, x.detail])));
       });
   }
 
@@ -63,6 +69,7 @@ class ParticipationService {
       })
       .catch(function (error) {
         ToastDisplay(error.response, 'error');
+        return Promise.reject(Object.fromEntries(error.response.data.errors.map((x: FormEntryError) => [x.attr, x.detail])))
       });
   }
 
