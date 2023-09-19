@@ -26,10 +26,6 @@ msgstr ""
 msgid "Contests"
 msgstr "Concours"
 
-#: apps/contest/models.py:18
-msgid "Only one contest can be set to open at a time"
-msgstr "Un seul concours à la fois peut être défini comme ouvert"
-
 #: apps/participation/admin.py:10
 msgid "Approuver les participations selectionnées"
 msgstr ""
