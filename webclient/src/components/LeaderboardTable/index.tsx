@@ -22,7 +22,7 @@ export const LeaderboardTable = ({ stats, mode }: Props) => {
 
   if (!contest) return null; // no contest
 
-  const maxConsecutive = Number(sortedStats[0]?.total_days);
+  const maxConsecutive = Number(sortedStats[0]?.max_consecutive_days);
 
   return (
     <>
@@ -147,11 +147,11 @@ const TotalDaysRenderer = ({ stat, idx, max, currentUser }: TotalDaysProps) => {
               </div>
             </div>
             <div className="flex-none text-sm font-bold text-darkblue-800">
-              {t('Leaderboard.DaysDisplay', { nb: stat.total_days })}
+              {t('Leaderboard.DaysDisplay', { nb: stat.max_consecutive_days })}
             </div>
           </div>
           <div className="grow pt-2">
-            <LinearProgress value={Number(stat.total_days)} max={max} />
+            <LinearProgress value={Number(stat.max_consecutive_days)} max={max} />
           </div>
         </div>
       </div>
