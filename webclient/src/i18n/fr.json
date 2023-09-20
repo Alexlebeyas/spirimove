@@ -42,9 +42,9 @@
         "Title": "Concours",
         "CurrentDay": "Jour",
         "Stimulation": "Lâche pas!",
-        "ContestEnding": "{{contest}}: plus que {{remaining}} jours.",
+        "ContestEnding": "Spiri-Move: plus que {{remaining}} jours.",
         "Congratulations": "Félicitations!",
-        "ContestFinished": "{{contest}} est terminé."
+        "ContestFinished": "Spiri-Move est terminé."
       },
       "Cumulated": {
         "Title": "Cumulatif",
@@ -132,11 +132,11 @@
         "Tooltip": "L'organisateur est celui qui a initié l'activité de groupe."
       },
       "Facilitator": {
-        "Label": "J'étais le facilitateur",
+        "Label": "J'étais le facilitateur.",
         "Tooltip": "Le facilitateur est celui qui a facilité l'activité de groupe."
       },
       "Initiator": {
-        "Label": "J'étais l'initiateur",
+        "Label": "J'ai initié l'activité.",
         "Tooltip": "L'initiateur est celui qui a initié l'activité de groupe."
       },
       "Approved": "Approuvée",

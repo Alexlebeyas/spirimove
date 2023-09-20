@@ -40,6 +40,8 @@ interface FieldErrors {
   type: string;
 }
 
+const FACILITATOR_KEY = 2;
+
 const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDate, setOpen, participationToEdit }) => {
   const {isLoading, participationsTypes, getParticipationsTypes} = fetchParticipationsType((state) => state);
   if(isLoading){
@@ -56,9 +58,8 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
     isOrganizer: participationToEdit ? participationToEdit.is_organizer : false, 
     type: participationToEdit?.type?.id ?? participationsTypes[0]?.id,
   });
-
+  
   const [intensiveTooltipVisibility, setIntensiveTooltipVisibility] = useState(false);
-  const [organizerTooltipVisibility, setOrganizerTooltipVisibility] = useState(false);
   const [showActivityTypeTooltip, setShowActivityTypeTooltip] = useState(false);
 
   const [fileUrl, setfileUrl] = useState( participationToEdit?.image ?? '');
@@ -285,7 +286,8 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
           {canHaveOrganizer ? (
             <div className="mb-6">
               <FormControlLabel
-                label={t('Participation.Organizer.Label')}
+                label={participationData?.type === FACILITATOR_KEY
+                  ? t('Participation.Facilitator.Label'): t('Participation.Initiator.Label')}
                 control={
                   <Checkbox
                     checked={participationData.isOrganizer}
@@ -298,21 +300,6 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   />
                 }
               />
-              <ClickAwayListener onClickAway={() => setOrganizerTooltipVisibility(false)}>
-                <Tooltip
-                  PopperProps={{
-                    disablePortal: true,
-                  }}
-                  onClose={() => setOrganizerTooltipVisibility(false)}
-                  open={organizerTooltipVisibility}
-                  disableFocusListener
-                  disableHoverListener
-                  disableTouchListener
-                  title={t('Participation.Organizer.Tooltip')}
-                >
-                  <HelpIcon onClick={() => setOrganizerTooltipVisibility(true)} />
-                </Tooltip>
-              </ClickAwayListener>
             </div>
           ) : (
             ''
