@@ -41,7 +41,7 @@ export const ConfirmBox: React.FC<Props> = ({ open, setOpen, participation, hand
                 <DialogContentText id="alert-dialog-description">
                 {t('Participation.DeleteMessageConfirm')} <br/>
                 {t('Participation.ActivityDescription.Label')} : <strong>{participation?.description}</strong> <br/>
-                {t('Participation.ActivityDate')} : <strong>{formatDate(participation?.date)}</strong> 
+                {t('Participation.DateWithoutAsterisk')} : <strong>{formatDate(participation?.date)}</strong> 
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

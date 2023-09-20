@@ -48,13 +48,13 @@ const getScore = (status?: ParticipationStatus, points?: number): string | numbe
   }
 };
 
-const renderStatus = (status?: ParticipationStatus): JSX.Element | null => {
+const renderStatus = (t: (key: string) => string, status?: ParticipationStatus): JSX.Element | null => {
   if (!status) return null;
   const color = ParticipationStatusColorMap[status];
   if (!color) return null;
   return (
     <span>
-      <FiberManualRecordIcon style={{ color, fontSize: '17px' }} /> {status}
+      <FiberManualRecordIcon style={{ color, fontSize: '17px' }} /> {t(`Participation.ValidationState.${status}`)}
     </span>
   );
 };
@@ -149,7 +149,7 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
     <div className="m-2 rounded border bg-white p-4 shadow-md">
       <div className="flex items-center justify-between">
         <div className="font-bold">{formatDate(currentDate)}</div>
-        <div>{renderStatus(status)}</div>
+        <div>{renderStatus(t, status)}</div>
       </div>
       {image && (
         <div className="mt-4">
@@ -202,7 +202,7 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
       <td className="border-grey-light border p-3">{type === 'Normal' ? is_intensive : '-'}</td>
       <td className="border-grey-light border p-3">{type !== 'Normal' ? is_organizer : '-'}</td>
       <td className="border-grey-light border p-3">{description}</td>
-      <td className="border-grey-light border p-3">{renderStatus(status)}</td>
+      <td className="border-grey-light border p-3">{renderStatus(t, status)}</td>
       <td className="border-grey-light border p-3">{score}</td>
       <td className="border-grey-light border p-3">
         {image && (

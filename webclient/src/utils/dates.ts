@@ -1,4 +1,4 @@
-import { DATE_FORMAT, EUROPEAN_DATE_FORMAT } from '@/constants/formats';
+import { DATE_FORMAT, DISPLAY_DATE_FORMAT } from '@/constants/formats';
 import { DateTime } from 'luxon';
 import moment from 'moment';
 
@@ -19,7 +19,7 @@ export const daysInterval = function (from: DateTime, to: DateTime): number {
 
 export const formatDate = (date?: string) => {
   if(date){
-    const formattedDate = moment(date).format(EUROPEAN_DATE_FORMAT);
+    const formattedDate = moment(date).format(DISPLAY_DATE_FORMAT);
     return formattedDate;
   }
 

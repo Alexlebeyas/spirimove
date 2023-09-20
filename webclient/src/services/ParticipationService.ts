@@ -5,19 +5,33 @@ import { toast } from 'react-toastify';
 import { AxiosResponse } from 'axios';
 import i18n from 'i18next';
 
+type ResponseType = 
+  | 'Success'
+  | 'error'
+  | 'SubmitActivitySuccess'
+  | 'SubmitActivityError'
+  | 'DeleteActivitySuccess'
+  | 'DeleteActivityError';
 
-const ToastDisplay = (response:AxiosResponse<{ errors: {detail: string}[] }>, responseType:'success' | 'error') => {
+
+const ToastDisplay = (response: AxiosResponse<{ errors: { detail: string }[] }>, responseType: ResponseType) => {
+  let toastMessage: string;
+  let toastType = toast.success;
+
   if (responseType === 'error') {
-    toast.error(response?.data.errors[0].detail, {
-      position: toast.POSITION.TOP_RIGHT,
-      autoClose: 20000,
-    });
+    toastMessage = response?.data.errors[0].detail;
+    toastType = toast.error;
   } else {
-    toast.success(i18n.t('Request.Success'), {
-      position: toast.POSITION.TOP_RIGHT,
-      autoClose: 20000,
-    });
+    toastMessage = i18n.t(`Request.${responseType}`);
+    if (['SubmitActivityError', 'DeleteActivityError'].includes(responseType)) {
+      toastType = toast.error;
+    }
   }
+
+  toastType(toastMessage, {
+    position: toast.POSITION.TOP_RIGHT,
+    autoClose: 20000,
+  });
 };
 
 interface FormEntryError {
@@ -41,10 +55,10 @@ class ParticipationService {
 
     return ApiService.post('/create/participation/', formData)
       .then(function (response) {
-        ToastDisplay(response, 'success');
+        ToastDisplay(response, 'SubmitActivitySuccess');
       })
       .catch(function (error) {
-        ToastDisplay(error.response, 'error');
+        ToastDisplay(error.response, 'SubmitActivityError');
         return Promise.reject(Object.fromEntries(error.response.data.errors.map((x: FormEntryError) => [x.attr, x.detail])));
       });
   }
@@ -65,10 +79,10 @@ class ParticipationService {
 
     return ApiService.put(`/update/participation/${paticipationId}/`, formData)
       .then(function (data) {
-        ToastDisplay(data, 'success');
+        ToastDisplay(data, 'SubmitActivitySuccess');
       })
       .catch(function (error) {
-        ToastDisplay(error.response, 'error');
+        ToastDisplay(error.response, 'SubmitActivityError');
         return Promise.reject(Object.fromEntries(error.response.data.errors.map((x: FormEntryError) => [x.attr, x.detail])))
       });
   }
@@ -76,10 +90,10 @@ class ParticipationService {
   static deleteParticipation(data: IParticipation) {
     return ApiService.delete(`/delete/participation/${data.id}/`)
       .then(function (data) {
-        ToastDisplay(data, 'success');
+        ToastDisplay(data, 'DeleteActivitySuccess');
       })
       .catch(function (error) {
-        ToastDisplay(error.response, 'error');
+        ToastDisplay(error.response, 'DeleteActivityError');
       });
   }
 

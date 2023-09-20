@@ -93,12 +93,22 @@
       "Submit": "Envoyer"
     },
     "Request": {
-      "Success": "Opération effectuée avec succès"
+      "Success": "Opération effectuée avec succès",
+      "SubmitActivitySuccess": "Activité envoyée avec succès.",
+      "SubmitActivityError": "L'activité n'a pas pu être envoyée.",
+      "DeleteActivitySuccess": "L'activité a été supprimé avec succès.",
+      "DeleteActivityError": "L'activité n'a pas pu être supprimée."
     },
     "Participation": {
+      "ValidationState": {
+        "In verification": "En attente",
+        "Approved": "Approuvé",
+        "Rejected": "Refusé"
+      },
       "DeleteActivity": "Supprimer l'activité?",
       "NoMoreToLoad": "Plus de participations à charger !",
-      "ActivityDate": "Date",
+      "ActivityDate": "Date *",
+      "DateWithoutAsterisk": "Date",
       "ActivityType": {
         "Label": "Type *",
         "Tooltip": "Sélecteur de type d'activité"
@@ -113,14 +123,23 @@
         "Tooltip": "Ex. entraînement à haute intensité, course à pied, vélo, boxe, sports d'équipes (hockey, soccer, etc...) ou plus de 10 000 pas par jour."
       },
       "Organizer": {
-        "Label": "Etes-vous l'organisateur ?",
+        "Label": "J'étais l'organisateur",
         "Tooltip": "L'organisateur est celui qui a initié l'activité de groupe."
+      },
+      "Facilitator": {
+        "Label": "J'étais le facilitateur",
+        "Tooltip": "Le facilitateur est celui qui a facilité l'activité de groupe."
+      },
+      "Initiator": {
+        "Label": "J'étais l'initiateur",
+        "Tooltip": "L'initiateur est celui qui a initié l'activité de groupe."
       },
       "Approved": "Approuvée",
       "NotApproved": "Non Approuvée",
       "SelectImage": "Choisir une image",
       "NewTitle": "Nouvelle Activité",
-      "EditTitle": "Modifier la Activité"
+      "EditTitle": "Modifier la Activité",
+      "Required": "Obligatoire."
     },
     "ParticipationType": {
       "Normal": "Normal"

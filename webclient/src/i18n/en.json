@@ -93,12 +93,22 @@
       "Submit": "Submit"
     },
     "Request": {
-      "Success": "Operation performed successfully"
+      "Success": "Operation performed successfully",
+      "SubmitActivitySuccess": "Activity submitted successfully",
+      "SubmitActivityError": "The activity couldn't be submitted",
+      "DeleteActivitySuccess": "Activity deleted successfully",
+      "DeleteActivityError": "The activity couldn't be deleted"
     },
     "Participation": {
+      "ValidationState": {
+        "In verification": "Pending",
+        "Approved": "Approved",
+        "Rejected": "Rejected"
+      },
       "DeleteActivity": "Delete activity?",
       "NoMoreToLoad": "No more participations to load !",
-      "ActivityDate": "Date",
+      "ActivityDate": "Date *",
+      "DateWithoutAsterisk": "Date",
       "ActivityType": {
         "Label": "Type *",
         "Tooltip": "Activity Type Selector"
@@ -113,14 +123,23 @@
         "Tooltip": "E.g. High-intensity training, running, cycling, boxing, team sports (hockey, soccer, etc...) or more than 10,000 steps a day."
       },
       "Organizer": {
-        "Label": "Are you the organizer ?",
+        "Label": "I was the organizer",
         "Tooltip": "The organizer is the one who initiated the group activity."
+      },
+      "Facilitator": {
+        "Label": "I was the facilitator",
+        "Tooltip": "The facilitator is the one who facilitated the group activity."
+      },
+      "Initiator": {
+        "Label": "I was the initiator",
+        "Tooltip": "The initiator is the one who initiated the group activity."
       },
       "Approved": "Approved",
       "NotApproved": "Not Approved",
       "SelectImage": "Select Image",
       "NewTitle": "New Activity",
-      "EditTitle": "Edit Activity"
+      "EditTitle": "Edit Activity",
+      "Required": "Required"
     },
     "ParticipationType": {
       "Normal": "Normal"
