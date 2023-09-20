@@ -6,6 +6,7 @@
       "Cancel": "Annuler",
       "Delete": "Supprimer",
       "DeleteTitle": "Suppression",
+      "KeepIt": "Conserver",
       "Office": "Bureau de ",
       "Language": "Langage",
       "English": "Anglais",
@@ -18,15 +19,16 @@
       "Leaderboard": "Classement",
       "MySpiriMove": "Mon Spiri-Move",
       "About": "À Propos",
-      "MyProfile": "Mon Profile",
-      "Logout": "Se déconnecter"
+      "MyProfile": "Profil",
+      "Logout": "Déconnexion"
     },
     "Home": {
-      "AddParticipation": "Ajouter une participation",
+      "AddNewActivity": "Nouvelle Activité",
       "ContestStatusOver": "Le concours est terminé!",
-      "ViewResults": "Voir les résultats"
+      "ViewResults": "Résultats"
     },
     "Leaderboard": {
+      "Title": "Classement",
       "ViewMore": "Voir plus",
       "PointsMode": "Points",
       "PointsDisplay": "{{nb}} pts",
@@ -37,15 +39,15 @@
       "WinnersPerOfficeLabel": "Par bureau",      
       "WinnersNotFound": "Aucun gagnant à afficher.",
       "RemainingDays": {
-        "Title": "Progrès",
-        "CurrentDay": "Day",
-        "Stimulation": "Continue!",
+        "Title": "Concours",
+        "CurrentDay": "Jour",
+        "Stimulation": "Lâche pas!",
         "ContestEnding": "{{contest}}: plus que {{remaining}} jours.",
-        "Congratulations": "Bravo!",
-        "ContestFinished": "{{contest}} est maintenant terminé."
+        "Congratulations": "Félicitations!",
+        "ContestFinished": "{{contest}} est terminé."
       },
       "Cumulated": {
-        "Title": "Cumulé",
+        "Title": "Cumulatif",
         "Points": "Pts",
         "Participants": "Participants"
       }
@@ -63,24 +65,24 @@
     "ContestCalendar": {
       "Progression": "Ma progression Spiri-Move",
       "Date": "Date",
-      "ParticipationType": "Type de participation",
-      "Description": "Description de l'activité",
+      "ParticipationType": "Type",
+      "Description": "Description",
       "Intensity": "Haute Intensité",
-      "Status": "Status",
+      "Status": "Statut",
       "Score": "Score",
       "Initiator": "Initiateur",
-      "NoData": "Aucune donnée pour cette date.",
+      "NoData": "Aucune activité pour cette date.",
       "Image": "Image"
     },
     "MySpiriMove": {
       "Stats": {
-        "Title": "Mon Spiri-Move: {{name}}",
-        "Days": "Days",
+        "Title": "Mon Classement",
+        "Days": "Jours",
         "Points": "Pts",
         "Streak": "{{streak}} jours consécutifs, continue comme ca!",
-        "RewardLevel_one": "Bon travail ! Vous avez débloqué un prix!",
-        "RewardLevel_other": "Effort incroyable ! {{count}} prix vous attendent.",
-        "RewardLevel_zero": "Continuez comme ça ! Aucun prix n'a encore été gagné."
+        "RewardLevel_one": "Tu es éligible à 1 tirage.",
+        "RewardLevel_other": "Tu es éligible à {{count}} tirages.",
+        "RewardLevel_zero": "Tu n'es pas encore éligible au tirage."
       }
     },
     "Time": {
@@ -88,26 +90,27 @@
     },
     "Button": {
       "Cancel": "Annuler",
-      "Submit": "Soumettre"
+      "Submit": "Envoyer"
     },
     "Request": {
       "Success": "Opération effectuée avec succès"
     },
     "Participation": {
+      "DeleteActivity": "Supprimer l'activité?",
       "NoMoreToLoad": "Plus de participations à charger !",
-      "ActivityDate": "Date de l'activité",
+      "ActivityDate": "Date",
       "ActivityType": {
-        "Label": "Type d'activité",
+        "Label": "Type *",
         "Tooltip": "Sélecteur de type d'activité"
       },
       "ActivityDescription": {
-        "Label": "Description de l'activité",
+        "Label": "Description",
         "Tooltip": "Description de l'activité"
       },
-      "DeleteMessageConfirm": "Êtes-vous sûr de vouloir supprimer la participation suivante :",
+      "DeleteMessageConfirm": "Voulez-vous vraiment supprimer l'activité suivante?",
       "HighIntensity": {
         "Label": "Haute Intensité",
-        "Tooltip": "Par exemple : Entraînement à haute intensité, course à pied, vélo, boxe, sports d'équipes (hockey, soccer, etc...) ou plus de 10 000 pas par jour."
+        "Tooltip": "Ex. entraînement à haute intensité, course à pied, vélo, boxe, sports d'équipes (hockey, soccer, etc...) ou plus de 10 000 pas par jour."
       },
       "Organizer": {
         "Label": "Etes-vous l'organisateur ?",
@@ -115,9 +118,9 @@
       },
       "Approved": "Approuvée",
       "NotApproved": "Non Approuvée",
-      "SelectImage": "Choisir Image",
-      "NewTitle": "Nouvelle Participation",
-      "EditTitle": "Modifier la Participation"
+      "SelectImage": "Choisir une image",
+      "NewTitle": "Nouvelle Activité",
+      "EditTitle": "Modifier la Activité"
     },
     "ParticipationType": {
       "Normal": "Normal"

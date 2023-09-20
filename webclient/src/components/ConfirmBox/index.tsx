@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Dispatch, SetStateAction} from 'react';
 import { IParticipation } from '@/interfaces';
 import { useTranslation } from 'react-i18next';
-
+import { formatDate } from '@/utils/dates'; 
 
 interface Props {
     open: boolean;
@@ -36,16 +36,16 @@ export const ConfirmBox: React.FC<Props> = ({ open, setOpen, participation, hand
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
             >
-            <DialogTitle id="alert-dialog-title">{t('Common.DeleteTitle')}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">{t('Participation.DeleteActivity')}</DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                 {t('Participation.DeleteMessageConfirm')} <br/>
-                {t('Participation.ActivityDescription')} : <strong>{participation?.description}</strong> <br/>
-                {t('Participation.ActivityDate')} : <strong>{participation?.date}</strong> ?
+                {t('Participation.ActivityDescription.Label')} : <strong>{participation?.description}</strong> <br/>
+                {t('Participation.ActivityDate')} : <strong>{formatDate(participation?.date)}</strong> 
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} autoFocus>{t('Common.Cancel')} </Button>
+                <Button onClick={handleClose} autoFocus>{t('Common.KeepIt')} </Button>
                 <Button onClick={handleDelete}>{t('Common.Delete')}</Button>
             </DialogActions>
             </Dialog>

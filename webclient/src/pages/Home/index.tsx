@@ -53,13 +53,13 @@ const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
-  const AddParticipationButton = () => (
+  const AddNewActivityButton = () => (
     <button
       className="mb-7 w-full rounded-md bg-darkblue-800 py-4 text-base font-bold text-white antialiased hover:bg-blue"
       onClick={() => setIsOpen(true)}
     >
       <AddIcon className="mr-3" />
-      {t('Home.AddParticipation')}
+      {t('Home.AddNewActivity')}
     </button>
   );
 
@@ -80,7 +80,7 @@ const Home = () => {
       {contest ? (
         <>
           <div className="flex flex-col items-center justify-center">
-            {contest?.show_winners ? <ContestOverView /> : <AddParticipationButton />}
+            {contest?.show_winners ? <ContestOverView /> : <AddNewActivityButton />}
 
             {isLoadingParticipations && <CircularProgress color="inherit" />}
             {!isLoadingParticipations &&

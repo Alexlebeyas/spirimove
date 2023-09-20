@@ -177,7 +177,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
         </div>}
           <div className="mb-6 md:flex md:items-center">
             <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.type} >
-              <InputLabel id="activity-type-label">{t('Participation.ActivityType')}</InputLabel>
+              <InputLabel id="activity-type-label">{t('Participation.ActivityType.Label')}</InputLabel>
               <Select
                 className={'w-full'}
                 labelId="activity-type-label"
@@ -208,7 +208,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
               required={true}
               className="mb-6 w-full"
               id="outlined-basic"
-              label="Activity Description"
+              label={t('Participation.ActivityDescription.Label')}
               variant="outlined"
               value={participationData.description}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

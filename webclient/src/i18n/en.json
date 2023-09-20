@@ -6,6 +6,7 @@
       "Cancel": "Cancel",
       "Delete": "Delete",
       "DeleteTitle": "Deletion",
+      "KeepIt": "Keep it",
       "Office": "Office of ",
       "Language": "Language",
       "English": "English",
@@ -18,15 +19,16 @@
       "Leaderboard": "Leaderboard",
       "MySpiriMove": "My Spiri-Move",
       "About": "About",
-      "MyProfile": "My Profile",
+      "MyProfile": "Profile",
       "Logout": "Logout"
     },
     "Home": {
-      "AddParticipation": "Add participation",
+      "AddNewActivity": "New Activity",
       "ContestStatusOver": "The Contest is over!",
       "ViewResults": "View Results"
     },
     "Leaderboard": {
+      "Title": "Leaderboard",
       "ViewMore": "View more",
       "PointsMode": "Points",
       "PointsDisplay": "{{nb}} pts",
@@ -37,7 +39,7 @@
       "WinnersPerOfficeLabel": "Per Office",
       "WinnersNotFound": "No winners to display.",
       "RemainingDays": {
-        "Title": "Progress",
+        "Title": "Contest",
         "CurrentDay": "Day",
         "Stimulation": "Don't give up!",
         "ContestEnding": "{{contest}} ends in {{remaining}} days.",
@@ -69,18 +71,18 @@
       "Status": "Status",
       "Score": "Score",
       "Initiator": "Initiator",
-      "NoData": "No data for this date.",
+      "NoData": "No activity yet for this date.",
       "Image": "Image"
     },
     "MySpiriMove": {
       "Stats": {
-        "Title": "My Spiri-Move: {{name}}",
+        "Title": "My Stats",
         "Days": "Days",
         "Points": "Pts",
         "Streak": "{{streak}} day streak, keep it up!",
-        "RewardLevel_one": "Great job! You've unlocked a prize!",
-        "RewardLevel_other": "Incredible effort! {{count}} prizes await your claim.",
-        "RewardLevel_zero": "Keep going! No prizes earned just yet."
+        "RewardLevel_one": "You are now eligible for 1 prize.",
+        "RewardLevel_other": "You are now eligible for {{count}} prizes.",
+        "RewardLevel_zero": "You are not eligible for a prize yet."
       }
     },
     "Time": {
@@ -94,20 +96,21 @@
       "Success": "Operation performed successfully"
     },
     "Participation": {
+      "DeleteActivity": "Delete activity?",
       "NoMoreToLoad": "No more participations to load !",
-      "ActivityDate": "Activity Date",
+      "ActivityDate": "Date",
       "ActivityType": {
-        "Label": "Activity Type",
+        "Label": "Type *",
         "Tooltip": "Activity Type Selector"
       },
       "ActivityDescription": {
-        "Label": "Activity Description",
+        "Label": "Description",
         "Tooltip": "Activity Description"
       },
-      "DeleteMessageConfirm": "Are you sure you want to delete the following participation :",
+      "DeleteMessageConfirm": "Are you sure you want to delete the following activity?",
       "HighIntensity": {
         "Label": "High Intensity",
-        "Tooltip": "For example: High-intensity training, running, cycling, boxing, team sports (hockey, soccer, etc...) or more than 10,000 steps a day."
+        "Tooltip": "E.g. High-intensity training, running, cycling, boxing, team sports (hockey, soccer, etc...) or more than 10,000 steps a day."
       },
       "Organizer": {
         "Label": "Are you the organizer ?",
@@ -116,8 +119,8 @@
       "Approved": "Approved",
       "NotApproved": "Not Approved",
       "SelectImage": "Select Image",
-      "NewTitle": "New Participation",
-      "EditTitle": "Edit Participation"
+      "NewTitle": "New Activity",
+      "EditTitle": "Edit Activity"
     },
     "ParticipationType": {
       "Normal": "Normal"

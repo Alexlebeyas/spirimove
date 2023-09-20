@@ -8,6 +8,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import { useContest } from '@/hooks';
 import { isContestOver } from '@/utils/contest';
+import { formatDate } from '@/utils/dates';
+
 interface Props {
   currentDate: string;
   participation?: IParticipation;
@@ -59,7 +61,7 @@ const renderStatus = (status?: ParticipationStatus): JSX.Element | null => {
 
 const EmptyRow: React.FC<{ currentDate: string }> = ({ currentDate }) => (
   <tr className="flex-no wrap mb-2 flex flex-col hover:bg-gray-100 sm:mb-0 sm:table-row">
-    <td className="border-grey-light border p-3">{currentDate}</td>
+    <td className="border-grey-light border p-3">{formatDate(currentDate)}</td>
     {Array(8)
       .fill(null)
       .map((_, id) => (
@@ -73,7 +75,7 @@ const EmptyRow: React.FC<{ currentDate: string }> = ({ currentDate }) => (
 const EmptyCard: React.FC<{ currentDate: string; message: string }> = ({ currentDate, message }) => (
   <div className="m-2 rounded border bg-white p-4 shadow-md">
     <div className="flex items-center justify-between">
-      <div className="font-bold">{currentDate}</div>
+      <div className="font-bold">{formatDate(currentDate)}</div>
     </div>
     <div className="mt-2">{message}</div>
   </div>
@@ -146,7 +148,7 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
   }) => (
     <div className="m-2 rounded border bg-white p-4 shadow-md">
       <div className="flex items-center justify-between">
-        <div className="font-bold">{currentDate}</div>
+        <div className="font-bold">{formatDate(currentDate)}</div>
         <div>{renderStatus(status)}</div>
       </div>
       {image && (
@@ -195,7 +197,7 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
     image,
   }) => (
     <tr className="flex-no wrap mb-2 flex flex-col hover:bg-gray-100 sm:mb-0 sm:table-row">
-      <td className="border-grey-light border p-3">{currentDate}</td>
+      <td className="border-grey-light border p-3">{formatDate(currentDate)}</td>
       <td className="border-grey-light border p-3">{type}</td>
       <td className="border-grey-light border p-3">{type === 'Normal' ? is_intensive : '-'}</td>
       <td className="border-grey-light border p-3">{type !== 'Normal' ? is_organizer : '-'}</td>
