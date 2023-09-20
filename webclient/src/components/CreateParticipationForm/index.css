@@ -1,0 +1,44 @@
+.MuiFormLabel-root {
+  color: #000000 !important;
+}
+
+.MuiButton-outlined {
+  font-family: 'inter' !important;
+  text-transform: none !important;
+  border-color: #2f3940 !important;
+  color: #2f3940 !important;
+  font-weight: 700 !important;
+  height: 48px !important;
+}
+.MuiButton-outlined:hover {
+  color: #708ef4 !important;
+  border-color: #708ef4 !important;
+  background-color: #ffffff !important;
+}
+
+.MuiButton-contained {
+  font-family: 'inter' !important;
+  text-transform: none !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  background-color: #2f3940 !important;
+  box-shadow: none !important;
+  height: 48px !important;
+}
+.MuiButton-contained:hover {
+  background-color: #708ef4 !important;
+}
+
+.MuiTooltip-tooltip {
+  font-family: 'inter' !important;
+  font-weight: 600 !important;
+  color: #2f3940 !important;
+  background-color: #ffd333 !important;
+  padding: 8px 12px !important;
+  font-size: 0.75rem !important;
+  line-height: 1.4em !important;
+  border: none !important;
+}
+.MuiTooltip-arrow {
+  color: #ffd233 !important;
+}
