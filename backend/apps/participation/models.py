@@ -47,7 +47,7 @@ class ParticipationModel(models.Model):
     class Meta:
         verbose_name = _('Participation')
         verbose_name_plural = _('Participations')
-        ordering = ['date', 'id']
+        ordering = ['-date', '-id']
 
     IN_VERIFICATION = 'IN_VERIFICATION'
     REJECTED = 'REJECTED'
