@@ -44,8 +44,8 @@ msgid "Participation(s) sélectionnée(s) Marquée(s) comme rejetée(s) !!"
 msgstr "Selected participation(s) Marked as rejected!!"
 
 #: apps/participation/admin.py:22
-msgid "Désapprouver les participations selectionnées"
-msgstr "Disapprove selected participations"
+msgid "Réinitialiser la décision des participations selectionnées"
+msgstr "Reset the decision of selected participations"
 
 #: apps/participation/admin.py:25
 msgid "Participation(s) sélectionnée(s) Marquée(s) comme non approuvée(s) !!"
