@@ -111,7 +111,12 @@
       "DateWithoutAsterisk": "Date",
       "ActivityType": {
         "Label": "Type *",
-        "Tooltip": "Activity Type Selector"
+        "Tooltip": "Activity Type Selector",
+        "Options": {
+          "Normal": "Standard",
+          "Popup": "Pop-up Challenge",
+          "King of the Hill": "King of the Hill"
+        }
       },
       "ActivityDescription": {
         "Label": "Description",

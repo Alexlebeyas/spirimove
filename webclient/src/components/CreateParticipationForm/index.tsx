@@ -213,7 +213,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                 required={true}
               >
               { participationsTypes?.map((participationType) => (
-                  <MenuItem key={participationType.id} value={participationType.id}>{participationType.name}</MenuItem>
+                  <MenuItem key={participationType.id} value={participationType.id}>{t(`Participation.ActivityType.Options.${participationType.name}`)}</MenuItem>
               ))}
               </Select>
               <FormHelperText>{typeError?.type && t('Participation.Required')}</FormHelperText>
