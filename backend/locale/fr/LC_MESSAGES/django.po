@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-12 11:38+0000\n"
+"POT-Creation-Date: 2023-09-18 15:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-#: apps/contest/models.py:12
+
+#: apps/contest/models.py:13
 msgid "Contest"
 msgstr ""
 
-#: apps/contest/models.py:13
+#: apps/contest/models.py:14
 msgid "Contests"
 msgstr "Concours"
 
@@ -122,7 +123,7 @@ msgstr "Niveau"
 msgid "Levels"
 msgstr "Niveaux"
 
-#: apps/participation/models.py:127 apps/participation/models.py:128
+#: apps/participation/models.py:128 apps/participation/models.py:129
 msgid "Draw"
 msgstr "Tirage"
 
@@ -156,7 +157,9 @@ msgstr "En-tête de base invalide. Aucune information d'identification fournie."
 
 #: apps/users/auth.py:49
 msgid "Invalid basic header. Credentials string should not contain spaces."
-msgstr "En-tête de base invalide. La chaîne d’informations d’identification ne doit pas contenir d’espaces."
+msgstr ""
+"En-tête de base invalide. La chaîne d’informations d’identification ne doit "
+"pas contenir d’espaces."
 
 #: apps/users/auth.py:60 apps/users/auth.py:77
 msgid "No such user"
@@ -210,10 +213,5 @@ msgstr "Bureau"
 msgid "Display Name"
 msgstr "Afficher le nom"
 
-#: spiri_move/urls.py:68
-msgid "admin/"
-msgstr ""
-
-#: apps/contest/admin.py:27
-msgid "Run Drawn"
-msgstr "Exécuter le tirage"
+#~ msgid "Run Drawn"
+#~ msgstr "Exécuter le tirage"
