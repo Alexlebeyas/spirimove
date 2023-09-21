@@ -8,6 +8,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import { useContest } from '@/hooks';
 import { isContestOver } from '@/utils/contest';
+import { formatDate } from '@/utils/dates';
+
 interface Props {
   currentDate: string;
   participation?: IParticipation;
@@ -46,20 +48,20 @@ const getScore = (status?: ParticipationStatus, points?: number): string | numbe
   }
 };
 
-const renderStatus = (status?: ParticipationStatus): JSX.Element | null => {
+const renderStatus = (t: (key: string) => string, status?: ParticipationStatus): JSX.Element | null => {
   if (!status) return null;
   const color = ParticipationStatusColorMap[status];
   if (!color) return null;
   return (
     <span>
-      <FiberManualRecordIcon style={{ color, fontSize: '17px' }} /> {status}
+      <FiberManualRecordIcon style={{ color, fontSize: '17px' }} /> {t(`Participation.ValidationState.${status}`)}
     </span>
   );
 };
 
 const EmptyRow: React.FC<{ currentDate: string }> = ({ currentDate }) => (
   <tr className="flex-no wrap mb-2 flex flex-col hover:bg-gray-100 sm:mb-0 sm:table-row">
-    <td className="border-grey-light border p-3">{currentDate}</td>
+    <td className="border-grey-light border p-3">{formatDate(currentDate)}</td>
     {Array(8)
       .fill(null)
       .map((_, id) => (
@@ -73,7 +75,7 @@ const EmptyRow: React.FC<{ currentDate: string }> = ({ currentDate }) => (
 const EmptyCard: React.FC<{ currentDate: string; message: string }> = ({ currentDate, message }) => (
   <div className="m-2 rounded border bg-white p-4 shadow-md">
     <div className="flex items-center justify-between">
-      <div className="font-bold">{currentDate}</div>
+      <div className="font-bold">{formatDate(currentDate)}</div>
     </div>
     <div className="mt-2">{message}</div>
   </div>
@@ -146,8 +148,8 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
   }) => (
     <div className="m-2 rounded border bg-white p-4 shadow-md">
       <div className="flex items-center justify-between">
-        <div className="font-bold">{currentDate}</div>
-        <div>{renderStatus(status)}</div>
+        <div className="font-bold">{formatDate(currentDate)}</div>
+        <div>{renderStatus(t, status)}</div>
       </div>
       {image && (
         <div className="mt-4">
@@ -195,12 +197,12 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
     image,
   }) => (
     <tr className="flex-no wrap mb-2 flex flex-col hover:bg-gray-100 sm:mb-0 sm:table-row">
-      <td className="border-grey-light border p-3">{currentDate}</td>
+      <td className="border-grey-light border p-3">{formatDate(currentDate)}</td>
       <td className="border-grey-light border p-3">{type}</td>
       <td className="border-grey-light border p-3">{type === 'Normal' ? is_intensive : '-'}</td>
       <td className="border-grey-light border p-3">{type !== 'Normal' ? is_organizer : '-'}</td>
       <td className="border-grey-light border p-3">{description}</td>
-      <td className="border-grey-light border p-3">{renderStatus(status)}</td>
+      <td className="border-grey-light border p-3">{renderStatus(t, status)}</td>
       <td className="border-grey-light border p-3">{score}</td>
       <td className="border-grey-light border p-3">
         {image && (
