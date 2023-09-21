@@ -16,12 +16,12 @@ export const ParticipationStatus = {
   Rejected: 'Rejected',
 } as const;
 
-export type ParticipationStatus = typeof ParticipationStatus[keyof typeof ParticipationStatus];
+export type ParticipationStatus = (typeof ParticipationStatus)[keyof typeof ParticipationStatus];
 
 export const ParticipationStatusColorMap = {
   [ParticipationStatus.InVerification]: 'orange',
-  [ParticipationStatus.Approved]: 'green',
-  [ParticipationStatus.Rejected]: 'red',
+  [ParticipationStatus.Approved]: '#31AA69',
+  [ParticipationStatus.Rejected]: '#E0303B',
 } as const;
 
 export interface IParticipation {

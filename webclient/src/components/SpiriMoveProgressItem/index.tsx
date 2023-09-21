@@ -51,19 +51,19 @@ const renderStatus = (status?: ParticipationStatus): JSX.Element | null => {
   const color = ParticipationStatusColorMap[status];
   if (!color) return null;
   return (
-    <span>
-      <FiberManualRecordIcon style={{ color, fontSize: '17px' }} /> {status}
+    <span className="align-middle">
+      <FiberManualRecordIcon style={{ color, fontSize: '16px' }} /> {status}
     </span>
   );
 };
 
 const EmptyRow: React.FC<{ currentDate: string }> = ({ currentDate }) => (
-  <tr className="flex-no wrap mb-2 flex flex-col hover:bg-gray-100 sm:mb-0 sm:table-row">
-    <td className="border-grey-light border p-3">{currentDate}</td>
+  <tr className="flex-no wrap mb-2 flex flex-col border-b border-slate-200 text-darkblue-800 hover:bg-slate-50 sm:mb-0 sm:table-row">
+    <td className="px-3 py-2">{currentDate}</td>
     {Array(8)
       .fill(null)
       .map((_, id) => (
-        <td key={id} className="border-grey-light border p-3">
+        <td key={id} className="p-4">
           &nbsp;
         </td>
       ))}
@@ -71,11 +71,11 @@ const EmptyRow: React.FC<{ currentDate: string }> = ({ currentDate }) => (
 );
 
 const EmptyCard: React.FC<{ currentDate: string; message: string }> = ({ currentDate, message }) => (
-  <div className="m-2 rounded border bg-white p-4 shadow-md">
+  <div className="mx-4 mb-5 rounded-md bg-white px-4 py-5 antialiased shadow-md">
     <div className="flex items-center justify-between">
-      <div className="font-bold">{currentDate}</div>
+      <div className="font-semibold text-darkblue-800">{currentDate}</div>
     </div>
-    <div className="mt-2">{message}</div>
+    <div className="mt-2 text-sm text-slate-600">{message}</div>
   </div>
 );
 
@@ -83,11 +83,11 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ handleRowEdit, handleRowD
   return (
     <>
       {canEdit && (
-        <IconButton style={{ color: 'green' }} aria-label="edit" onClick={handleRowEdit}>
+        <IconButton style={{ color: '#2F3940' }} aria-label="edit" onClick={handleRowEdit}>
           <EditIcon />
         </IconButton>
       )}
-      <IconButton style={{ color: 'red' }} aria-label="delete" onClick={handleRowDelete}>
+      <IconButton style={{ color: '#2F3940' }} aria-label="delete" onClick={handleRowDelete}>
         <DeleteIcon />
       </IconButton>
     </>
@@ -144,10 +144,10 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
     score,
     image,
   }) => (
-    <div className="m-2 rounded border bg-white p-4 shadow-md">
+    <div className="mx-4 mb-5 rounded-md bg-white px-4 py-5 text-darkblue-800 antialiased shadow-md">
       <div className="flex items-center justify-between">
-        <div className="font-bold">{currentDate}</div>
-        <div>{renderStatus(status)}</div>
+        <div className="font-semibold">{currentDate}</div>
+        <div className="font-medium">{renderStatus(status)}</div>
       </div>
       {image && (
         <div className="mt-4">
@@ -155,21 +155,19 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
         </div>
       )}
 
-      <div className="mt-2">
-        {t('ContestCalendar.Description')}: {description}
-      </div>
-      <div className="mt-2">
+      <div className="mt-4 text-sm font-medium">{description}</div>
+      <div className="mt-1 text-sm font-medium">
         {t('ContestCalendar.ParticipationType')}: {type}
       </div>
-      <div className="mt-2">
+      <div className="mt-1 text-sm font-medium">
         {t('ContestCalendar.Intensity')}: {type === 'Normal' ? is_intensive : '-'}
       </div>
-      <div className="mt-2">
+      <div className="mt-1 text-sm font-medium">
         {t('ContestCalendar.Initiator')}: {type !== 'Normal' ? is_organizer : '-'}
       </div>
-      <div className="mt-2 flex items-center justify-between">
-        <div>
-          <b>{t('ContestCalendar.Score')}</b>: {score}
+      <div className="mt-1 flex items-center justify-between">
+        <div className="font-semibold">
+          {t('ContestCalendar.Score')}: {score}
         </div>
         <div>
           {isContestOngoing && (
@@ -194,20 +192,20 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
     score,
     image,
   }) => (
-    <tr className="flex-no wrap mb-2 flex flex-col hover:bg-gray-100 sm:mb-0 sm:table-row">
-      <td className="border-grey-light border p-3">{currentDate}</td>
-      <td className="border-grey-light border p-3">{type}</td>
-      <td className="border-grey-light border p-3">{type === 'Normal' ? is_intensive : '-'}</td>
-      <td className="border-grey-light border p-3">{type !== 'Normal' ? is_organizer : '-'}</td>
-      <td className="border-grey-light border p-3">{description}</td>
-      <td className="border-grey-light border p-3">{renderStatus(status)}</td>
-      <td className="border-grey-light border p-3">{score}</td>
-      <td className="border-grey-light border p-3">
+    <tr className="wrap mb-2 flex flex-col border-b border-slate-200 text-darkblue-800 hover:bg-slate-50 sm:mb-0 sm:table-row">
+      <td className="px-3 py-2">{currentDate}</td>
+      <td className="px-3 py-2">{type}</td>
+      <td className="px-3 py-2">{type === 'Normal' ? is_intensive : '-'}</td>
+      <td className="px-3 py-2">{type !== 'Normal' ? is_organizer : '-'}</td>
+      <td className="px-3 py-2">{description}</td>
+      <td className="px-3 py-2">{renderStatus(status)}</td>
+      <td className="px-3 py-2">{score}</td>
+      <td className="px-3 py-2">
         {image && (
           <img className="max-h-[50px] max-w-[50px] object-cover" src={image} alt="Activity Image" loading="lazy" />
         )}
       </td>
-      <td className="border-grey-light border p-3">
+      <td className="py-2 pr-3 text-right">
         {isContestOngoing && (
           <ActionButtons
             handleRowEdit={handleRowEdit}

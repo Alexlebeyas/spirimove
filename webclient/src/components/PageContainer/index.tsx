@@ -15,5 +15,5 @@ export const PageContainer: React.FC<Props> = ({ children }) => {
     return <div className="mx-auto w-full md:w-[85%] lg:w-[800px]">{children}</div>;
   }
 
-  return <div className="mx-auto w-[90%] md:w-[80%]">{children}</div>;
+  return <div className="mx-auto w-full md:w-[80%] md:max-w-7xl">{children}</div>;
 };

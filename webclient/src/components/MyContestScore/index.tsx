@@ -27,22 +27,24 @@ const MyContestScore = () => {
   const rewardLevel = levels.filter(({ participation_day }) => participation_day <= stats.nb_days).length;
 
   return (
-    <div className="mb-6 w-full max-w-[350px] overflow-hidden rounded-md bg-white shadow-md">
-      <div className="block rounded-lg border border-gray-200 bg-white p-6 shadow">
-        <h6 className="text-xl font-semibold tracking-tight text-gray-900">
-          {stats.contest_name}
-        </h6>
-        <div className="flex flex-col justify-center items-left h-full">
-          <div className="flex items-center m-4">
-            <h3 className="font-medium tracking-tight text-gray-900">
-              {stats.nb_point} <span className="text-sm font-normal mr-7">{t('MySpiriMove.Stats.Points')}</span>
+    <div className="mx-4 mb-6 max-w-full rounded-md bg-white shadow-md sm:mx-0 sm:max-w-[350px]">
+      <div className="p-5 antialiased">
+        <h6 className="text-xl font-bold text-darkblue-800 lg:text-lg">{stats.contest_name}</h6>
+        <div className="items-left flex h-full flex-col justify-center">
+          <div className="m-4 flex items-center">
+            <h3 className="border-r-2 border-slate-200 text-4xl font-semibold text-darkblue-800">
+              {stats.nb_point}{' '}
+              <span className="mr-7 text-[13px] font-medium leading-[14px] sm:text-xs">
+                {t('MySpiriMove.Stats.Points')}
+              </span>
             </h3>
-            <span className="text-gray-300 align-middle inline-block transform scale-y-150">|</span>
-            <h3 className="font-medium tracking-tight text-gray-900 ml-7">
-              {stats.nb_days} <span className="text-sm font-normal">{t('MySpiriMove.Stats.Days')}</span>
+
+            <h3 className="ml-7 text-4xl font-semibold text-darkblue-800">
+              {stats.nb_days}{' '}
+              <span className="text-[13px] font-medium leading-[14px] sm:text-xs">{t('MySpiriMove.Stats.Days')}</span>
             </h3>
           </div>
-          <p className="ml-4 text-sm font-normal text-gray-900">
+          <p className="ml-4 text-sm font-medium text-darkblue-800 sm:text-xs">
             {t('MySpiriMove.Stats.RewardLevel', { count: rewardLevel })}
           </p>
         </div>

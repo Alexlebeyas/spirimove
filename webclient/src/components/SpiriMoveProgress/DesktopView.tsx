@@ -24,11 +24,13 @@ const DesktopView: React.FC<ViewProps> = ({
   };
 
   return (
-    <table className="my-5 w-full overflow-hidden rounded-lg sm:bg-white sm:shadow-lg">
+    <table className="mb-5 w-full overflow-hidden rounded-lg antialiased sm:bg-white sm:shadow-lg">
       <thead className="text-white">
-        <tr className="rounded-l-lg bg-gray-800">
-        {Object.entries(headers).map(([key, header]) => (
-            <th key={key} className="p-3 text-left">{header}</th>
+        <tr className="rounded-l-lg bg-darkblue-800">
+          {Object.entries(headers).map(([key, header]) => (
+            <th key={key} className="px-3 py-4 text-left text-sm font-medium">
+              {header}
+            </th>
           ))}
         </tr>
       </thead>
