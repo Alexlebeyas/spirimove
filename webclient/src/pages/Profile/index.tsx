@@ -43,7 +43,6 @@ const Profile = () => {
     setLanguage(e.target.value);
     i18next.changeLanguage(e.target.value);
     setCurrentLanguage(e.target.value);
-    window.location.reload();
   };
 
   return (
