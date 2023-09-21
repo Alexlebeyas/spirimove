@@ -63,8 +63,8 @@ class ParticipationModelAdmin(admin.ModelAdmin):
 class PendingParticipation(ParticipationModel):
     class Meta:
         proxy = True
-        verbose_name = _('Pending participation')
-        verbose_name_plural = _('Pending participations')
+        verbose_name = _('Participation en attente')
+        verbose_name_plural = _('Participations en attente')
 
 
 @admin.register(PendingParticipation)
@@ -86,8 +86,8 @@ class PendingParticipationAdmin(ParticipationModelAdmin):
 class ResolvedParticipation(ParticipationModel):
     class Meta:
         proxy = True
-        verbose_name = _('Resolved participation')
-        verbose_name_plural = _('Resolved participations')
+        verbose_name = _('Participation résolu')
+        verbose_name_plural = _('Participations résolu')
 
 
 @admin.register(ResolvedParticipation)
