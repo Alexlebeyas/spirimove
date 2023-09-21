@@ -8,6 +8,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import { useContest } from '@/hooks';
 import { isContestOver } from '@/utils/contest';
+import { formatDate } from '@/utils/dates';
+
 interface Props {
   currentDate: string;
   participation?: IParticipation;
@@ -46,20 +48,20 @@ const getScore = (status?: ParticipationStatus, points?: number): string | numbe
   }
 };
 
-const renderStatus = (status?: ParticipationStatus): JSX.Element | null => {
+const renderStatus = (t: (key: string) => string, status?: ParticipationStatus): JSX.Element | null => {
   if (!status) return null;
   const color = ParticipationStatusColorMap[status];
   if (!color) return null;
   return (
     <span className="align-middle">
-      <FiberManualRecordIcon style={{ color, fontSize: '16px' }} /> {status}
+      <FiberManualRecordIcon style={{ color, fontSize: '16px' }} /> {t(`Participation.ValidationState.${status}`)}
     </span>
   );
 };
 
 const EmptyRow: React.FC<{ currentDate: string }> = ({ currentDate }) => (
   <tr className="flex-no wrap mb-2 flex flex-col border-b border-slate-200 text-darkblue-800 hover:bg-slate-50 sm:mb-0 sm:table-row">
-    <td className="px-3 py-2">{currentDate}</td>
+    <td className="px-3 py-2">{formatDate(currentDate)}</td>
     {Array(8)
       .fill(null)
       .map((_, id) => (
@@ -73,7 +75,7 @@ const EmptyRow: React.FC<{ currentDate: string }> = ({ currentDate }) => (
 const EmptyCard: React.FC<{ currentDate: string; message: string }> = ({ currentDate, message }) => (
   <div className="mx-4 mb-5 rounded-md bg-white px-4 py-5 antialiased shadow-md">
     <div className="flex items-center justify-between">
-      <div className="font-semibold text-darkblue-800">{currentDate}</div>
+      <div className="font-semibold text-darkblue-800">{formatDate(currentDate)}</div>
     </div>
     <div className="mt-2 text-sm text-slate-600">{message}</div>
   </div>
@@ -146,8 +148,8 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
   }) => (
     <div className="mx-4 mb-5 rounded-md bg-white px-4 py-5 text-darkblue-800 antialiased shadow-md">
       <div className="flex items-center justify-between">
-        <div className="font-semibold">{currentDate}</div>
-        <div className="font-medium">{renderStatus(status)}</div>
+        <div className="font-semibold">{formatDate(currentDate)}</div>
+        <div className="font-medium">{renderStatus(t, status)}</div>
       </div>
       {image && (
         <div className="mt-4">
@@ -193,12 +195,12 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
     image,
   }) => (
     <tr className="wrap mb-2 flex flex-col border-b border-slate-200 text-darkblue-800 hover:bg-slate-50 sm:mb-0 sm:table-row">
-      <td className="px-3 py-2">{currentDate}</td>
+      <td className="px-3 py-2">{formatDate(currentDate)}</td>
       <td className="px-3 py-2">{type}</td>
       <td className="px-3 py-2">{type === 'Normal' ? is_intensive : '-'}</td>
       <td className="px-3 py-2">{type !== 'Normal' ? is_organizer : '-'}</td>
       <td className="px-3 py-2">{description}</td>
-      <td className="px-3 py-2">{renderStatus(status)}</td>
+      <td className="px-3 py-2">{renderStatus(t, status)}</td>
       <td className="px-3 py-2">{score}</td>
       <td className="px-3 py-2">
         {image && (

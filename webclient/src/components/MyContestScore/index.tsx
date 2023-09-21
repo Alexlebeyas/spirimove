@@ -29,7 +29,7 @@ const MyContestScore = () => {
   return (
     <div className="mx-4 mb-6 max-w-full rounded-md bg-white shadow-md sm:mx-0 sm:max-w-[350px]">
       <div className="p-5 antialiased">
-        <h6 className="text-xl font-bold text-darkblue-800 lg:text-lg">{stats.contest_name}</h6>
+        <h6 className="text-xl font-bold text-darkblue-800 lg:text-lg">{t('MySpiriMove.Stats.Title')}</h6>
         <div className="items-left flex h-full flex-col justify-center">
           <div className="m-4 flex items-center">
             <h3 className="border-r-2 border-slate-200 text-4xl font-semibold text-darkblue-800">

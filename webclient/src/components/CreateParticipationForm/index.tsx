@@ -6,7 +6,7 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import HelpIcon from '@mui/icons-material/Help';
 import ParticipationService from '@/services/ParticipationService';
-import { DATE_FORMAT } from '@/constants/formats';
+import { DATE_FORMAT, DISPLAY_DATE_FORMAT } from '@/constants/formats';
 import { useTranslation } from 'react-i18next';
 import Button from '@mui/material/Button';
 import './index.css';
@@ -41,6 +41,8 @@ interface FieldErrors {
   type: string;
 }
 
+const FACILITATOR_KEY = 2;
+
 const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDate, setOpen, participationToEdit }) => {
   const { isLoading, participationsTypes, getParticipationsTypes } = fetchParticipationsType((state) => state);
   if (isLoading) {
@@ -59,7 +61,6 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
   });
 
   const [intensiveTooltipVisibility, setIntensiveTooltipVisibility] = useState(false);
-  const [organizerTooltipVisibility, setOrganizerTooltipVisibility] = useState(false);
   const [showActivityTypeTooltip, setShowActivityTypeTooltip] = useState(false);
 
   const [fileUrl, setfileUrl] = useState(participationToEdit?.image ?? '');
@@ -80,8 +81,31 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
 
   const { t } = useTranslation();
 
+  const validateForm = (): FieldErrors | undefined => {
+    const errors: Partial<FieldErrors> = {};
+
+    if (!participationData.description) {
+      errors.description = t('Participation.Required');
+    }
+
+    if (shouldSetImage && !participationData.image) {
+      errors.image = t('Participation.Required');
+    }
+
+    if (!participationData.type) {
+      errors.type = t('Participation.Required');
+    }
+
+    return Object.keys(errors).length > 0 ? (errors as FieldErrors) : undefined;
+  };
+
   const onSubmitHandler = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
+    const formErrors = validateForm();
+    if (formErrors) {
+      setTypeError(formErrors);
+      return;
+    }
     setTypeError(undefined);
     if (participationToEdit) {
       ParticipationService.updateParticipation(participationData, participationToEdit?.id)
@@ -152,6 +176,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                 <DatePicker
                   className="w-full sm:w-1/2"
                   label={t('Participation.ActivityDate')}
+                  format={DISPLAY_DATE_FORMAT}
                   value={moment(participationData.date)}
                   minDate={moment(startDate, DATE_FORMAT)}
                   maxDate={moment(endDate, DATE_FORMAT)}
@@ -192,20 +217,13 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   </Button>
                 </label>
                 {fileUrl ? <img src={fileUrl} style={{ height: 200 }} /> : ''}
-                <FormHelperText
-                  sx={{
-                    color: '#E0303B',
-                    fontWeight: '700',
-                  }}
-                >
-                  {typeError?.image}
-                </FormHelperText>
+                <FormHelperText>{typeError?.image}</FormHelperText>
               </FormControl>
             </div>
           )}
           <div className="mb-6 md:flex md:items-center">
             <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.type}>
-              <InputLabel id="activity-type-label">{t('Participation.ActivityType')}</InputLabel>
+              <InputLabel id="activity-type-label">{t('Participation.ActivityType.Label')}</InputLabel>
               <Select
                 className={'w-full'}
                 labelId="activity-type-label"
@@ -218,7 +236,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
               >
                 {participationsTypes?.map((participationType) => (
                   <MenuItem key={participationType.id} value={participationType.id}>
-                    {participationType.name}
+                    {t(`Participation.ActivityType.Options.${participationType.name}`)}
                   </MenuItem>
                 ))}
               </Select>
@@ -228,7 +246,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   fontWeight: '700',
                 }}
               >
-                {typeError?.type}
+                {typeError?.type && t('Participation.Required')}
               </FormHelperText>
               <div style={{ position: 'absolute', top: '50%', right: 12, transform: 'translateY(-50%)' }}>
                 <ClickAwayListener onClickAway={() => setShowActivityTypeTooltip(false)}>
@@ -268,14 +286,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   })
                 }
               />
-              <FormHelperText
-                sx={{
-                  color: '#E0303B',
-                  fontWeight: '700',
-                }}
-              >
-                {typeError?.description}{' '}
-              </FormHelperText>
+              <FormHelperText>{typeError?.description}</FormHelperText>
             </FormControl>
           </div>
 
@@ -330,10 +341,20 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
           {canHaveOrganizer ? (
             <div className="mb-6">
               <FormControlLabel
-                label={t('Participation.Organizer.Label')}
+                label={
+                  participationData?.type === FACILITATOR_KEY
+                    ? t('Participation.Facilitator.Label')
+                    : t('Participation.Initiator.Label')
+                }
                 control={
                   <Checkbox
                     checked={participationData.isOrganizer}
+                    sx={{
+                      color: '#2F3940',
+                      '&.Mui-checked': {
+                        color: '#708EF4',
+                      },
+                    }}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setParticipationData({
                         ...participationData,
@@ -343,21 +364,6 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   />
                 }
               />
-              <ClickAwayListener onClickAway={() => setOrganizerTooltipVisibility(false)}>
-                <Tooltip
-                  PopperProps={{
-                    disablePortal: true,
-                  }}
-                  onClose={() => setOrganizerTooltipVisibility(false)}
-                  open={organizerTooltipVisibility}
-                  disableFocusListener
-                  disableHoverListener
-                  disableTouchListener
-                  title={t('Participation.Organizer.Tooltip')}
-                >
-                  <HelpIcon onClick={() => setOrganizerTooltipVisibility(true)} />
-                </Tooltip>
-              </ClickAwayListener>
             </div>
           ) : (
             ''
