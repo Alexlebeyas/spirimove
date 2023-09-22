@@ -59,11 +59,11 @@ msgid "Participations en attente"
 msgstr ""
 
 #: apps/participation/admin.py:89
-msgid "Participation résolu"
+msgid "Participation résolue"
 msgstr ""
 
 #: apps/participation/admin.py:90
-msgid "Participations résolu"
+msgid "Participations résolues"
 msgstr ""
 
 #: apps/participation/models.py:25

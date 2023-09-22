@@ -86,8 +86,8 @@ class PendingParticipationAdmin(ParticipationModelAdmin):
 class ResolvedParticipation(ParticipationModel):
     class Meta:
         proxy = True
-        verbose_name = _('Participation résolu')
-        verbose_name_plural = _('Participations résolu')
+        verbose_name = _('Participation résolue')
+        verbose_name_plural = _('Participations résolues')
 
 
 @admin.register(ResolvedParticipation)
