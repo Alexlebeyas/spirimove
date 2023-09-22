@@ -24,7 +24,7 @@ export const ParticipateModal: React.FC<Props> = ({ contestId, startDate, open, 
         scroll="body"
         aria-labelledby="participate-dialog-title"
         aria-describedby="participate-dialog-description"
-        maxWidth="sm"
+        maxWidth="xs"
         fullWidth
       >
         <DialogContent dividers>

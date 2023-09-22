@@ -31,7 +31,7 @@ interface Props {
   endDate: string;
   contestId: number;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  participationToEdit?: IParticipation| null;
+  participationToEdit?: IParticipation | null;
 }
 
 interface FieldErrors {
@@ -43,8 +43,8 @@ interface FieldErrors {
 const FACILITATOR_KEY = 2;
 
 const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDate, setOpen, participationToEdit }) => {
-  const {isLoading, participationsTypes, getParticipationsTypes} = fetchParticipationsType((state) => state);
-  if(isLoading){
+  const { isLoading, participationsTypes, getParticipationsTypes } = fetchParticipationsType((state) => state);
+  if (isLoading) {
     getParticipationsTypes();
   }
   const emptyIconRenderer = useCallback(() => null, []);
@@ -54,42 +54,48 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
     description: participationToEdit ? participationToEdit.description : '',
     date: participationToEdit ? participationToEdit.date : moment().format(DATE_FORMAT),
     image: undefined,
-    isIntensive: participationToEdit ? participationToEdit.is_intensive : false, 
-    isOrganizer: participationToEdit ? participationToEdit.is_organizer : false, 
+    isIntensive: participationToEdit ? participationToEdit.is_intensive : false,
+    isOrganizer: participationToEdit ? participationToEdit.is_organizer : false,
     type: participationToEdit?.type?.id ?? participationsTypes[0]?.id,
   });
-  
+
   const [intensiveTooltipVisibility, setIntensiveTooltipVisibility] = useState(false);
   const [showActivityTypeTooltip, setShowActivityTypeTooltip] = useState(false);
 
-  const [fileUrl, setfileUrl] = useState( participationToEdit?.image ?? '');
+  const [fileUrl, setfileUrl] = useState(participationToEdit?.image ?? '');
   const [typeError, setTypeError] = useState<FieldErrors | undefined>(undefined);
 
   const updateMyParticipations = fetchMyParticipations((state) => state.getParticipations);
   const updateAllParticipations = fetchAllParticipations((state) => state.getParticipations);
 
-  const [canBeIntensive, setCanBeIntensive] = useState(participationsTypes.find((p) => p.id === participationData.type)?.can_be_intensive);
-  const [canHaveOrganizer, setCanHaveOrganizer] = useState(participationsTypes.find((p) => p.id === participationData.type)?.can_have_organizer);
-  const [shouldSetImage, setShouldSetImage] = useState(participationsTypes.find((p) => p.id === participationData.type)?.should_set_image);
+  const [canBeIntensive, setCanBeIntensive] = useState(
+    participationsTypes.find((p) => p.id === participationData.type)?.can_be_intensive
+  );
+  const [canHaveOrganizer, setCanHaveOrganizer] = useState(
+    participationsTypes.find((p) => p.id === participationData.type)?.can_have_organizer
+  );
+  const [shouldSetImage, setShouldSetImage] = useState(
+    participationsTypes.find((p) => p.id === participationData.type)?.should_set_image
+  );
 
   const { t } = useTranslation();
 
   const validateForm = (): FieldErrors | undefined => {
     const errors: Partial<FieldErrors> = {};
-  
+
     if (!participationData.description) {
       errors.description = t('Participation.Required');
     }
-  
+
     if (shouldSetImage && !participationData.image) {
       errors.image = t('Participation.Required');
     }
-  
+
     if (!participationData.type) {
       errors.type = t('Participation.Required');
     }
-  
-    return Object.keys(errors).length > 0 ? errors as FieldErrors : undefined;
+
+    return Object.keys(errors).length > 0 ? (errors as FieldErrors) : undefined;
   };
 
   const onSubmitHandler = async (e: React.MouseEvent<HTMLElement>) => {
@@ -100,22 +106,26 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
       return;
     }
     setTypeError(undefined);
-    if(participationToEdit){
-      ParticipationService.updateParticipation(participationData, participationToEdit?.id).then(()=>{
-        updateMyParticipations();
-        updateAllParticipations();
-        setOpen(false);
-      }).catch(function (error) {
-        setTypeError(error);
-      });
-    }else{
-      ParticipationService.submitParticipation(participationData).then(()=>{
-        updateMyParticipations();
-        updateAllParticipations();
-        setOpen(false);
-      }).catch(function (error) {
-        setTypeError(error);
-      });
+    if (participationToEdit) {
+      ParticipationService.updateParticipation(participationData, participationToEdit?.id)
+        .then(() => {
+          updateMyParticipations();
+          updateAllParticipations();
+          setOpen(false);
+        })
+        .catch(function (error) {
+          setTypeError(error);
+        });
+    } else {
+      ParticipationService.submitParticipation(participationData)
+        .then(() => {
+          updateMyParticipations();
+          updateAllParticipations();
+          setOpen(false);
+        })
+        .catch(function (error) {
+          setTypeError(error);
+        });
     }
   };
 
@@ -127,7 +137,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
   const handleImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const file = e.target?.files != undefined ? e.target.files[0] : undefined;
-    const filePath = file != undefined ? URL.createObjectURL(file):'';
+    const filePath = file != undefined ? URL.createObjectURL(file) : '';
     setfileUrl(filePath);
 
     setParticipationData({
@@ -136,9 +146,9 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
     });
   };
 
-  const onParticipationTypeChange = (e: SelectChangeEvent<number|string>) => {
-    const val = e.target.value ? Number(e.target.value) : "";
-    const choosenType = participationsTypes?.find((type) => type.id === val)
+  const onParticipationTypeChange = (e: SelectChangeEvent<number | string>) => {
+    const val = e.target.value ? Number(e.target.value) : '';
+    const choosenType = participationsTypes?.find((type) => type.id === val);
     const intensive = choosenType?.can_be_intensive ? participationData.isIntensive : false;
     const organizer = choosenType?.can_have_organizer ? participationData.isOrganizer : false;
     setCanBeIntensive(choosenType?.can_be_intensive ?? false);
@@ -153,15 +163,17 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
   };
 
   return (
-   <div className="my-5">
-    <h1 className="mb-6">{!participationToEdit ? t('Participation.NewTitle'): t('Participation.EditTitle')}</h1>
+    <div className="mx-2 my-4">
+      <h1 className="mb-8 text-3xl font-bold text-darkblue-800">
+        {!participationToEdit ? t('Participation.NewTitle') : t('Participation.EditTitle')}
+      </h1>
       <div>
         <form>
-          <div className="mb-6 mt-5">
+          <div className="mb-6">
             <div data-te-datepicker-init data-te-inline="true" data-te-input-wrapper-init>
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DatePicker
-                  className="w-full"
+                  className="w-full sm:w-1/2"
                   label={t('Participation.ActivityDate')}
                   format={DISPLAY_DATE_FORMAT}
                   value={moment(participationData.date)}
@@ -180,28 +192,36 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
             </div>
           </div>
 
-          {shouldSetImage && <div className="mb-6">
-        <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.image} >
-          <input
-            accept="image/*"
-            hidden
-            id="raised-button-file"
-            type="file"
-            onChange={handleImageFile}
-            style={{ display: 'none' }}
-            required={shouldSetImage}
-          />
-          <label htmlFor="raised-button-file">
-            <Button className="w-full" variant="outlined" component="span" onChange={handleImageFile}>
-              {t('Participation.SelectImage')}
-            </Button>
-          </label>
-          {fileUrl ? <img src={fileUrl} style={{ height:200}}/> : ''}
-          <FormHelperText>{typeError?.image && t('Participation.Required')}</FormHelperText>
-          </FormControl>
-        </div>}
+          {shouldSetImage && (
+            <div className="mb-6">
+              <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.image}>
+                <input
+                  accept="image/*"
+                  hidden
+                  id="raised-button-file"
+                  type="file"
+                  onChange={handleImageFile}
+                  style={{ display: 'none' }}
+                  required={shouldSetImage}
+                />
+                <label htmlFor="raised-button-file">
+                  <Button
+                    className="w-full"
+                    variant="outlined"
+                    size="large"
+                    component="span"
+                    onChange={handleImageFile}
+                  >
+                    {t('Participation.SelectImage')}
+                  </Button>
+                </label>
+                {fileUrl ? <img src={fileUrl} style={{ height: 200 }} /> : ''}
+                <FormHelperText>{typeError?.image}</FormHelperText>
+              </FormControl>
+            </div>
+          )}
           <div className="mb-6 md:flex md:items-center">
-            <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.type} >
+            <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.type}>
               <InputLabel id="activity-type-label">{t('Participation.ActivityType.Label')}</InputLabel>
               <Select
                 className={'w-full'}
@@ -213,37 +233,59 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                 IconComponent={emptyIconRenderer}
                 required={true}
               >
-              { participationsTypes?.map((participationType) => (
-                  <MenuItem key={participationType.id} value={participationType.id}>{t(`Participation.ActivityType.Options.${participationType.name}`)}</MenuItem>
-              ))}
+                {participationsTypes?.map((participationType) => (
+                  <MenuItem key={participationType.id} value={participationType.id}>
+                    {t(`Participation.ActivityType.Options.${participationType.name}`)}
+                  </MenuItem>
+                ))}
               </Select>
-              <FormHelperText>{typeError?.type && t('Participation.Required')}</FormHelperText>
+              <FormHelperText
+                sx={{
+                  color: '#E0303B',
+                  fontWeight: '700',
+                }}
+              >
+                {typeError?.type && t('Participation.Required')}
+              </FormHelperText>
               <div style={{ position: 'absolute', top: '50%', right: 12, transform: 'translateY(-50%)' }}>
                 <ClickAwayListener onClickAway={() => setShowActivityTypeTooltip(false)}>
-                  <Tooltip open={showActivityTypeTooltip} title={t('Participation.ActivityType.Tooltip')}>
-                    <HelpIcon color="action" onClick={() => setShowActivityTypeTooltip(!showActivityTypeTooltip)} />
+                  <Tooltip
+                    open={showActivityTypeTooltip}
+                    title={t('Participation.ActivityType.Tooltip')}
+                    placement="top-end"
+                    arrow
+                  >
+                    <HelpIcon
+                      sx={{ color: '#2F3940', '&:hover': { color: '#708EF4' } }}
+                      onClick={() => setShowActivityTypeTooltip(!showActivityTypeTooltip)}
+                    />
                   </Tooltip>
                 </ClickAwayListener>
-            </div>
+              </div>
             </FormControl>
           </div>
           <div className="mb-6 md:flex md:items-center">
-          <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.description} >
-            <TextField
-              required={true}
-              className="mb-6 w-full"
-              id="outlined-basic"
-              label={t('Participation.ActivityDescription.Label')}
+            <FormControl
+              className="w-full"
               variant="outlined"
-              value={participationData.description}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setParticipationData({
-                  ...participationData,
-                  description: e.target.value,
-                })
-              }
-            />
-            <FormHelperText>{typeError?.description && t('Participation.Required')}</FormHelperText>
+              style={{ width: '100%' }}
+              error={!!typeError?.description}
+            >
+              <TextField
+                required={true}
+                className="mb-6 w-full"
+                id="outlined-basic"
+                label="Activity Description"
+                variant="outlined"
+                value={participationData.description}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setParticipationData({
+                    ...participationData,
+                    description: e.target.value,
+                  })
+                }
+              />
+              <FormHelperText>{typeError?.description}</FormHelperText>
             </FormControl>
           </div>
 
@@ -251,9 +293,16 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
             <div className="mb-6">
               <FormControlLabel
                 label={t('Participation.HighIntensity.Label')}
+                className=" text-darkblue-800"
                 control={
                   <Checkbox
                     checked={participationData.isIntensive}
+                    sx={{
+                      color: '#2F3940',
+                      '&.Mui-checked': {
+                        color: '#708EF4',
+                      },
+                    }}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setParticipationData({
                         ...participationData,
@@ -274,8 +323,13 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   disableHoverListener
                   disableTouchListener
                   title={t('Participation.HighIntensity.Tooltip')}
+                  placement="top"
+                  arrow
                 >
-                  <HelpIcon color="action" onClick={() => setIntensiveTooltipVisibility(true)} />
+                  <HelpIcon
+                    sx={{ color: '#2F3940', '&:hover': { color: '#708EF4' } }}
+                    onClick={() => setIntensiveTooltipVisibility(true)}
+                  />
                 </Tooltip>
               </ClickAwayListener>
             </div>
@@ -286,11 +340,20 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
           {canHaveOrganizer ? (
             <div className="mb-6">
               <FormControlLabel
-                label={participationData?.type === FACILITATOR_KEY
-                  ? t('Participation.Facilitator.Label'): t('Participation.Initiator.Label')}
+                label={
+                  participationData?.type === FACILITATOR_KEY
+                    ? t('Participation.Facilitator.Label')
+                    : t('Participation.Initiator.Label')
+                }
                 control={
                   <Checkbox
                     checked={participationData.isOrganizer}
+                    sx={{
+                      color: '#2F3940',
+                      '&.Mui-checked': {
+                        color: '#708EF4',
+                      },
+                    }}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setParticipationData({
                         ...participationData,
@@ -304,21 +367,29 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
           ) : (
             ''
           )}
-
-          <div className="mb-6 md:flex md:items-center">
-            <Button
-              className="w-full"
-              variant="contained"
-              component="label"
-              onClick={onSubmitHandler}
-            >
-              {t('Button.Submit')}
-            </Button>
-          </div>
-          <div className="mb-6 md:flex md:items-center">
-            <Button className="w-full" variant="contained" component="label" onClick={onCancelHandler}>
-              {t('Button.Cancel')}
-            </Button>
+          <div className="flex flex-col md:flex-row md:justify-end md:space-x-4">
+            <div className="mb-6 md:mb-0 md:flex ">
+              <Button
+                className="w-full md:w-32"
+                variant="outlined"
+                size="large"
+                component="label"
+                onClick={onCancelHandler}
+              >
+                {t('Button.Cancel')}
+              </Button>
+            </div>
+            <div className="mb-6 md:mb-0 md:flex">
+              <Button
+                className="w-full md:w-32"
+                variant="contained"
+                size="large"
+                component="label"
+                onClick={onSubmitHandler}
+              >
+                {t('Button.Submit')}
+              </Button>
+            </div>
           </div>
         </form>
       </div>

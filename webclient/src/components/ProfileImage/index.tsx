@@ -25,7 +25,7 @@ export const ProfileImage: React.FC<Props> = ({ name, image, size, fontSize }) =
   ) : (
     <div
       style={{ width: `${size}px`, height: `${size}px`, fontSize: `${fontSize}px` }}
-      className={`flex select-none items-center justify-center rounded-full bg-[#e0303b] font-semibold text-white`}
+      className={`flex select-none items-center justify-center rounded-full bg-[#e0303b] font-semibold uppercase text-white`}
     >
       {initials}
     </div>
