@@ -216,7 +216,9 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                     {t('Participation.SelectImage')}
                   </Button>
                 </label>
-                {fileUrl ? <img src={fileUrl} style={{ height: 200 }} /> : ''}
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  {fileUrl ? <img src={fileUrl} style={{ maxWidth: "100%", maxHeight: 350 }} /> : ''}
+                </div>
                 <FormHelperText>{typeError?.image}</FormHelperText>
               </FormControl>
             </div>
