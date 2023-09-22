@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-18 15:46+0000\n"
+"POT-Creation-Date: 2023-09-21 19:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
 #: apps/contest/models.py:13
 msgid "Contest"
 msgstr ""
@@ -44,36 +43,28 @@ msgid "Participation(s) sélectionnée(s) Marquée(s) comme rejetée(s) !!"
 msgstr ""
 
 #: apps/participation/admin.py:22
-msgid "Désapprouver les participations selectionnées"
+msgid "Réinitialiser la décision des participations selectionnées"
 msgstr ""
 
 #: apps/participation/admin.py:25
 msgid "Participation(s) sélectionnée(s) Marquée(s) comme non approuvée(s) !!"
 msgstr ""
 
-#: apps/participation/admin.py:63
-msgid "Participation to approve"
-msgstr "Participation à approuver"
+#: apps/participation/admin.py:66
+msgid "Participation en attente"
+msgstr ""
 
-#: apps/participation/admin.py:64
-msgid "Participations to approve"
-msgstr "Participations à approuver"
+#: apps/participation/admin.py:67
+msgid "Participations en attente"
+msgstr ""
 
-#: apps/participation/admin.py:84
-msgid "Participation to reject"
-msgstr "Participation à refuser"
+#: apps/participation/admin.py:89
+msgid "Participation résolue"
+msgstr ""
 
-#: apps/participation/admin.py:85
-msgid "Participations to reject"
-msgstr "Participations à refuser"
-
-#: apps/participation/admin.py:105
-msgid "Participation to unapproved"
-msgstr "Participation à désapprouver"
-
-#: apps/participation/admin.py:106
-msgid "Participations to unapproved"
-msgstr "Participations à désapprouver"
+#: apps/participation/admin.py:90
+msgid "Participations résolues"
+msgstr ""
 
 #: apps/participation/models.py:25
 msgid "Participation type"
@@ -81,7 +72,7 @@ msgstr "Type de participation"
 
 #: apps/participation/models.py:26
 msgid "Participations type"
-msgstr "Type des participations"
+msgstr "Type des participation"
 
 #: apps/participation/models.py:48
 msgid "Participation"
@@ -212,6 +203,3 @@ msgstr "Bureau"
 #: apps/users/models.py:90
 msgid "Display Name"
 msgstr "Afficher le nom"
-
-#~ msgid "Run Drawn"
-#~ msgstr "Exécuter le tirage"
