@@ -29,7 +29,7 @@ const Profile = () => {
   };
 
   const onFileDeleteHandler = async () => {
-    await UserService.deleteProfileImage();    
+    await UserService.deleteProfileImage();
     await refreshUser();
   };
 
@@ -49,26 +49,28 @@ const Profile = () => {
     <PageContainer>
       <div className="flex justify-center rounded-md bg-white p-4 shadow-md">
         <div>
-          <div className="mb-6 flex flex-col items-center justify-center">
-            <div className="relative">
-              <ProfileImage name={user.display_name} size={175} fontSize={70} image={user.profile_picture} />
+          <div className="mb-6 flex flex-col items-center justify-center text-darkblue-800">
+            <div className="relative mb-3">
+              <ProfileImage name={user.display_name} size={160} fontSize={60} image={user.profile_picture} />
               <button
-                className="absolute right-5 top-1 rounded-full bg-gray-100 p-1 shadow-md hover:bg-gray-200"
+                className="absolute right-3 top-1 rounded-full bg-gray-100 p-1 shadow-md hover:bg-gray-200"
                 onClick={onFileSelectHandler}
               >
                 <EditIcon />
               </button>
-              {user.profile_picture &&
+              {user.profile_picture && (
                 <button
-                className="absolute right-5 bottom-1 rounded-full bg-gray-100 p-1 shadow-md hover:bg-gray-200"
-                onClick={onFileDeleteHandler}
+                  className="absolute bottom-1 right-3 rounded-full bg-gray-100 p-1 shadow-md hover:bg-gray-200"
+                  onClick={onFileDeleteHandler}
                 >
-                  <DeleteIcon style={{ color: 'red' }}/>
+                  <DeleteIcon style={{ color: '#E0303B' }} />
                 </button>
-              }              
+              )}
             </div>
             <h3 className="mt-2">{user.display_name}</h3>
-            <h4 className="mt-2">{t('Common.Office')} {user.office}</h4>
+            <h4 className="mt-2 font-medium text-slate-500">
+              {t('Common.Office')} {user.office}
+            </h4>
             <input
               className="hidden"
               type="file"
@@ -85,8 +87,7 @@ const Profile = () => {
               </Select>
             </FormControl>
           </div>
-          <div>
-          </div>
+          <div></div>
         </div>
       </div>
     </PageContainer>

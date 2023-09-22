@@ -9,7 +9,6 @@ import ParticipationService from '@/services/ParticipationService';
 import { DATE_FORMAT, DISPLAY_DATE_FORMAT } from '@/constants/formats';
 import { useTranslation } from 'react-i18next';
 import Button from '@mui/material/Button';
-import './index.css';
 import {
   Checkbox,
   ClickAwayListener,
