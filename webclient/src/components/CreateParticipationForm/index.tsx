@@ -193,7 +193,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
 
           {shouldSetImage && (
             <div className="mb-6">
-              <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.image}>
+              <FormControl className="w-full" variant="outlined" error={!!typeError?.image}>
                 <input
                   accept="image/*"
                   hidden
@@ -214,17 +214,17 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                     {t('Participation.SelectImage')}
                   </Button>
                 </label>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  {fileUrl ? <img src={fileUrl} style={{ maxWidth: '100%', maxHeight: 350 }} /> : ''}
+                <div className="flex justify-center items-center">
+                  {fileUrl ? <img src={fileUrl} className="max-w-full max-h-88" /> : ''}
                 </div>
                 <FormHelperText>{typeError?.image}</FormHelperText>
               </FormControl>
             </div>
           )}
           <div className="mb-6 md:flex md:items-center">
-            <div style={{ display: 'flex', width: '100%', flexWrap: 'nowrap' }}>
-              <div style={{ flexBasis: '90%' }}>
-                <FormControl className="w-full" style={{ width: '100%' }} error={!!typeError?.type}>
+            <div className="flex w-full flex-nowrap">
+              <div className="flex-grow">
+                <FormControl className="w-full" error={!!typeError?.type}>
                   <InputLabel id="activity-type-label">{t('Participation.ActivityType.Label')}</InputLabel>
                   <Select
                     className={'w-full'}
@@ -250,10 +250,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   </FormHelperText>
                 </FormControl>
               </div>
-              <div
-                className="ml-3"
-                style={{ flexBasis: '10%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              >
+              <div className="ml-3 flex items-center justify-center flex-basis[10%]">
                 <ClickAwayListener onClickAway={() => setShowActivityTypeTooltip(false)}>
                   <Tooltip
                     open={showActivityTypeTooltip}
@@ -274,7 +271,6 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
             <FormControl
               className="w-full"
               variant="outlined"
-              style={{ width: '100%' }}
               error={!!typeError?.description}
             >
               <TextField
