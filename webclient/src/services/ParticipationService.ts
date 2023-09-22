@@ -30,7 +30,8 @@ const ToastDisplay = (response: AxiosResponse<{ errors: { detail: string }[] }>,
 
   toastType(toastMessage, {
     position: toast.POSITION.TOP_RIGHT,
-    autoClose: 20000,
+    autoClose: 5000,
+    pauseOnHover: false,
   });
 };
 
