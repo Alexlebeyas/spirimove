@@ -7,6 +7,7 @@ import ParticipationService from '@/services/ParticipationService';
 import { IParticipation } from '@/interfaces';
 import { fetchAllParticipations } from '@/stores/useParticipationStore';
 import AddReactionOutlinedIcon from '@mui/icons-material/AddReactionOutlined';
+import { formatDate } from '@/utils/dates';
 import './index.css';
 
 interface Props {
@@ -91,7 +92,7 @@ export const ParticipationCard: React.FC<Props> = ({ participation }) => {
       <img className="max-h-[450px] w-full object-contain" src={participation.image} />
 
       <div className="p-3">
-        <div className="mb-1 text-sm font-medium text-slate-600">{participation.date}</div>
+        <div className="mb-1 text-sm font-medium text-slate-600">{formatDate(participation.date)}</div>
         <p className="font-medium">{participation.description}</p>
         <div className="mt-2 text-slate-600">
           <ReactionCounter
