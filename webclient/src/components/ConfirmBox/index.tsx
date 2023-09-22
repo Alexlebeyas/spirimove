@@ -55,9 +55,9 @@ export const ConfirmBox: React.FC<Props> = ({ open, setOpen, participation, hand
         </DialogContent>
         <DialogActions sx={{ marginBottom: 2, marginRight: 2 }}>
           <Button variant="outlined" size="large" onClick={handleClose} autoFocus sx={{ marginRight: 1 }}>
-            {t('Common.KeepIt')}{' '}
+            {t('Common.KeepIt')}
           </Button>
-          <Button className="!bg-red hover:!bg-[#B11B24]" variant="contained" size="large" onClick={handleDelete}>
+          <Button className="MuiCustomButton-delete" variant="contained" size="large" onClick={handleDelete}>
             {t('Common.Delete')}
           </Button>
         </DialogActions>
