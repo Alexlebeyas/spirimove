@@ -47,7 +47,9 @@ class ParticipationModelAdmin(admin.ModelAdmin):
     def image_displayed(self, obj):
         if obj.image:
             return format_html(
-                f"<a target='_blank' href='{obj.image.url}'><img height='100px' width='100px' src='{obj.image.url}'></a>")
+                "<a target='_blank' href='{}'><img height='100px' src='{}' />",
+                obj.image.url,
+                obj.image.url)
         return "/"
 
     def has_delete_permission(self, request, obj=None):
@@ -108,7 +110,12 @@ class ResolvedParticipationAdmin(ParticipationModelAdmin):
 
 @admin.register(DrawModel)
 class DrawModelAdmin(admin.ModelAdmin):
-    list_display = ['contest_name', 'winner_name', 'level_name', 'office', 'total_days', 'date_created',
+    list_display = ['contest_name',
+                    'winner_name',
+                    'level_name',
+                    'office',
+                    'total_days',
+                    'date_created',
                     'last_modified']
 
     def contest_name(self, obj):

@@ -33,7 +33,8 @@ class UserAdmin(DjangoUserAdmin):
     def image_displayed(self, obj):
         if obj.profile_picture:
             return format_html(
-                f"<a target='_blank' href='{obj.profile_picture.url}'><img height='100px' width='100px' src='{obj.profile_picture.url}'></a>")
+                f"<a target='_blank' href='{obj.profile_picture.url}'>"
+                f"<img height='100px' width='100px' src='{obj.profile_picture.url}'></a>")
         return "/"
 
     def group_list(self, obj):

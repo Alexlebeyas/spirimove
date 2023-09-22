@@ -6,6 +6,7 @@ from django.core.files.storage import default_storage
 
 from .models import ParticipationModel, ParticipationTypeModel, DrawModel, LevelModel, ReactionModel
 
+
 class AddParticipationModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParticipationModel
@@ -103,7 +104,7 @@ class LeaderBoardSerializer(serializers.Serializer):
     total_days = serializers.CharField(max_length=200)
     max_consecutive_days = serializers.CharField(max_length=200)
 
-    def to_representation(self, instance):        
+    def to_representation(self, instance):
         data = super().to_representation(instance)
         request = self.context
         data['user__profile_picture'] = request.build_absolute_uri(

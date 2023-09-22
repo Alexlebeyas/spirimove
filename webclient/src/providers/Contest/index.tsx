@@ -11,7 +11,7 @@ interface Props {
   children: JSX.Element | Array<JSX.Element>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
+ 
 const CurrentContestContext = createContext<ICurrentContestContext>({ contest: undefined, fetchCurrent: () => {} });
 
 const CurrentContestProvider: React.FC<Props> = ({ children }) => {

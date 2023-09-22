@@ -5,10 +5,24 @@ DEBUG = TEMPLATE_DEBUG = False
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-ALLOWED_HOSTS = ['spiri-move-be.azurewebsites.net']
-PROJECT_PROTOCOL = 'https://'
-PROJECT_DOMAIN = 'spiri-move-be.azurewebsites.net'
-PROJECT_URI = "".join((PROJECT_PROTOCOL, PROJECT_DOMAIN))
+PROJECT_URI = 'https://' + os.environ['WEBSITE_HOSTNAME']
+ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
+CSRF_TRUSTED_ORIGINS = [PROJECT_URI] if 'WEBSITE_HOSTNAME' in os.environ else []
+
+# Configure Postgres database based on connection string of the libpq Keyword/Value form
+# https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING
+conn_str = os.environ['AZURE_POSTGRESQL_CONNECTIONSTRING']
+conn_str_params = {pair.split('=')[0]: pair.split('=')[1] for pair in conn_str.split(' ')}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': conn_str_params['dbname'],
+        'USER': conn_str_params['user'],
+        'PASSWORD': conn_str_params['password'],
+        'HOST': conn_str_params['host'],
+        'PORT': conn_str_params['port'],
+    }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {

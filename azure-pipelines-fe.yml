@@ -3,20 +3,32 @@ trigger:
     include:
       - develop
 
-resources:
-  - repo: self
+variables:
+  - group: Azure Info
+  - group: Azure web app
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: $(AZ_VM_IMAGE_NAME)
 
 steps:
   - task: NodeTool@0
+    displayName: "Install Node"
     inputs:
-      versionSpec: "18.x"
-    displayName: "Install Node.js"
+      versionSource: "spec"
+      versionSpec: $(NODE_VERSION)
 
   - script: |
       npm ci
-      npm run build
-    workingDirectory: "$(build.sourcesdirectory)/webclient"
-    displayName: "Install dependencies and build app"
+    workingDirectory: "$(System.DefaultWorkingDirectory)/$(PROJECT_ROOT)"
+    displayName: "Install dependencies"
+
+  - script: |
+      npm run lint:ci
+    workingDirectory: "$(System.DefaultWorkingDirectory)/$(PROJECT_ROOT)"
+    continueOnError: true
+    displayName: "Lint"
+
+  - script: |
+      npm run test --if-present
+    workingDirectory: "$(System.DefaultWorkingDirectory)/$(PROJECT_ROOT)"
+    displayName: "Test"

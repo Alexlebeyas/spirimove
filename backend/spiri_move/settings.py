@@ -8,8 +8,8 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 INSTALLED_APPS += ["sslserver",]
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
-PROJECT_PROTOCOL = 'http://'
-PROJECT_DOMAIN = ''
+PROJECT_PROTOCOL = 'https://'
+PROJECT_DOMAIN = 'localhost'
 PROJECT_URI = "".join((PROJECT_PROTOCOL, PROJECT_DOMAIN))
 
 AZURE_ACCOUNT_NAME = ""

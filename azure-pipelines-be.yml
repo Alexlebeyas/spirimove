@@ -5,27 +5,42 @@ trigger:
     include:
     - develop
 
-pr:
-  autoCancel: true
-
-resources:
-- repo: self
-
 variables:
-  tag: '$(Build.BuildId)'
+  - group: Azure Info
+  - group: Azure backend app
+  - group: backend.env.ci
 
 stages:
 - stage: Build
   displayName: Build docker-compose
   jobs:
   - job: Build
-    displayName: Build
+    displayName: Lint and tests
     pool:
       vmImage: ubuntu-latest
+    
     steps:
     - task: DockerCompose@0
+      displayName: Build
       inputs:
         containerregistrytype: 'Container Registry'
         dockerComposeFile: '**/docker-compose.yml'
         action: 'Run a Docker Compose command'
-        dockerComposeCommand: 'build'
+        dockerComposeCommand: 'build web'
+
+    - task: DockerCompose@0
+      displayName: Lint
+      continueOnError: true
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerComposeFile: '**/docker-compose.yml'
+        action: 'Run a Docker Compose command'
+        dockerComposeCommand: 'run web make lint'
+
+    - task: DockerCompose@0
+      displayName: Tests
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerComposeFile: '**/docker-compose.yml'
+        action: 'Run a Docker Compose command'
+        dockerComposeCommand: 'run web make test'

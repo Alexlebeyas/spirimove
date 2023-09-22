@@ -6,48 +6,51 @@
 trigger: none
 
 variables:
-  # Azure Resource Manager connection created during pipeline creation
-  azureServiceConnectionId: '4f02a825-8a0c-42ba-85e3-17c262683393'
-
-  # Web app name
-  webAppName: 'spiri-move-be'
-
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
-
-  # Environment name
-  environmentName: 'spiri-move-be'
-
-  # Project root folder. Point to the folder containing manage.py file.
-  projectRoot: $(System.DefaultWorkingDirectory)/backend
-
-  # Python version: 3.10
-  pythonVersion: '3.10'
+  - group: Azure Info
+  - group: Azure backend app
 
 stages:
 - stage: Build
   displayName: Build stage
   jobs:
   - job: BuildJob
+    
     pool:
-      vmImage: $(vmImageName)
+        vmImage: $(AZ_VM_IMAGE_NAME)
+    
+    variables:
+    - group: backend.env.ci
+    
     steps:
-    - task: UsePythonVersion@0
+    - task: DockerCompose@0
+      displayName: Build
       inputs:
-        versionSpec: '$(pythonVersion)'
-      displayName: 'Use Python $(pythonVersion)'
+        containerregistrytype: 'Container Registry'
+        dockerComposeFile: '**/docker-compose.yml'
+        action: 'Run a Docker Compose command'
+        dockerComposeCommand: 'build web'
 
-    - script: |
-        python -m pip install --upgrade pip
-        pip install setup
-        pip install --target="./.python_packages/lib/site-packages" -r ./requirements.txt
-      workingDirectory: $(projectRoot)
-      displayName: "Install requirements"
+    - task: DockerCompose@0
+      displayName: Lint
+      continueOnError: true
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerComposeFile: '**/docker-compose.yml'
+        action: 'Run a Docker Compose command'
+        dockerComposeCommand: 'run web make lint'
+
+    - task: DockerCompose@0
+      displayName: Tests
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerComposeFile: '**/docker-compose.yml'
+        action: 'Run a Docker Compose command'
+        dockerComposeCommand: 'run web make test'
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
-        rootFolderOrFile: '$(projectRoot)'
+        rootFolderOrFile: '$(PROJECT_ROOT)'
         includeRootFolder: false
         archiveType: zip
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
@@ -61,27 +64,26 @@ stages:
   displayName: 'Deploy Web App'
   dependsOn: Build
   condition: succeeded()
+  
   jobs:
   - deployment: DeploymentJob
+  
     pool:
-      vmImage: $(vmImageName)
-    environment: $(environmentName)
+      vmImage: $(AZ_VM_IMAGE_NAME)
+  
+    environment: $(AZ_DEVOPS_ENVIRONMENT)
+  
     strategy:
       runOnce:
         deploy:
           steps:
 
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: '$(pythonVersion)'
-            displayName: 'Use Python version'
-
           - task: AzureWebApp@1
-            displayName: 'Azure Web App Deploy: $(webAppName)'
+            displayName: "Azure Web App Deploy to dev: $(AZ_WEB_APP_NAME)"
             inputs:
-              azureSubscription: $(azureServiceConnectionId)
+              azureSubscription: $(AZ_SUBSCRIPTION)
               deployToSlotOrASE: true
               resourceGroupName: Backend
-              slotName: production
-              appName: $(webAppName)
+              slotName: dev
+              appName: $(AZ_WEB_APP_NAME)
               package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip

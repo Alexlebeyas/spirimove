@@ -28,6 +28,22 @@ stages:
           versionSource: "spec"
           versionSpec: $(NODE_VERSION)
 
+      - script: |
+          npm ci
+        workingDirectory: "$(System.DefaultWorkingDirectory)/$(PROJECT_ROOT)"
+        displayName: "Install dependencies"
+
+      - script: |
+          npm run lint:ci
+        workingDirectory: "$(System.DefaultWorkingDirectory)/$(PROJECT_ROOT)"
+        continueOnError: true
+        displayName: "Lint"
+
+      - script: |
+          npm run test --if-present
+        workingDirectory: "$(System.DefaultWorkingDirectory)/$(PROJECT_ROOT)"
+        displayName: "Test"
+
       - bash: |
           set -e
           echo "Write $(pwd)/.env.production"
@@ -42,11 +58,10 @@ stages:
         displayName: "Generate .env.production"
 
       - script: |
-          npm ci
           npm run build
         workingDirectory: "$(System.DefaultWorkingDirectory)/$(PROJECT_ROOT)"
-        displayName: "Install dependencies and build app"
-      
+        displayName: "Build app"
+
       - task: CopyFiles@2
         displayName: "Copy production build"
         inputs:
@@ -65,7 +80,7 @@ stages:
   condition: succeeded()
   jobs:
   - deployment: Deploy
-    environment: $(AZ_DEVOPS_ENVIRONMENT)
+    environment: $(AZ_DEVOPS_ENVIRONMENT)-${{ parameters.deployEnv }}
     pool:
       vmImage: $(AZ_VM_IMAGE_NAME)
     strategy:
