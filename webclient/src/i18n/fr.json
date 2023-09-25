@@ -111,12 +111,7 @@
       "DateWithoutAsterisk": "Date",
       "ActivityType": {
         "Label": "Type *",
-        "Tooltip": "Sélecteur de type d'activité",
-        "Options": {
-          "Normal": "Standard",
-          "Popup": "Défi Pop-up",
-          "King of the Hill": "Henri pis sa gang"
-        }
+        "Tooltip": "Sélecteur de type d'activité"
       },
       "ActivityDescription": {
         "Label": "Description",
