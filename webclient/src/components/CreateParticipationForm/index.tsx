@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ICreateParticipationForm } from '@/interfaces/ICreateParticipationForm';
 import moment from 'moment';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -49,10 +49,8 @@ const helpTextProps = {
 }
 
 const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDate, setOpen, participationToEdit }) => {
-  const { isLoading, participationsTypes, getParticipationsTypes } = fetchParticipationsType((state) => state);
-  if (isLoading) {
-    getParticipationsTypes();
-  }
+  const { participationsTypes, getParticipationsTypes } = fetchParticipationsType((state) => state);
+  
   const [participationData, setParticipationData] = useState<ICreateParticipationForm>({
     contestId: contestId,
     name: 'name',
@@ -188,6 +186,11 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
     });
   };
 
+  useEffect(() => {
+    getParticipationsTypes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="mx-2 my-4">
       <h1 className="mb-8 text-3xl font-bold text-darkblue-800">
@@ -273,7 +276,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   >
                     {participationsTypes?.map((participationType) => (
                       <MenuItem key={participationType.id} value={participationType.id}>
-                        {t(`Participation.ActivityType.Options.${participationType.name}`)}
+                        {participationType.name}
                       </MenuItem>
                     ))}
                   </Select>

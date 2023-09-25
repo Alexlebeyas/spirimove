@@ -90,8 +90,6 @@ class User(AbstractUser):
     display_name = models.CharField(_('Display Name'), max_length=256, null=True, blank=True)
     profile_picture = models.ImageField(upload_to=profile_picture_path, storage=get_storage(private=True), null=True,
                                         blank=True)
-    roles = models.ManyToManyField(Role, blank=True)
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 

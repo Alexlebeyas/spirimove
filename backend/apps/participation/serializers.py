@@ -14,9 +14,10 @@ class AddParticipationModelSerializer(serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super(AddParticipationModelSerializer, self).__init__(*args, **kwargs)
-        participation_type = ParticipationTypeModel.objects.get(pk=self.initial_data.get("type"))
-        if participation_type.should_set_image and not (self.instance and self.instance.image):
-            self.fields['image'].required = True
+        if hasattr(object, 'initial_data'):
+            participation_type = ParticipationTypeModel.objects.get(pk=self.initial_data.get("type"))
+            if participation_type.should_set_image and not (self.instance and self.instance.image):
+                self.fields['image'].required = True
 
     def validate(self, data):
         """

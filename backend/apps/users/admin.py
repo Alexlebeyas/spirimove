@@ -24,7 +24,7 @@ class UserAdmin(DjangoUserAdmin):
             'fields': ('email', 'password1', 'password2'),
         }),
     )
-    list_display = ['email', 'display_name', 'first_name', 'last_name', 'office', 'group_list', 'role_list',
+    list_display = ['email', 'display_name', 'first_name', 'last_name', 'office', 'group_list',
                     'image_displayed', 'is_superuser']
     search_fields = ('email', 'first_name', 'last_name')
     ordering = ('email',)
@@ -39,9 +39,6 @@ class UserAdmin(DjangoUserAdmin):
 
     def group_list(self, obj):
         return ' / '.join([group.name for group in obj.groups.all()])
-
-    def role_list(self, obj):
-        return ' / '.join([role.role for role in obj.roles.all()])
 
     def has_module_permission(self, request):
         if request.user.is_authenticated:
