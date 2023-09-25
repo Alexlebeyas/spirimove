@@ -34,14 +34,16 @@ const MyContestScore = () => {
           <div className="m-4 flex items-center">
             <h3 className="border-r-2 border-slate-200 text-4xl font-semibold text-darkblue-800">
               {stats.nb_point}
-              <span className="mr-7 text-[13px] font-medium leading-[14px] sm:text-xs">
+              <span className="ml-1 mr-7 text-[13px] font-medium leading-[14px] sm:text-xs">
                 {t('MySpiriMove.Stats.Points')}
               </span>
             </h3>
 
             <h3 className="ml-7 text-4xl font-semibold text-darkblue-800">
               {stats.nb_days}
-              <span className="text-[13px] font-medium leading-[14px] sm:text-xs">{t('MySpiriMove.Stats.Days')}</span>
+              <span className="ml-1 text-[13px] font-medium leading-[14px] sm:text-xs">
+                {t('MySpiriMove.Stats.Days')}
+              </span>
             </h3>
           </div>
           <p className="ml-4 text-sm font-medium text-darkblue-800 sm:text-xs">
