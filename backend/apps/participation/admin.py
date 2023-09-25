@@ -1,10 +1,17 @@
+import csv
+
 from apps.contest.models import ContestsModel
 from django.contrib import admin
 from django.contrib import messages
+from django.http import HttpResponse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from .models import ParticipationModel, DrawModel, ParticipationTypeModel, LevelModel
+
+participation_list_display = ['date', 'user__display_name', 'status', 'type__name', 'is_intensive', 'is_organizer',
+                              'points', 'description', 'image_displayed']
+participation_list_to_export = participation_list_display[:-1]
 
 
 @admin.action(description=_("Approuver les participations selectionnées"))
@@ -25,23 +32,38 @@ def make_unapprove(modeladmin, request, queryset):
     messages.success(request, _("Participation(s) sélectionnée(s) Marquée(s) comme non approuvée(s) !!"))
 
 
+@admin.action(description=_("Exporter les participations selectionnées en CSV"))
+def export_participations_as_csv(modeladmin, request, queryset):
+    field_names = participation_list_to_export
+    queryset = queryset.values(*field_names)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=Participations.csv'
+    writer = csv.writer(response)
+
+    writer.writerow(field_names)
+    for obj in queryset:
+        writer.writerow([obj.get(field) for field in field_names])
+
+    messages.success(request, _("Exportation réussie !"))
+    return response
+
+
 @admin.register(ParticipationModel)
 class ParticipationModelAdmin(admin.ModelAdmin):
-    list_display = ['user_name', 'contest_name', 'description', 'type_name', 'points', 'is_intensive', 'is_organizer',
-                    'date', 'image_displayed', 'status']
+    list_display = participation_list_display
     list_filter = ('contest__name',)
-    actions = [make_approve, make_rejected, make_unapprove, ]
+    actions = [make_approve, make_rejected, make_unapprove, export_participations_as_csv]
 
     def has_change_permission(self, request, obj=None):
         return obj is None
 
-    def contest_name(self, obj):
+    def contest__name(self, obj):
         return obj.contest.name
 
-    def user_name(self, obj):
+    def user__display_name(self, obj):
         return obj.user.display_name
 
-    def type_name(self, obj):
+    def type__name(self, obj):
         return obj.type.name if obj.type else "/"
 
     def image_displayed(self, obj):
@@ -71,9 +93,8 @@ class PendingParticipation(ParticipationModel):
 
 @admin.register(PendingParticipation)
 class PendingParticipationAdmin(ParticipationModelAdmin):
-    actions = [make_approve, make_rejected]
-    list_display = ['date', 'user_name', 'status', 'type_name', 'is_intensive', 'is_organizer', 'points', 'description',
-                    'image_displayed']
+    actions = [make_approve, make_rejected, export_participations_as_csv]
+    list_display = participation_list_display
 
     def get_queryset(self, request):
         return self.model.objects.filter(
@@ -94,9 +115,8 @@ class ResolvedParticipation(ParticipationModel):
 
 @admin.register(ResolvedParticipation)
 class ResolvedParticipationAdmin(ParticipationModelAdmin):
-    actions = [make_unapprove]
-    list_display = ['date', 'user_name', 'status', 'type_name', 'is_intensive', 'is_organizer', 'points', 'description',
-                    'image_displayed']
+    actions = [make_unapprove, export_participations_as_csv]
+    list_display = participation_list_display
 
     def get_queryset(self, request):
         return self.model.objects.filter(
