@@ -108,6 +108,9 @@
       "DeleteActivity": "Delete activity?",
       "NoMoreToLoad": "No more participations to load !",
       "ActivityDate": "Date *",
+      "ActivityDuplicateDateError": "This activity type has been logged already on this date.",
+      "ActivityDateOutOfRangeError": "Must be within the contest date range.",
+      "ActivityDuplicateTypeError": "This activity type has been logged already on this date.",
       "DateWithoutAsterisk": "Date",
       "ActivityType": {
         "Label": "Type *",

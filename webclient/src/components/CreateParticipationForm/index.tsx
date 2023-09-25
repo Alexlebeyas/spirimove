@@ -38,9 +38,15 @@ interface FieldErrors {
   description: string;
   image: string;
   type: string;
+  date: string;
 }
 
 const FACILITATOR_KEY = 2;
+
+const helpTextProps = {
+  color: '#E0303B',
+  fontWeight: '700',
+}
 
 const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDate, setOpen, participationToEdit }) => {
   const { isLoading, participationsTypes, getParticipationsTypes } = fetchParticipationsType((state) => state);
@@ -81,6 +87,20 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
 
   const validateForm = (): FieldErrors | undefined => {
     const errors: Partial<FieldErrors> = {};
+
+    if (participationData.date) {
+      
+      const start_date = new Date(startDate);
+      const end_date = new Date(endDate);
+      const newDate = new Date(participationData.date);
+      start_date.setHours(0, 0, 0, 0);
+      end_date.setHours(0, 0, 0, 0);
+      newDate.setHours(0, 0, 0, 0);
+
+      if (newDate < start_date || newDate > end_date) {
+        errors.date = t('Participation.ActivityDateOutOfRangeError');
+      }
+    } 
 
     if (!participationData.description) {
       errors.description = t('Participation.Required');
@@ -123,7 +143,14 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
           setOpen(false);
         })
         .catch(function (error) {
-          setTypeError(error);
+          const errorObject = {...error};
+          if(error?.date){
+            errorObject.date = t('Participation.ActivityDuplicateDateError');
+          }
+          if(error?.type){
+            errorObject.type = t('Participation.ActivityDuplicateTypeError');
+          }
+          setTypeError(errorObject);
         });
     }
   };
@@ -178,6 +205,15 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   value={moment(participationData.date)}
                   minDate={moment(startDate, DATE_FORMAT)}
                   maxDate={moment(endDate, DATE_FORMAT)}
+                  slotProps={{
+                    textField: () => {
+                      const showError = typeError?.type || typeError?.date;
+                      return ({
+                        color: showError ? 'error' : 'primary',
+                        focused: showError ? true : false,
+                      })
+                    },
+                  }}
                   onChange={(newValue) => {
                     if (newValue !== null) {
                       setParticipationData({
@@ -188,6 +224,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   }}
                 />
               </LocalizationProvider>
+              <FormHelperText sx={helpTextProps}>{typeError?.date}</FormHelperText>
             </div>
           </div>
 
@@ -217,7 +254,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                 <div className="flex justify-center items-center">
                   {fileUrl ? <img src={fileUrl} className="max-w-full max-h-88" /> : ''}
                 </div>
-                <FormHelperText>{typeError?.image}</FormHelperText>
+                <FormHelperText sx={helpTextProps}>{typeError?.image}</FormHelperText>
               </FormControl>
             </div>
           )}
@@ -240,13 +277,8 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                       </MenuItem>
                     ))}
                   </Select>
-                  <FormHelperText
-                    sx={{
-                      color: '#E0303B',
-                      fontWeight: '700',
-                    }}
-                  >
-                    {typeError?.type && t('Participation.Required')}
+                  <FormHelperText sx={helpTextProps}>
+                    {typeError?.type}
                   </FormHelperText>
                 </FormControl>
               </div>
@@ -279,6 +311,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                 id="outlined-basic"
                 label="Activity Description"
                 variant="outlined"
+                error={!!typeError?.description}
                 value={participationData.description}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setParticipationData({
@@ -287,7 +320,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   })
                 }
               />
-              <FormHelperText>{typeError?.description}</FormHelperText>
+              <FormHelperText sx={helpTextProps}>{typeError?.description}</FormHelperText>
             </FormControl>
           </div>
 
