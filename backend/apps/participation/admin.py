@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
+from spiri_move.admin_panel_permissions import ModerationPermissions, AdminPermissions
 
 from .models import ParticipationModel, DrawModel, ParticipationTypeModel, LevelModel
 
@@ -49,13 +50,10 @@ def export_participations_as_csv(modeladmin, request, queryset):
 
 
 @admin.register(ParticipationModel)
-class ParticipationModelAdmin(admin.ModelAdmin):
+class ParticipationModelAdmin(ModerationPermissions, admin.ModelAdmin):
     list_display = participation_list_display
     list_filter = ('contest__name',)
     actions = [make_approve, make_rejected, make_unapprove, export_participations_as_csv]
-
-    def has_change_permission(self, request, obj=None):
-        return obj is None
 
     def contest__name(self, obj):
         return obj.contest.name
@@ -73,15 +71,6 @@ class ParticipationModelAdmin(admin.ModelAdmin):
                 obj.image.url,
                 obj.image.url)
         return "/"
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-    def has_add_permission(self, request):
-        return False
-
-    def has_module_permission(self, request):
-        return (request.user.is_moderator() or request.user.is_admin()) if request.user.is_authenticated else False
 
 
 class PendingParticipation(ParticipationModel):
@@ -102,9 +91,6 @@ class PendingParticipationAdmin(ParticipationModelAdmin):
             contest=ContestsModel.current_contest.first()
         )
 
-    def has_module_permission(self, request):
-        return (request.user.is_moderator() or request.user.is_admin()) if request.user.is_authenticated else False
-
 
 class ResolvedParticipation(ParticipationModel):
     class Meta:
@@ -124,12 +110,9 @@ class ResolvedParticipationAdmin(ParticipationModelAdmin):
             contest=ContestsModel.current_contest.first()
         )
 
-    def has_module_permission(self, request):
-        return (request.user.is_moderator() or request.user.is_admin()) if request.user.is_authenticated else False
-
 
 @admin.register(DrawModel)
-class DrawModelAdmin(admin.ModelAdmin):
+class DrawModelAdmin(AdminPermissions, admin.ModelAdmin):
     list_display = ['contest_name',
                     'winner_name',
                     'level_name',
@@ -147,33 +130,15 @@ class DrawModelAdmin(admin.ModelAdmin):
     def level_name(self, obj):
         return f"{obj.level.name}"
 
-    def has_module_permission(self, request):
-        return request.user.is_admin() if request.user.is_authenticated else False
-
-    def has_add_permission(self, request):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-    def has_change_permission(self, request, obj=None):
-        return obj is None
-
 
 @admin.register(ParticipationTypeModel)
-class ParticipationTypeModelAdmin(admin.ModelAdmin):
+class ParticipationTypeModelAdmin(AdminPermissions, admin.ModelAdmin):
     list_display = ['pk', 'name', 'name_fr', 'name_en', 'can_be_intensive', 'can_add_more_by_day', 'can_have_organizer',
                     'shoul_be_display_on_feed', 'should_set_image', 'points', 'date_created']
     exclude = ['description', ]
 
-    def has_module_permission(self, request):
-        return request.user.is_admin() if request.user.is_authenticated else False
-
 
 @admin.register(LevelModel)
-class LevelModelAdmin(admin.ModelAdmin):
+class LevelModelAdmin(AdminPermissions, admin.ModelAdmin):
     list_display = ['pk', 'name', 'price', 'participation_day', 'order', 'is_active', 'date_created']
     exclude = ['last_modified', ]
-
-    def has_module_permission(self, request):
-        return request.user.is_admin() if request.user.is_authenticated else False
