@@ -10,13 +10,12 @@ from django.shortcuts import get_object_or_404
 from django.urls import path, reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
-from spiri_move.admin_panel_permissions import AdminPermissions
 
 from .models import ContestsModel
 
 
 @admin.register(ContestsModel)
-class ActivitiesModelAdmin(AdminPermissions, admin.ModelAdmin):
+class ActivitiesModelAdmin(admin.ModelAdmin):
     list_display = ['name', 'name_en', 'name_fr', 'start_date', 'end_date', 'is_open', 'date_created', 'last_modified',
                     'draw_action']
     exclude = ['date_created', 'last_modified', ]
@@ -39,6 +38,7 @@ class ActivitiesModelAdmin(AdminPermissions, admin.ModelAdmin):
         contest = get_object_or_404(ContestsModel, pk=contest_id)
         list_element_for_draw = get_list_stats(contest)
         list_res = sorted(list_element_for_draw, key=lambda data: data['nb_days'], reverse=True)
+        DrawModel.objects.filter(contest=contest).delete()
 
         winner_list = self.run_global_draw_function(contest, list_res)
         self.run_office_draw_function(contest, list_res, winner_list)
