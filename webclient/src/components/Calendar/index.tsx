@@ -7,6 +7,7 @@ import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { useContestParticipations } from '@/hooks/useContestParticipations';
 import { CircularProgress } from '@mui/material';
+import { DATE_FORMAT } from '@/constants/formats';
 
 interface CustomDayProps extends PickersDayProps<Moment> {
   highlightedDates?: string[];
@@ -20,7 +21,7 @@ const StyledBadge = styled(Badge)(() => ({
 }));
 
 function CustomDay({ highlightedDates = [], day, ...other }: CustomDayProps) {
-  const dateString = day.format('YYYY-MM-DD');
+  const dateString = day.format(DATE_FORMAT);
   const isHighlighted = highlightedDates.includes(dateString);
 
   return (
