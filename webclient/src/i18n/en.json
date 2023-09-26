@@ -23,9 +23,9 @@
       "Logout": "Logout"
     },
     "Home": {
-      "AddNewActivity": "New Activity",
-      "ContestStatusOver": "The Contest is over!",
-      "ViewResults": "View Results"
+      "AddNewActivity": "New activity",
+      "ContestStatusOver": "The contest is over!",
+      "ViewResults": "View results"
     },
     "Leaderboard": {
       "Title": "Leaderboard",
@@ -114,7 +114,11 @@
       "DateWithoutAsterisk": "Date",
       "ActivityType": {
         "Label": "Type *",
-        "Tooltip": "Activity Type Selector"
+        "Tooltip": {
+          "Standard": "Your daily activity.",
+          "KingOfHill": "When you gather at least 2 other Spirians to your sport initiative.",
+          "PopUpChallenge": "A short online session organized by a moderator."
+        }
       },
       "ActivityDescription": {
         "Label": "Description",

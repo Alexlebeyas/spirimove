@@ -25,6 +25,7 @@ import {
 
 import { IParticipation } from '@/interfaces';
 import { fetchMyParticipations, fetchAllParticipations, fetchParticipationsType } from '@/stores/useParticipationStore';
+import { isDateWithinRange } from '@/utils/dates';
 
 interface Props {
   startDate: string;
@@ -41,12 +42,28 @@ interface FieldErrors {
   date: string;
 }
 
+interface ActivityTypeTooltip {
+  activityType?: ICreateParticipationForm['type'];
+  canHaveOrganizer?: boolean;
+}
+
 const FACILITATOR_KEY = 2;
 
-const helpTextProps = {
+const errorTextStyles = {
   color: '#E0303B',
   fontWeight: '700',
 }
+
+// TODO: This is temporary and should be removed when the backend returns translated activity tooltips
+const getActivityTypeTooltipKey = ({ canHaveOrganizer, activityType }: ActivityTypeTooltip): string => {
+  if (canHaveOrganizer) {
+    return activityType === FACILITATOR_KEY
+      ? 'Participation.ActivityType.Tooltip.PopUpChallenge'
+      : 'Participation.ActivityType.Tooltip.KingOfHill';
+  }
+
+  return 'Participation.ActivityType.Tooltip.Standard';
+};
 
 const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDate, setOpen, participationToEdit }) => {
   const { participationsTypes, getParticipationsTypes } = fetchParticipationsType((state) => state);
@@ -87,15 +104,9 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
     const errors: Partial<FieldErrors> = {};
 
     if (participationData.date) {
-      
-      const start_date = new Date(startDate);
-      const end_date = new Date(endDate);
-      const newDate = new Date(participationData.date);
-      start_date.setHours(0, 0, 0, 0);
-      end_date.setHours(0, 0, 0, 0);
-      newDate.setHours(0, 0, 0, 0);
+      const isDateInRange = isDateWithinRange(participationData.date, startDate, endDate);
 
-      if (newDate < start_date || newDate > end_date) {
+      if (!isDateInRange) {
         errors.date = t('Participation.ActivityDateOutOfRangeError');
       }
     } 
@@ -141,13 +152,11 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
           setOpen(false);
         })
         .catch(function (error) {
-          const errorObject = {...error};
-          if(error?.date){
-            errorObject.date = t('Participation.ActivityDuplicateDateError');
-          }
-          if(error?.type){
-            errorObject.type = t('Participation.ActivityDuplicateTypeError');
-          }
+          const errorObject = {
+            ...error,
+            date: error?.date ? t('Participation.ActivityDuplicateDateError') : error?.date,
+            type: error?.type ? t('Participation.ActivityDuplicateTypeError') : error?.type,
+          };
           setTypeError(errorObject);
         });
     }
@@ -211,10 +220,10 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   slotProps={{
                     textField: () => {
                       const showError = typeError?.type || typeError?.date;
-                      return ({
+                      return {
                         color: showError ? 'error' : 'primary',
                         focused: showError ? true : false,
-                      })
+                      };
                     },
                   }}
                   onChange={(newValue) => {
@@ -227,7 +236,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   }}
                 />
               </LocalizationProvider>
-              <FormHelperText sx={helpTextProps}>{typeError?.date}</FormHelperText>
+              <FormHelperText sx={errorTextStyles}>{typeError?.date}</FormHelperText>
             </div>
           </div>
 
@@ -245,7 +254,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                 />
                 <label htmlFor="raised-button-file">
                   <Button
-                    className="w-full"
+                    className={`w-full ${typeError?.image ? 'MuiCustomButton-error' : ''}`}
                     variant="outlined"
                     size="large"
                     component="span"
@@ -254,60 +263,59 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                     {t('Participation.SelectImage')}
                   </Button>
                 </label>
-                <div className="flex justify-center items-center">
-                  {fileUrl ? <img src={fileUrl} className="max-w-full max-h-88" /> : ''}
+                <div className="flex items-center justify-center">
+                  {fileUrl ? <img src={fileUrl} className="max-h-88 max-w-full" /> : ''}
                 </div>
-                <FormHelperText sx={helpTextProps}>{typeError?.image}</FormHelperText>
+                <FormHelperText sx={errorTextStyles}>{typeError?.image}</FormHelperText>
               </FormControl>
             </div>
           )}
-          <div className="mb-6 md:flex md:items-center">
-            <div className="flex w-full flex-nowrap">
-              <div className="flex-grow">
-                <FormControl className="w-full" error={!!typeError?.type}>
-                  <InputLabel id="activity-type-label">{t('Participation.ActivityType.Label')}</InputLabel>
-                  <Select
-                    className={'w-full'}
-                    labelId="activity-type-label"
-                    value={participationData.type}
-                    label={t('Participation.ActivityType.Label')}
-                    onChange={onParticipationTypeChange}
-                    required={true}
-                  >
-                    {participationsTypes?.map((participationType) => (
-                      <MenuItem key={participationType.id} value={participationType.id}>
-                        {participationType.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText sx={helpTextProps}>
-                    {typeError?.type}
-                  </FormHelperText>
-                </FormControl>
-              </div>
-              <div className="ml-3 flex items-center justify-center flex-basis[10%]">
-                <ClickAwayListener onClickAway={() => setShowActivityTypeTooltip(false)}>
-                  <Tooltip
-                    open={showActivityTypeTooltip}
-                    title={t('Participation.ActivityType.Tooltip')}
-                    placement="top-end"
-                    arrow
-                  >
-                    <HelpIcon
-                      sx={{ color: '#2F3940', '&:hover': { color: '#708EF4' } }}
-                      onClick={() => setShowActivityTypeTooltip(!showActivityTypeTooltip)}
-                    />
-                  </Tooltip>
-                </ClickAwayListener>
+          <div className="mb-6 ">
+            <div className="md:flex md:items-center">
+              <div className="flex w-full flex-nowrap">
+                <div className="flex-grow">
+                  <FormControl className="w-full" error={!!typeError?.type}>
+                    <InputLabel id="activity-type-label">{t('Participation.ActivityType.Label')}</InputLabel>
+                    <Select
+                      className={'w-full'}
+                      labelId="activity-type-label"
+                      value={participationData.type}
+                      label={t('Participation.ActivityType.Label')}
+                      onChange={onParticipationTypeChange}
+                      required={true}
+                    >
+                      {participationsTypes?.map((participationType) => (
+                        <MenuItem key={participationType.id} value={participationType.id}>
+                          {participationType.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+                <div className="flex-basis[10%] ml-3 flex items-center justify-center">
+                  <ClickAwayListener onClickAway={() => setShowActivityTypeTooltip(false)}>
+                    <Tooltip
+                      open={showActivityTypeTooltip}
+                      title={t(getActivityTypeTooltipKey({ activityType: participationData.type, canHaveOrganizer }))}
+                      placement="top-end"
+                      arrow
+                    >
+                      <HelpIcon
+                        sx={{ color: '#2F3940', '&:hover': { color: '#708EF4' } }}
+                        onClick={() => setShowActivityTypeTooltip(!showActivityTypeTooltip)}
+                      />
+                    </Tooltip>
+                  </ClickAwayListener>
+                </div>
               </div>
             </div>
+            <div className="ml-2 flex w-full flex-nowrap">
+              <FormHelperText sx={errorTextStyles}>{typeError?.type}</FormHelperText>
+            </div>
           </div>
+
           <div className="mb-6 md:flex md:items-center">
-            <FormControl
-              className="w-full"
-              variant="outlined"
-              error={!!typeError?.description}
-            >
+            <FormControl className="w-full" variant="outlined" error={!!typeError?.description}>
               <TextField
                 required={true}
                 className="mb-6 w-full"
@@ -323,7 +331,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   })
                 }
               />
-              <FormHelperText sx={helpTextProps}>{typeError?.description}</FormHelperText>
+              <FormHelperText sx={errorTextStyles}>{typeError?.description}</FormHelperText>
             </FormControl>
           </div>
 

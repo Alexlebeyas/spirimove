@@ -26,3 +26,15 @@ export const formatDate = (date?: string) => {
   return '';
 
 };
+
+export const isDateWithinRange = (participationDate: string, startDate: string, endDate: string) => {
+  const startDateObj = new Date(startDate);
+      const endDateObj = new Date(endDate);
+      const participationDateObj = new Date(participationDate);
+
+      const startOfStartDate = new Date(startDateObj.setHours(0, 0, 0, 0));
+      const startOfEndDate = new Date(endDateObj.setHours(0, 0, 0, 0));
+      const startOfParticipationDate = new Date(participationDateObj.setHours(0, 0, 0, 0));
+
+      return startOfParticipationDate >= startOfStartDate && startOfParticipationDate <= startOfEndDate
+}
