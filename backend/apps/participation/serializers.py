@@ -6,6 +6,7 @@ from django.core.files.storage import default_storage
 
 from .models import ParticipationModel, ParticipationTypeModel, DrawModel, LevelModel, ReactionModel
 
+
 class AddParticipationModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParticipationModel
@@ -13,9 +14,10 @@ class AddParticipationModelSerializer(serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super(AddParticipationModelSerializer, self).__init__(*args, **kwargs)
-        participation_type = ParticipationTypeModel.objects.get(pk=self.initial_data.get("type"))
-        if participation_type.should_set_image and not (self.instance and self.instance.image):
-            self.fields['image'].required = True
+        if hasattr(object, 'initial_data'):
+            participation_type = ParticipationTypeModel.objects.get(pk=self.initial_data.get("type"))
+            if participation_type.should_set_image and not (self.instance and self.instance.image):
+                self.fields['image'].required = True
 
     def validate(self, data):
         """
@@ -103,7 +105,7 @@ class LeaderBoardSerializer(serializers.Serializer):
     total_days = serializers.CharField(max_length=200)
     max_consecutive_days = serializers.CharField(max_length=200)
 
-    def to_representation(self, instance):        
+    def to_representation(self, instance):
         data = super().to_representation(instance)
         request = self.context
         data['user__profile_picture'] = request.build_absolute_uri(

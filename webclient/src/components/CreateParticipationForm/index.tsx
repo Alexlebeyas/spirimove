@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState, useCallback } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ICreateParticipationForm } from '@/interfaces/ICreateParticipationForm';
 import moment from 'moment';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -43,11 +43,8 @@ interface FieldErrors {
 const FACILITATOR_KEY = 2;
 
 const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDate, setOpen, participationToEdit }) => {
-  const { isLoading, participationsTypes, getParticipationsTypes } = fetchParticipationsType((state) => state);
-  if (isLoading) {
-    getParticipationsTypes();
-  }
-  const emptyIconRenderer = useCallback(() => null, []);
+  const { participationsTypes, getParticipationsTypes } = fetchParticipationsType((state) => state);
+  
   const [participationData, setParticipationData] = useState<ICreateParticipationForm>({
     contestId: contestId,
     name: 'name',
@@ -162,6 +159,11 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
     });
   };
 
+  useEffect(() => {
+    getParticipationsTypes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="mx-2 my-4">
       <h1 className="mb-8 text-3xl font-bold text-darkblue-800">
@@ -194,7 +196,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
 
           {shouldSetImage && (
             <div className="mb-6">
-              <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.image}>
+              <FormControl className="w-full" variant="outlined" error={!!typeError?.image}>
                 <input
                   accept="image/*"
                   hidden
@@ -215,39 +217,43 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                     {t('Participation.SelectImage')}
                   </Button>
                 </label>
-                {fileUrl ? <img src={fileUrl} style={{ height: 200 }} /> : ''}
+                <div className="flex justify-center items-center">
+                  {fileUrl ? <img src={fileUrl} className="max-w-full max-h-88" /> : ''}
+                </div>
                 <FormHelperText>{typeError?.image}</FormHelperText>
               </FormControl>
             </div>
           )}
           <div className="mb-6 md:flex md:items-center">
-            <FormControl className="w-full" variant="outlined" style={{ width: '100%' }} error={!!typeError?.type}>
-              <InputLabel id="activity-type-label">{t('Participation.ActivityType.Label')}</InputLabel>
-              <Select
-                className={'w-full'}
-                labelId="activity-type-label"
-                value={participationData.type}
-                variant="outlined"
-                label="Activity Type"
-                onChange={onParticipationTypeChange}
-                IconComponent={emptyIconRenderer}
-                required={true}
-              >
-                {participationsTypes?.map((participationType) => (
-                  <MenuItem key={participationType.id} value={participationType.id}>
-                    {t(`Participation.ActivityType.Options.${participationType.name}`)}
-                  </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText
-                sx={{
-                  color: '#E0303B',
-                  fontWeight: '700',
-                }}
-              >
-                {typeError?.type && t('Participation.Required')}
-              </FormHelperText>
-              <div style={{ position: 'absolute', top: '50%', right: 12, transform: 'translateY(-50%)' }}>
+            <div className="flex w-full flex-nowrap">
+              <div className="flex-grow">
+                <FormControl className="w-full" error={!!typeError?.type}>
+                  <InputLabel id="activity-type-label">{t('Participation.ActivityType.Label')}</InputLabel>
+                  <Select
+                    className={'w-full'}
+                    labelId="activity-type-label"
+                    value={participationData.type}
+                    label={t('Participation.ActivityType.Label')}
+                    onChange={onParticipationTypeChange}
+                    required={true}
+                  >
+                    {participationsTypes?.map((participationType) => (
+                      <MenuItem key={participationType.id} value={participationType.id}>
+                        {participationType.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <FormHelperText
+                    sx={{
+                      color: '#E0303B',
+                      fontWeight: '700',
+                    }}
+                  >
+                    {typeError?.type && t('Participation.Required')}
+                  </FormHelperText>
+                </FormControl>
+              </div>
+              <div className="ml-3 flex items-center justify-center flex-basis[10%]">
                 <ClickAwayListener onClickAway={() => setShowActivityTypeTooltip(false)}>
                   <Tooltip
                     open={showActivityTypeTooltip}
@@ -262,13 +268,12 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   </Tooltip>
                 </ClickAwayListener>
               </div>
-            </FormControl>
+            </div>
           </div>
           <div className="mb-6 md:flex md:items-center">
             <FormControl
               className="w-full"
               variant="outlined"
-              style={{ width: '100%' }}
               error={!!typeError?.description}
             >
               <TextField

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-18 15:46+0000\n"
+"POT-Creation-Date: 2023-09-22 15:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,72 +24,72 @@ msgstr ""
 
 #: apps/contest/models.py:14
 msgid "Contests"
-msgstr "Contests"
+msgstr ""
 
-#: apps/participation/admin.py:10
+#: apps/participation/admin.py:16
 msgid "Approuver les participations selectionnées"
 msgstr "Approve selected participations"
 
-#: apps/participation/admin.py:13
+#: apps/participation/admin.py:19
 msgid ""
 "Participation(s) sélectionnée(s) Marqué(s) comme approuvé(s) avec succès !!"
 msgstr "Selected participation(s) Marked as successfully approved !!"
 
-#: apps/participation/admin.py:16
+#: apps/participation/admin.py:22
 msgid "Rejeter les participations selectionnées"
 msgstr "Reject selected participations"
 
-#: apps/participation/admin.py:19
+#: apps/participation/admin.py:25
 msgid "Participation(s) sélectionnée(s) Marquée(s) comme rejetée(s) !!"
 msgstr "Selected participation(s) Marked as rejected!!"
 
-#: apps/participation/admin.py:22
-msgid "Désapprouver les participations selectionnées"
-msgstr "Disapprove selected participations"
+#: apps/participation/admin.py:28
+msgid "Réinitialiser la décision des participations selectionnées"
+msgstr "Reset the decision of selected participations"
 
-#: apps/participation/admin.py:25
+#: apps/participation/admin.py:31
 msgid "Participation(s) sélectionnée(s) Marquée(s) comme non approuvée(s) !!"
 msgstr "Selected participation(s) Marked as not approved!!"
 
-#: apps/participation/admin.py:63
-msgid "Participation to approve"
-msgstr "Participation to approve"
+#: apps/participation/admin.py:34
+msgid "Exporter les participations selectionnées en CSV"
+msgstr "Export selected participations in CSV"
 
-#: apps/participation/admin.py:64
-msgid "Participations to approve"
-msgstr "Participation to approve"
+#: apps/participation/admin.py:46
+msgid "Exportation réussie !"
+msgstr ""
 
-#: apps/participation/admin.py:84
-msgid "Participation to reject"
-msgstr "Participation to reject"
+#: apps/participation/admin.py:87
+msgid "Participation en attente"
+msgstr "Pending participation"
 
-#: apps/participation/admin.py:85
-msgid "Participations to reject"
-msgstr "Participations to reject"
+#: apps/participation/admin.py:88
+msgid "Participations en attente"
+msgstr "Pending participations"
 
-#: apps/participation/admin.py:105
-msgid "Participation to unapproved"
-msgstr "Participation to unapproved"
+#: apps/participation/admin.py:109
+msgid "Participation résolue"
+msgstr "Resolved participation"
 
-#: apps/participation/admin.py:106
-msgid "Participations to unapproved"
-msgstr "Participations to unapproved"
+#: apps/participation/admin.py:110
+msgid "Participations résolues"
+msgstr "Resolved participations"
 
 #: apps/participation/models.py:25
 msgid "Participation type"
-msgstr "Participation type"
+msgstr ""
 
 #: apps/participation/models.py:26
 msgid "Participations type"
-msgstr "Participations type"
+msgstr ""
 
 #: apps/participation/models.py:48
 msgid "Participation"
-msgstr "Participation"
+msgstr ""
 
 #: apps/participation/models.py:49
 msgid "Participations"
-msgstr "Participations"
+msgstr ""
 
 #: apps/participation/models.py:56
 msgid "In verification"
@@ -109,31 +109,31 @@ msgstr ""
 
 #: apps/participation/models.py:96
 msgid "Reaction"
-msgstr "Reaction"
+msgstr ""
 
 #: apps/participation/models.py:97 apps/participation/models.py:103
 msgid "Reactions"
-msgstr "Reactions"
+msgstr ""
 
 #: apps/participation/models.py:112
 msgid "Level"
-msgstr "Level"
+msgstr ""
 
 #: apps/participation/models.py:113
 msgid "Levels"
-msgstr "Levels"
+msgstr ""
 
 #: apps/participation/models.py:128 apps/participation/models.py:129
 msgid "Draw"
-msgstr "Draw"
+msgstr ""
 
 #: apps/participation/serializers.py:34
 msgid "The date does not match this Spiri-Move"
-msgstr "The date does not match this Spiri-Move"
+msgstr ""
 
 #: apps/participation/serializers.py:44
 msgid "The type of participation chosen is not active on this date"
-msgstr "The type of participation chosen is not active on this date"
+msgstr ""
 
 #: apps/participation/serializers.py:57
 msgid "You have already entered a participation with type {} for this day."

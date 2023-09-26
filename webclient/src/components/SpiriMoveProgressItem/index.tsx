@@ -40,9 +40,9 @@ const getScore = (status?: ParticipationStatus, points?: number): string | numbe
   switch (status) {
     case ParticipationStatus.Approved:
       return points || 0;
-    case ParticipationStatus.Rejected:
     case ParticipationStatus.InVerification:
       return '-';
+    case ParticipationStatus.Rejected:
     default:
       return 0;
   }

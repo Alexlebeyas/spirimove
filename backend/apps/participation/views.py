@@ -5,7 +5,7 @@ from django.db import connection
 
 from apps.contest.models import ContestsModel
 from apps.users.models import User, Role
-from django.db.models import Sum, Count
+from django.db.models import Sum
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -47,10 +47,11 @@ class DrawResultAPIView(ListAPIView):
 
 class ListAllParticipationAPIView(ListAPIView):
     """List all database participations for active contests"""
-    queryset = ParticipationModel.objects.filter(
-        contest=ContestsModel.current_contest.first(),
-        type__shoul_be_display_on_feed=True
-    )
+    def get_queryset(self):
+        return ParticipationModel.objects.filter(
+            contest=ContestsModel.current_contest.first(),
+            type__shoul_be_display_on_feed=True
+        )
     serializer_class = ListParticipationModelSerializer
     pagination_class = FeedPagination
 
@@ -237,7 +238,7 @@ def get_leaderboard_stats(contest):
     - only count one participation per (user / day / type), keeping the one with most points
     - sum the points per user for each day
     - identify the streaks per user (consecutive days with a participation) and count their length
-    - keep only longest streak for each user and sort results by streak length DESC, 
+    - keep only longest streak for each user and sort results by streak length DESC,
     - aggregate all the statistics per user (total_days, total_points, max_consecutive_days)
     """
     with connection.cursor() as cursor:

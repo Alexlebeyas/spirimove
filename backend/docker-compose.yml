@@ -17,7 +17,7 @@ services:
     restart: always
     depends_on:
       - db
-    command: sh -c "python manage.py runsslserver 0.0.0.0:8000"
+    command: ./start.sh
   db:
     image: postgres:13-alpine
     environment:
