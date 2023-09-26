@@ -80,9 +80,8 @@ const Home = () => {
       {contest ? (
         <>
           <div className="flex flex-col items-center justify-center">
-            {contest?.show_winners ? <ContestOverView /> : <AddNewActivityButton />}
+            {contest?.is_open ? <AddNewActivityButton /> : (contest?.show_winners ? <ContestOverView /> : '')}
 
-            {isLoadingParticipations && <CircularProgress color="inherit" />}
             {!isLoadingParticipations &&
               participations?.length !== 0 &&
               participations.map((participation) => (

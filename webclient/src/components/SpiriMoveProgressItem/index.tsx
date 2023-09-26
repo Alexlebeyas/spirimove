@@ -106,7 +106,7 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const { contest } = useContest();
-  const isContestOngoing = contest?.end_date && !isContestOver(contest.end_date);
+  const isContestOngoing = contest?.end_date && !isContestOver(contest.end_date) && contest.is_open;
 
   const commonValues = {
     is_intensive: participation?.is_intensive ? t('Common.Yes') : t('Common.No'),

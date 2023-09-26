@@ -41,6 +41,9 @@ class ActivitiesModelAdmin(admin.ModelAdmin):
 
         winner_list = self.run_global_draw_function(contest, list_res)
         self.run_office_draw_function(contest, list_res, winner_list)
+        contest.is_open = False
+        contest.show_winners = True
+        contest.save()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     def run_global_draw_function(self, contest, list_element_for_draw):

@@ -96,8 +96,13 @@ class User(AbstractUser):
     objects = UserManager()
 
     def save(self, *args, **kwargs):
+        """
+            Set the default role only when creating a user.
+            Once the user is created we can manage the role on the admin panel
+        """
+        is_create_action = not self.pk
         super(User, self).save(*args, **kwargs)
-        if not self.groups.all().exists():
+        if is_create_action and not self.groups.all().exists():
             default_role = Role.objects.filter(is_default=True).first()
             group, created = Group.objects.get_or_create(name=default_role.role)
             self.groups.add(group)

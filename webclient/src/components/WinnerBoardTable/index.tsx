@@ -57,7 +57,7 @@ const WinnersList: React.FC<WinnersListProps> = ({ winners }) => {
 
 export const WinnerPodium: React.FC<WinnerPodiumProps> = ({ contest, results }) => {
   const { t } = useTranslation();
-  if (contest?.show_winners && results) {
+  if (!contest?.is_open && contest?.show_winners && results) {
     return (
       <div className="mb-5 flex flex-col antialiased lg:flex-row">
         <div className="mb-5 w-full lg:w-1/2">
