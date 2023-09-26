@@ -52,7 +52,8 @@ def export_participations_as_csv(modeladmin, request, queryset):
 @admin.register(ParticipationModel)
 class ParticipationModelAdmin(ModerationPermissions, admin.ModelAdmin):
     list_display = participation_list_display
-    list_filter = ('contest__name',)
+    list_filter = ('date', 'status')
+    search_fields = ('user__display_name', 'type__name', 'description', 'status')
     actions = [make_approve, make_rejected, make_unapprove, export_participations_as_csv]
 
     def contest__name(self, obj):
