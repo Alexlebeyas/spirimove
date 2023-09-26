@@ -64,11 +64,11 @@ const Home = () => {
   );
 
   const ContestOverView = () => (
-    <div className="mb-2">
-      <h4 className="mb-3">{t('Home.ContestStatusOver')}</h4>
+    <div className="mb-2 flex flex-col items-center justify-center">
+      <h4 className="mb-3 text-xl text-darkblue-800 sm:text-2xl">{t('Home.ContestStatusOver')}</h4>
       <Link
         to="/leaderboard"
-        className="text-md mb-7 flex items-center justify-center rounded-md bg-yellow px-3 py-4 font-bold antialiased hover:bg-yellow"
+        className="mb-7 flex items-center justify-center rounded-md bg-yellow px-6 py-4 text-base font-bold text-darkblue-800 antialiased hover:bg-blue hover:text-white"
       >
         {t('Home.ViewResults')} <ArrowForwardIcon className="ml-2" />
       </Link>

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
 
 import { ProfileImage } from '..';
 import { WinnerInfo, WinnerboardEntries, IContest } from '@/interfaces';
@@ -62,9 +62,8 @@ export const WinnerPodium: React.FC<WinnerPodiumProps> = ({ contest, results }) 
       <div className="mb-5 flex flex-col antialiased lg:flex-row">
         <div className="mb-5 w-full lg:w-1/2">
           <div className="h-auto rounded-md bg-white px-4 py-5 shadow-md sm:px-5">
-            <h3 className="mb-3 text-xl font-bold text-darkblue-800 lg:text-lg">
-              {t('Leaderboard.WinnersLabel')}{' '}
-              <EmojiEventsIcon fontSize="small" />
+            <h3 className="mb-3 flex items-center text-xl font-bold text-darkblue-800 lg:text-lg">
+              {t('Leaderboard.WinnersLabel')} <EmojiEventsOutlinedIcon className="ml-1" fontSize="medium" />
             </h3>
             <WinnersList winners={results[0]?.winners} />
           </div>

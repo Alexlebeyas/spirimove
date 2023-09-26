@@ -21,7 +21,7 @@ const RemainingDays = () => {
     <>
       <div className="m-2 flex flex-col items-center">
         <div className="relative flex grow flex-col items-center">
-          <div className="absolute -bottom-[87px] z-0 flex -rotate-90 pb-3">
+          <div className="absolute -bottom-[87px] z-0 mb-2 flex -rotate-90">
             <CircularProgress
               size={174}
               variant="determinate"
@@ -30,7 +30,7 @@ const RemainingDays = () => {
               value={progressValue}
             />
           </div>
-          <div className="z-10 mt-5 grow items-center border-b-2 border-slate-200 pb-3">
+          <div className="z-10 mt-6 grow items-center border-b-2 border-slate-200 pb-3">
             <div className="text-center text-xs font-medium text-slate-600">
               {t('Leaderboard.RemainingDays.CurrentDay')}
             </div>
