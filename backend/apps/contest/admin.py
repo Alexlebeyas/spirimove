@@ -38,6 +38,7 @@ class ActivitiesModelAdmin(admin.ModelAdmin):
         contest = get_object_or_404(ContestsModel, pk=contest_id)
         list_element_for_draw = get_list_stats(contest)
         list_res = sorted(list_element_for_draw, key=lambda data: data['nb_days'], reverse=True)
+        DrawModel.objects.filter(contest=contest).delete()
 
         winner_list = self.run_global_draw_function(contest, list_res)
         self.run_office_draw_function(contest, list_res, winner_list)

@@ -4,12 +4,13 @@ from django.contrib.auth.models import Group
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from rest_framework.authtoken.models import TokenProxy
+from spiri_move.admin_panel_permissions import AdminPermissions
 
-from .models import User, Role
+from .models import User
 
 
 @admin.register(User)
-class UserAdmin(DjangoUserAdmin):
+class UserAdmin(AdminPermissions, DjangoUserAdmin):
     model = User
     fieldsets = (
         (None, {'fields': ('display_name', 'phone', 'password',)}),
@@ -39,19 +40,6 @@ class UserAdmin(DjangoUserAdmin):
 
     def group_list(self, obj):
         return ' / '.join([group.name for group in obj.groups.all()])
-
-    def has_module_permission(self, request):
-        if request.user.is_authenticated:
-            return request.user.is_superuser
-        return False
-
-
-@admin.register(Role)
-class RoleModelAdmin(admin.ModelAdmin):
-    list_display = ['role', 'is_default']
-
-    def has_module_permission(self, request):
-        return False
 
 
 admin.site.unregister(Group)

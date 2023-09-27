@@ -69,9 +69,6 @@ class Authentication(authentication.BaseAuthentication):
                 display_name=microsoft_info['displayName'],
                 first_name=microsoft_info.get('givenName', ''),
                 last_name=microsoft_info.get('surname', ''))
-        else:
-            user.office = microsoft_info['officeLocation']
-            user.save()
 
         if not user.is_active:
             raise exceptions.AuthenticationFailed(_('No such user'))
