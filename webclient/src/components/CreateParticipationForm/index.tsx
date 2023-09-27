@@ -154,7 +154,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
         .catch(function (error) {
           const errorObject = {
             ...error,
-            date: error?.date ? t('Participation.ActivityDuplicateDateError') : error?.date,
+            date: error?.date ? t('Participation.ActivityDuplicateTypeError') : error?.date,
             type: error?.type ? t('Participation.ActivityDuplicateTypeError') : error?.type,
           };
           setTypeError(errorObject);
