@@ -95,14 +95,16 @@ export const ParticipationCard: React.FC<Props> = ({ participation }) => {
         <div className="mb-1 text-sm font-medium text-slate-600">{formatDate(participation.date)}</div>
         <p className="font-medium">{participation.description}</p>
         <div className="mt-2 text-slate-600">
-          <ReactionCounter
-            className="space-x-0.5"
-            reactions={reactionsCounters}
-            showTotalOnly={true}
-            iconSize={22}
-            bg="transparent"
-            style={{ cursor: 'default' }}
-          />
+          {reactionsCounters?.length > 0 && (
+            <ReactionCounter
+              className="space-x-0.5"
+              reactions={reactionsCounters}
+              showTotalOnly={true}
+              iconSize={22}
+              bg="transparent"
+              style={{ cursor: 'default' }}
+            />
+          )}
         </div>
       </div>
       <div className="relative z-20 flex flex-row border-t border-slate-200 px-2 py-1">
