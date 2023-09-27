@@ -40,7 +40,7 @@ export const LeaderboardTable = ({ stats, mode }: Props) => {
                 />
               );
             case 'days':
-              return (
+              return Number(stat.max_consecutive_days) > 1 && (
                 <TotalDaysRenderer
                   key={stat.user__display_name}
                   stat={stat}
@@ -99,7 +99,7 @@ const TotalPointsRenderer = ({ stat, idx, currentUser }: TotalPointsProps) => {
         <div className="flex grow items-center">
           <div className="flex grow items-center">
             <div className="mr-3">
-            <ProfileImage name={stat.user__display_name} image={stat.user__profile_picture} size={32} fontSize={14} />
+              <ProfileImage name={stat.user__display_name} image={stat.user__profile_picture} size={32} fontSize={14} />
             </div>
             <div>
               <div className="text-[15px] font-medium text-darkblue-800 sm:text-sm">{stat.user__display_name}</div>
@@ -107,7 +107,7 @@ const TotalPointsRenderer = ({ stat, idx, currentUser }: TotalPointsProps) => {
             </div>
           </div>
           <div className="flex-none text-sm font-bold text-darkblue-800">
-            {t('Leaderboard.PointsDisplay', { nb: stat.total_points })}
+            {t('Leaderboard.PointsDisplay', { count: Number(stat.total_points) })}
           </div>
         </div>
       </div>

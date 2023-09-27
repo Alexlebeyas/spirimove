@@ -31,7 +31,8 @@
       "Title": "Leaderboard",
       "ViewMore": "View more",
       "PointsMode": "Points",
-      "PointsDisplay": "{{nb}} pts",
+      "PointsDisplay_one": "{{count}} pt",
+      "PointsDisplay_other": "{{count}} pts",
       "PrizeDisplay": "{{nb}} $",
       "ConsecutiveDaysMode": "Consecutive days",
       "DaysDisplay": "{{nb}} days",
@@ -42,14 +43,17 @@
         "Title": "Contest",
         "CurrentDay": "Day",
         "Stimulation": "Don't give up!",
-        "ContestEnding": "Spiri-Move ends in {{remaining}} days.",
+        "ContestEnding_one": "Spiri-Move ends in {{count}} day.",
+        "ContestEnding_other": "Spiri-Move ends in {{count}} days.",
         "Congratulations": "Good job!",
         "ContestFinished": "Spiri-Move is now over."
       },
       "Cumulated": {
         "Title": "Cumulated",
-        "Points": "Pts",
-        "Participants": "Participants"
+        "Points_one": "Pt",
+        "Points_other": "Pts",
+        "Participants_one": "Participant",
+        "Participants_other": "Participants"
       }
     },
     "Office": {
@@ -77,8 +81,10 @@
     "MySpiriMove": {
       "Stats": {
         "Title": "My Stats",
-        "Days": "Days",
-        "Points": "Pts",
+        "Days_one": "Day",
+        "Days_other": "Days",
+        "Points_one": "Pt",
+        "Points_other": "Pts",
         "Streak": "{{streak}} day streak, keep it up!",
         "RewardLevel_one": "You are now eligible for 1 prize.",
         "RewardLevel_other": "You are now eligible for {{count}} prizes.",

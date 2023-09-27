@@ -107,7 +107,6 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
   const { t } = useTranslation();
   const { contest } = useContest();
   const isContestOngoing = contest?.end_date && !isContestOver(contest.end_date);
-
   const commonValues = {
     is_intensive: participation?.is_intensive ? t('Common.Yes') : t('Common.No'),
     is_organizer: participation?.is_organizer ? t('Common.Yes') : t('Common.No'),
@@ -162,10 +161,10 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
         {t('ContestCalendar.ParticipationType')}: {type}
       </div>
       <div className="mt-1 text-sm font-medium">
-        {t('ContestCalendar.Intensity')}: {type === 'Normal' ? is_intensive : '-'}
+        {t('ContestCalendar.Intensity')}: {type === 'Standard' ? is_intensive : '-'}
       </div>
       <div className="mt-1 text-sm font-medium">
-        {t('ContestCalendar.Initiator')}: {type !== 'Normal' ? is_organizer : '-'}
+        {t('ContestCalendar.Initiator')}: {type !== 'Standard' ? is_organizer : '-'}
       </div>
       <div className="mt-1 flex items-center justify-between">
         <div className="font-semibold">
@@ -197,8 +196,8 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
     <tr className="wrap mb-2 flex flex-col border-b border-slate-200 text-darkblue-800 hover:bg-slate-50 sm:mb-0 sm:table-row">
       <td className="px-3 py-2">{formatDate(currentDate)}</td>
       <td className="px-3 py-2">{type}</td>
-      <td className="px-3 py-2">{type === 'Normal' ? is_intensive : '-'}</td>
-      <td className="px-3 py-2">{type !== 'Normal' ? is_organizer : '-'}</td>
+      <td className="px-3 py-2">{type === 'Standard' ? is_intensive : '-'}</td>
+      <td className="px-3 py-2">{type !== 'Standard' ? is_organizer : '-'}</td>
       <td className="px-3 py-2">{description}</td>
       <td className="px-3 py-2">{renderStatus(t, status)}</td>
       <td className="px-3 py-2">{score}</td>
