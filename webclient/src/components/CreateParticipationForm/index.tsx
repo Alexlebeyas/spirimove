@@ -2,8 +2,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ICreateParticipationForm } from '@/interfaces/ICreateParticipationForm';
 import moment from 'moment';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import HelpIcon from '@mui/icons-material/Help';
 import ParticipationService from '@/services/ParticipationService';
 import { DATE_FORMAT, DISPLAY_DATE_FORMAT } from '@/constants/formats';
@@ -209,7 +207,6 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
         <form>
           <div className="mb-6">
             <div data-te-datepicker-init data-te-inline="true" data-te-input-wrapper-init>
-              <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DatePicker
                   className="w-full sm:w-1/2"
                   label={t('Participation.ActivityDate')}
@@ -235,7 +232,6 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                     }
                   }}
                 />
-              </LocalizationProvider>
               <FormHelperText sx={errorTextStyles}>{typeError?.date}</FormHelperText>
             </div>
           </div>

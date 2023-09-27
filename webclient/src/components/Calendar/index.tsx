@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
 import moment, { Moment } from 'moment';
 import { Badge, styled } from '@mui/material';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { useContestParticipations } from '@/hooks/useContestParticipations';
@@ -57,7 +55,6 @@ export default function Calender() {
 
   return (
     <div className="mx-4 mb-6 max-w-full rounded-md bg-white shadow-md sm:mx-0 sm:max-w-[350px]">
-      <LocalizationProvider dateAdapter={AdapterMoment}>
         <DateCalendar
           reduceAnimations
           defaultCalendarMonth={moment()}
@@ -68,7 +65,6 @@ export default function Calender() {
             day: (dayProps) => <CustomDay {...dayProps} highlightedDates={allHighlightedDates} />,
           }}
         />
-      </LocalizationProvider>
     </div>
   );
 }
