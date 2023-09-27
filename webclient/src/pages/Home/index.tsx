@@ -80,7 +80,7 @@ const Home = () => {
       {contest ? (
         <>
           <div className="flex flex-col items-center justify-center">
-            {contest?.is_open && !contest?.show_winners ? <AddNewActivityButton /> : (!contest?.is_open && contest?.show_winners ? <ContestOverView /> : '')}
+            {contest?.show_winners ? <ContestOverView /> : <AddNewActivityButton />}
             {!isLoadingParticipations &&
               participations?.length !== 0 &&
               participations.map((participation) => (
