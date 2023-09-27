@@ -3,13 +3,13 @@ class ModerationPermissions:
         Moderator permission in admin board.
         Administrator has all moderator permissions
     """
-    def has_delete_permission(self):
+    def has_delete_permission(self, request):
         """
             Delete permissions for moderator and admin
         """
         return False
 
-    def has_add_permission(self):
+    def has_add_permission(self, request):
         """
             Add permissions for moderator and admin
         """
