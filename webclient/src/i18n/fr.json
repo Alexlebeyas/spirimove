@@ -108,7 +108,6 @@
       "DeleteActivity": "Supprimer l'activité?",
       "NoMoreToLoad": "Plus de participations à charger !",
       "ActivityDate": "Date *",
-      "ActivityDuplicateDateError": "This activity type has been logged already on this date.",
       "ActivityDateOutOfRangeError": "Doit être pendant le concours.",
       "ActivityDuplicateTypeError": "Une activité de ce type a déjà été saisie pour cette date.",
       "DateWithoutAsterisk": "Date",
