@@ -6,6 +6,8 @@ import './index.css';
 import { MsalProvider } from '@azure/msal-react';
 import MSALClientService from '@/services/MSALClientService.ts';
 import { AuthenticationResult, EventMessage, EventType } from '@azure/msal-browser';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
 const pca = MSALClientService.pca;
 
@@ -27,7 +29,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <MsalProvider instance={pca}>
-        <App />
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+          <App />
+        </LocalizationProvider>
       </MsalProvider>
     </BrowserRouter>
   </React.StrictMode>

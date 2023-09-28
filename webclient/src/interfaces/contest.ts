@@ -4,4 +4,5 @@ export interface IContest {
   start_date: string;
   end_date: string;
   show_winners: boolean;
+  is_open: boolean;
 }

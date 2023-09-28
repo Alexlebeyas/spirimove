@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-22 15:12+0000\n"
+"POT-Creation-Date: 2023-09-26 15:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,60 +18,60 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps/contest/models.py:13
+#: apps/contest/models.py:14
 msgid "Contest"
 msgstr ""
 
-#: apps/contest/models.py:14
+#: apps/contest/models.py:15
 msgid "Contests"
 msgstr ""
 
-#: apps/participation/admin.py:16
+#: apps/participation/admin.py:17
 msgid "Approuver les participations selectionnées"
 msgstr "Approve selected participations"
 
-#: apps/participation/admin.py:19
+#: apps/participation/admin.py:20
 msgid ""
 "Participation(s) sélectionnée(s) Marqué(s) comme approuvé(s) avec succès !!"
 msgstr "Selected participation(s) Marked as successfully approved !!"
 
-#: apps/participation/admin.py:22
+#: apps/participation/admin.py:23
 msgid "Rejeter les participations selectionnées"
 msgstr "Reject selected participations"
 
-#: apps/participation/admin.py:25
+#: apps/participation/admin.py:26
 msgid "Participation(s) sélectionnée(s) Marquée(s) comme rejetée(s) !!"
 msgstr "Selected participation(s) Marked as rejected!!"
 
-#: apps/participation/admin.py:28
+#: apps/participation/admin.py:29
 msgid "Réinitialiser la décision des participations selectionnées"
 msgstr "Reset the decision of selected participations"
 
-#: apps/participation/admin.py:31
+#: apps/participation/admin.py:32
 msgid "Participation(s) sélectionnée(s) Marquée(s) comme non approuvée(s) !!"
 msgstr "Selected participation(s) Marked as not approved!!"
 
-#: apps/participation/admin.py:34
+#: apps/participation/admin.py:35
 msgid "Exporter les participations selectionnées en CSV"
 msgstr "Export selected participations in CSV"
 
-#: apps/participation/admin.py:46
+#: apps/participation/admin.py:47
 msgid "Exportation réussie !"
 msgstr ""
 
-#: apps/participation/admin.py:87
+#: apps/participation/admin.py:90
 msgid "Participation en attente"
 msgstr "Pending participation"
 
-#: apps/participation/admin.py:88
+#: apps/participation/admin.py:91
 msgid "Participations en attente"
 msgstr "Pending participations"
 
-#: apps/participation/admin.py:109
+#: apps/participation/admin.py:112
 msgid "Participation résolue"
 msgstr "Resolved participation"
 
-#: apps/participation/admin.py:110
+#: apps/participation/admin.py:113
 msgid "Participations résolues"
 msgstr "Resolved participations"
 
@@ -127,15 +127,19 @@ msgstr ""
 msgid "Draw"
 msgstr ""
 
-#: apps/participation/serializers.py:34
-msgid "The date does not match this Spiri-Move"
+#: apps/participation/serializers.py:37
+msgid "You can not longer add/edit participation to this contest"
 msgstr ""
 
 #: apps/participation/serializers.py:44
+msgid "The date does not match this Spiri-Move"
+msgstr ""
+
+#: apps/participation/serializers.py:54
 msgid "The type of participation chosen is not active on this date"
 msgstr ""
 
-#: apps/participation/serializers.py:57
+#: apps/participation/serializers.py:67
 msgid "You have already entered a participation with type {} for this day."
 msgstr ""
 
@@ -209,4 +213,8 @@ msgstr ""
 
 #: apps/users/models.py:90
 msgid "Display Name"
+msgstr ""
+
+#: spiri_move/custom_permissions.py:10
+msgid "Adding participation not allowed for you."
 msgstr ""

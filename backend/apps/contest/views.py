@@ -6,5 +6,6 @@ from .models import ContestsModel
 # Create your views here.
 class ListContestAPIView(ListAPIView):
     """List all contests who are open"""
-    queryset = ContestsModel.objects.filter(is_open=True)
+    def get_queryset(self):
+        return ContestsModel.current_contest.all()
     serializer_class = ContestsModelSerializer

@@ -101,6 +101,17 @@
 .MuiCustomButton-delete:hover {
   background-color: #b11b24 !important;
 }
+
+.MuiCustomButton-error {
+  color: #2f3940 !important;
+  border-color: #e0303b !important;
+}
+
+.MuiCustomButton-error:hover {
+  color:  #e0303b !important;
+  border-color: #e0303b !important;
+}
+
 .MuiTooltip-tooltip {
   font-family: 'inter' !important;
   font-weight: 600 !important;
@@ -113,4 +124,9 @@
 }
 .MuiTooltip-arrow {
   color: #ffd233 !important;
+}
+:root {
+  --toastify-color-success: #31aa69;
+  --toastify-color-error: #e0303b;
+  --toastify-text-color-light: #3c4952;
 }
