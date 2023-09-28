@@ -5,7 +5,8 @@ from django.utils.translation import gettext_lazy as _
 
 class CurrentContestManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(is_open=True)
+        open_contest = super().get_queryset().filter(is_open=True)
+        return open_contest if open_contest.exists() else super().get_queryset().all()
 
 
 class ContestsModel(models.Model):

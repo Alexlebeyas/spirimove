@@ -1,18 +1,16 @@
 from collections import namedtuple
 from datetime import timedelta
 
-from django.db import connection
-
 from apps.contest.models import ContestsModel
 from apps.users.models import User, Role
+from django.db import connection
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from rest_framework import status
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
+from spiri_move.custom_permissions import ParticipantPermission
 from spiri_move.pagination_settings import FeedPagination
 
 from .models import ParticipationTypeModel, ParticipationModel, ReactionModel, LevelModel, DrawModel
@@ -47,11 +45,13 @@ class DrawResultAPIView(ListAPIView):
 
 class ListAllParticipationAPIView(ListAPIView):
     """List all database participations for active contests"""
+
     def get_queryset(self):
         return ParticipationModel.objects.filter(
             contest=ContestsModel.current_contest.first(),
             type__shoul_be_display_on_feed=True
         )
+
     serializer_class = ListParticipationModelSerializer
     pagination_class = FeedPagination
 
@@ -62,14 +62,8 @@ class ListMyParticipationAPIView(ListAPIView):
     def list(self, request, *args, **kwargs):
         queryset = ParticipationModel.objects.filter(
             user=request.user,
-            contest__is_open=True
+            contest=ContestsModel.current_contest.first()
         )
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -78,6 +72,7 @@ class ListMyParticipationAPIView(ListAPIView):
 
 class CreateParticipationAPIView(CreateAPIView):
     """ Create a new participation for the current user """
+    permission_classes = [ParticipantPermission]
 
     def list(self, request, *args, **kwargs):
         queryset = ParticipationModel.objects.filter(
@@ -98,6 +93,7 @@ class CreateParticipationAPIView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save(user=request.user)
         headers = self.get_success_headers(serializer.data)
+
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     parser_classes = (FormParser, MultiPartParser,)
@@ -106,6 +102,8 @@ class CreateParticipationAPIView(CreateAPIView):
 
 class ToggleReactionAPIView(CreateAPIView):
     """ Toggle current user reaction for participation """
+
+    permission_classes = [ParticipantPermission]
 
     def handle_reaction(self, request, serializer):
         current_reaction = ReactionModel.objects.filter(user=request.user,
@@ -138,6 +136,8 @@ class UpdateParticipationAPIView(UpdateAPIView):
         The participation must be for the current user
     """
 
+    permission_classes = [ParticipantPermission]
+
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = get_object_or_404(ParticipationModel, pk=kwargs['pk'], user=request.user)
@@ -164,6 +164,8 @@ class DeleteParticipationAPIView(DestroyAPIView):
         The participation must be for the current user
     """
 
+    permission_classes = [ParticipantPermission]
+
     def destroy(self, request, *args, **kwargs):
         instance = get_object_or_404(ParticipationModel, pk=kwargs['pk'], user=request.user)
         self.perform_destroy(instance)
@@ -185,7 +187,6 @@ class ListleaderBoardAPIView(ListAPIView):
     serializer_class = LeaderBoardSerializer
 
 
-@method_decorator(cache_page(60 * 30), name='dispatch')
 class ListStatAPIView(ListAPIView):
     """ Globals Stats
     60 Seconds x 10 so 30 Minutes for cache
@@ -320,8 +321,8 @@ WHERE rank = 1 AND by_user_rank = 1
 
 def get_list_stats(current_contest, user=None):
     result_final = []
-    list_users = User.objects.all() if not user else User.objects.filter(pk=user.pk)
 
+    list_users = User.objects.all() if not user else User.objects.filter(pk=user.pk)
     for participant in list_users.filter(groups__name=Role.PARTICIPANT).order_by('display_name'):
         data_user = list(ParticipationModel.objects
                          .filter(contest=current_contest, user=participant, status=ParticipationModel.APPROVED)
