@@ -31,7 +31,8 @@
       "Title": "Classement",
       "ViewMore": "Voir plus",
       "PointsMode": "Points",
-      "PointsDisplay": "{{nb}} pts",
+      "PointsDisplay_one": "{{count}} pt",
+      "PointsDisplay_other": "{{count}} pts",
       "PrizeDisplay": "${{nb}}",
       "ConsecutiveDaysMode": "Jours consécutifs",
       "DaysDisplay": "{{nb}} jours",
@@ -42,14 +43,17 @@
         "Title": "Concours",
         "CurrentDay": "Jour",
         "Stimulation": "Lâche pas!",
-        "ContestEnding": "Spiri-Move: plus que {{remaining}} jours.",
+        "ContestEnding_one": "Spiri-Move: plus que {{count}} jour.",
+        "ContestEnding_other": "Spiri-Move: plus que {{count}} jours.",
         "Congratulations": "Félicitations!",
         "ContestFinished": "Spiri-Move est terminé."
       },
       "Cumulated": {
         "Title": "Cumulatif",
-        "Points": "Pts",
-        "Participants": "Participants"
+        "Points_one": "Pt",
+        "Points_other": "Pts",
+        "Participants_one": "Participant",
+        "Participants_other": "Participants"
       }
     },
     "Office": {
@@ -77,8 +81,10 @@
     "MySpiriMove": {
       "Stats": {
         "Title": "Mon Classement",
-        "Days": "Jours",
-        "Points": "Pts",
+        "Days_one": "Jour",
+        "Days_other": "Jours",
+        "Points_one": "Pt",
+        "Points_other": "Pts",
         "Streak": "{{streak}} jours consécutifs, continue comme ca!",
         "RewardLevel_one": "Tu es éligible à 1 tirage.",
         "RewardLevel_other": "Tu es éligible à {{count}} tirages.",
@@ -149,6 +155,14 @@
     },
     "ParticipationType": {
       "Normal": "Normal"
+    },
+    "Emojis": {
+      "like": "J’aime",
+      "love": "Amour",
+      "haha": "Haha",
+      "wow": "Wow",
+      "bravo": "Bravo",
+      "muscle": "Muscle"
     }
   }
 }

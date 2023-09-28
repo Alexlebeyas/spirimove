@@ -15,13 +15,13 @@ const Cumulated = ({ stats }: CumulatedProps) => {
         <div className="mr-6 p-1">
           <div className="justify-center text-4xl font-semibold text-darkblue-800">{totalPts}</div>
           <div className="pt-0.5 text-[13px] font-medium leading-[14px] text-darkblue-800 sm:text-xs">
-            {t('Leaderboard.Cumulated.Points')}
+            {t('Leaderboard.Cumulated.Points', { count: totalPts })}
           </div>
         </div>
         <div className="p-1 pl-6">
           <div className="text-4xl font-semibold text-darkblue-800">{totalParticipants}</div>
           <div className="pt-0.5 text-[13px] font-medium leading-[14px] text-darkblue-800 sm:text-xs">
-            {t('Leaderboard.Cumulated.Participants')}
+            {t('Leaderboard.Cumulated.Participants', { count: totalParticipants })}
           </div>
         </div>
       </div>
