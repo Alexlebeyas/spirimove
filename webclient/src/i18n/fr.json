@@ -23,7 +23,7 @@
       "Logout": "Déconnexion"
     },
     "Home": {
-      "AddNewActivity": "Nouvelle Activité",
+      "AddNewActivity": "Nouvelle activité",
       "ContestStatusOver": "Le concours est terminé!",
       "ViewResults": "Résultats"
     },
@@ -108,10 +108,16 @@
       "DeleteActivity": "Supprimer l'activité?",
       "NoMoreToLoad": "Plus de participations à charger !",
       "ActivityDate": "Date *",
+      "ActivityDateOutOfRangeError": "Doit être pendant le concours.",
+      "ActivityDuplicateTypeError": "Une activité de ce type a déjà été saisie pour cette date.",
       "DateWithoutAsterisk": "Date",
       "ActivityType": {
         "Label": "Type *",
-        "Tooltip": "Sélecteur de type d'activité"
+        "Tooltip": {
+          "Standard": " Ton activité quotidienne.",
+          "KingOfHill": "Lorsque vous rassemblez au moins 2 autre Spiriens à votre initiative sportive.",
+          "PopUpChallenge": "Courte session en ligne organisée par un modérateur."
+        }
       },
       "ActivityDescription": {
         "Label": "Description",

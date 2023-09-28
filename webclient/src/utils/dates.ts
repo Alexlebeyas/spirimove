@@ -1,5 +1,5 @@
 import { DATE_FORMAT, DISPLAY_DATE_FORMAT } from '@/constants/formats';
-import { DateTime } from 'luxon';
+import { DateTime, Interval } from 'luxon';
 import moment from 'moment';
 
 export const getDates = function (strStartDate: string, strEndDate: string): string[] {
@@ -25,4 +25,13 @@ export const formatDate = (date?: string) => {
 
   return '';
 
+};
+
+export const isDateWithinRange = (participationDate: string, startDate: string, endDate: string): boolean => {
+  const start = DateTime.fromISO(startDate).startOf('day');
+  const end = DateTime.fromISO(endDate).endOf('day');
+  
+  const participation = DateTime.fromISO(participationDate);
+  
+  return Interval.fromDateTimes(start, end).contains(participation);
 };
