@@ -19,18 +19,19 @@ interface EmojiProps {
   node: JSX.Element;
   key: string;
 }
-const emojis: EmojiProps[] = [
-  { label: 'like', node: <span>👍</span>, key: 'like' },
-  { label: 'love', node: <span>💖</span>, key: 'love' },
-  { label: 'haha', node: <span>😆</span>, key: 'haha' },
-  { label: 'wow', node: <span>😱</span>, key: 'wow' },
-  { label: 'bravo', node: <span>🙌</span>, key: 'bravo' },
-  { label: 'muscle', node: <span>💪</span>, key: 'muscle' },
-];
 
 export const ParticipationCard: React.FC<Props> = ({ participation }) => {
   const { t } = useTranslation();
   const updateAllParticipations = fetchAllParticipations((state) => state.getParticipations);
+  const emojis: EmojiProps[] = useMemo(() => [
+    { label: t('Emojis.like'), node: <span>👍</span>, key: 'like' },
+    { label: t('Emojis.love'), node: <span>💖</span>, key: 'love' },
+    { label: t('Emojis.haha'), node: <span>😆</span>, key: 'haha' },
+    { label: t('Emojis.wow'), node: <span>😱</span>, key: 'wow' },
+    { label: t('Emojis.bravo'), node: <span>🙌</span>, key: 'bravo' },
+    { label: t('Emojis.muscle'), node: <span>💪</span>, key: 'muscle' },
+  ], [t]);
+
   const reactionsCounters: ReactionCounterObject[] = useMemo(() => {
     return participation.reactions
       .map((reaction) => {
@@ -42,7 +43,7 @@ export const ParticipationCard: React.FC<Props> = ({ participation }) => {
         };
       })
       .filter(Boolean);
-  }, [participation.reactions]);
+  }, [participation.reactions, emojis]);
 
   const onEmojiClick = (key: string) => {
     ParticipationService.toggleReactionParticipation({ participation: participation.id, reaction: key }).then(() => {
