@@ -66,21 +66,30 @@ const Home = () => {
   const ContestOverView = () => (
     <div className="mb-2 flex flex-col items-center justify-center">
       <h4 className="mb-3 text-xl text-darkblue-800 sm:text-2xl">{t('Home.ContestStatusOver')}</h4>
-      <Link
+      {contest?.show_winners && <Link
         to="/leaderboard"
         className="mb-7 flex items-center justify-center rounded-md bg-yellow px-6 py-4 text-base font-bold text-darkblue-800 antialiased hover:bg-blue hover:text-white"
       >
         {t('Home.ViewResults')} <ArrowForwardIcon className="ml-2" />
-      </Link>
+      </Link>}
     </div>
   );
+
+  const renderContestStatusComponent = () => {
+    if (!contest?.is_open) {
+      return <ContestOverView />;
+    }
+    return <AddNewActivityButton />;
+  }
 
   return (
     <PageContainer>
       {contest ? (
         <>
           <div className="flex flex-col items-center justify-center">
-            {contest?.show_winners ? <ContestOverView /> : <AddNewActivityButton />}
+            {renderContestStatusComponent()}
+
+            {isLoadingParticipations && <CircularProgress color="inherit" />}
             {!isLoadingParticipations &&
               participations?.length !== 0 &&
               participations.map((participation) => (

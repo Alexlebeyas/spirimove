@@ -43,7 +43,7 @@ const RemainingDays = () => {
         <div className="z-10 mt-1 text-xs font-medium text-slate-500">
           {isOver
             ? t('Leaderboard.RemainingDays.ContestFinished')
-            : t('Leaderboard.RemainingDays.ContestEnding', { remaining: remainingDays })}
+            : t('Leaderboard.RemainingDays.ContestEnding', { count: remainingDays })}
         </div>
       </div>
     </>
