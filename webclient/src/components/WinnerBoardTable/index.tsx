@@ -59,21 +59,24 @@ export const WinnerPodium: React.FC<WinnerPodiumProps> = ({ contest, results }) 
   const { t } = useTranslation();
   if (!contest?.is_open && contest?.show_winners && results) {
     return (
-      <div className="mb-5 flex flex-col antialiased lg:flex-row">
-        <div className="mb-5 w-full lg:w-1/2">
-          <div className="h-auto rounded-md bg-white px-4 py-5 shadow-md sm:px-5">
-            <h3 className="mb-3 flex items-center text-xl font-bold text-darkblue-800 lg:text-lg">
-              {t('Leaderboard.WinnersLabel')} <EmojiEventsOutlinedIcon className="ml-1" fontSize="medium" />
-            </h3>
-            <WinnersList winners={results[0]?.winners} />
+      <div>
+        <p className="mb-4 ml-2 text-xl font-bold text-darkblue-800 antialiased">{contest?.name}</p>
+        <div className="mb-5 flex flex-col antialiased lg:flex-row">
+          <div className="mb-5 w-full lg:w-1/2">
+            <div className="h-auto rounded-md bg-white px-4 py-5 shadow-md sm:px-5">
+              <h3 className="mb-3 flex items-center text-xl font-bold text-darkblue-800 lg:text-lg">
+                {t('Leaderboard.WinnersLabel')} <EmojiEventsOutlinedIcon className="ml-1" fontSize="medium" />
+              </h3>
+              <WinnersList winners={results[0]?.winners} />
+            </div>
           </div>
-        </div>
-        <div className="mb-5 w-full lg:ml-5 lg:w-1/2">
-          <div className="h-auto rounded-md bg-white px-4 py-5 shadow-md sm:px-5">
-            <h3 className="mb-3 text-xl font-bold text-darkblue-800 lg:text-lg">
-              {t('Leaderboard.WinnersPerOfficeLabel')}
-            </h3>
-            <WinnersList winners={results[0]?.perOfficeWinners} />
+          <div className="mb-5 w-full lg:ml-5 lg:w-1/2">
+            <div className="h-auto rounded-md bg-white px-4 py-5 shadow-md sm:px-5">
+              <h3 className="mb-3 text-xl font-bold text-darkblue-800 lg:text-lg">
+                {t('Leaderboard.WinnersPerOfficeLabel')}
+              </h3>
+              <WinnersList winners={results[0]?.perOfficeWinners} />
+            </div>
           </div>
         </div>
       </div>
