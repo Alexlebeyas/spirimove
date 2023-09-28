@@ -7,7 +7,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import { useContest } from '@/hooks';
-import { isContestOver } from '@/utils/contest';
 import { formatDate } from '@/utils/dates';
 
 interface Props {
@@ -106,7 +105,8 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const { contest } = useContest();
-  const isContestOngoing = contest?.end_date && !isContestOver(contest.end_date);
+  const isContestOngoing = contest?.is_open && !contest?.show_winners;
+
   const commonValues = {
     is_intensive: participation?.is_intensive ? t('Common.Yes') : t('Common.No'),
     is_organizer: participation?.is_organizer ? t('Common.Yes') : t('Common.No'),

@@ -5,14 +5,13 @@ import { toast } from 'react-toastify';
 import { AxiosResponse } from 'axios';
 import i18n from 'i18next';
 
-type ResponseType = 
+type ResponseType =
   | 'Success'
   | 'error'
   | 'SubmitActivitySuccess'
   | 'SubmitActivityError'
   | 'DeleteActivitySuccess'
   | 'DeleteActivityError';
-
 
 const ToastDisplay = (response: AxiosResponse<{ errors: { detail: string }[] }>, responseType: ResponseType) => {
   let toastMessage: string;
@@ -29,15 +28,17 @@ const ToastDisplay = (response: AxiosResponse<{ errors: { detail: string }[] }>,
   }
 
   toastType(toastMessage, {
-    position: toast.POSITION.TOP_RIGHT,
-    autoClose: 5000,
+    position: toast.POSITION.BOTTOM_CENTER,
+    autoClose: 2500,
     pauseOnHover: false,
+    pauseOnFocusLoss: false,
+    closeButton: false,
   });
 };
 
 interface FormEntryError {
-  attr: string,
-  detail: string
+  attr: string;
+  detail: string;
 }
 
 class ParticipationService {
@@ -47,7 +48,7 @@ class ParticipationService {
     formData.set('contest', data.contestId.toString());
     formData.set('description', data.description);
     formData.set('date', data.date);
-    if(data.image){
+    if (data.image) {
       formData.set('image', data.image as Blob);
     }
     formData.set('is_intensive', data.isIntensive.toString());
@@ -60,23 +61,24 @@ class ParticipationService {
       })
       .catch(function (error) {
         ToastDisplay(error.response, 'SubmitActivityError');
-        return Promise.reject(Object.fromEntries(error.response.data.errors.map((x: FormEntryError) => [x.attr, x.detail])));
+        return Promise.reject(
+          Object.fromEntries(error.response.data.errors.map((x: FormEntryError) => [x.attr, x.detail]))
+        );
       });
   }
 
-  static updateParticipation(data: ICreateParticipationForm, paticipationId:number) {
-
+  static updateParticipation(data: ICreateParticipationForm, paticipationId: number) {
     const formData = new FormData();
 
     formData.set('contest', data.contestId.toString());
     formData.set('description', data.description);
     formData.set('date', data.date);
-    if(data.image){
+    if (data.image) {
       formData.set('image', data.image as Blob);
     }
     formData.set('is_intensive', data.isIntensive.toString());
     formData.set('is_organizer', data.isOrganizer.toString());
-    formData.set('type', data.type ? data.type.toString() : "") ;
+    formData.set('type', data.type ? data.type.toString() : '');
 
     return ApiService.put(`/update/participation/${paticipationId}/`, formData)
       .then(function (data) {
@@ -84,7 +86,9 @@ class ParticipationService {
       })
       .catch(function (error) {
         ToastDisplay(error.response, 'SubmitActivityError');
-        return Promise.reject(Object.fromEntries(error.response.data.errors.map((x: FormEntryError) => [x.attr, x.detail])))
+        return Promise.reject(
+          Object.fromEntries(error.response.data.errors.map((x: FormEntryError) => [x.attr, x.detail]))
+        );
       });
   }
 
@@ -99,7 +103,7 @@ class ParticipationService {
   }
 
   static toggleReactionParticipation(data: ToggleReactionsType) {
-    return ApiService.post(`reaction/participation/`, data)
+    return ApiService.post(`reaction/participation/`, data);
   }
 }
 

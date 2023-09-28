@@ -1,8 +1,8 @@
 from apps.contest.serializers import ContestsModelSerializer
 from apps.users.serializers import UserModelSerializer
+from django.core.files.storage import default_storage
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
-from django.core.files.storage import default_storage
 
 from .models import ParticipationModel, ParticipationTypeModel, DrawModel, LevelModel, ReactionModel
 
@@ -23,21 +23,29 @@ class AddParticipationModelSerializer(serializers.ModelSerializer):
         """
             Validate the paticipation data
         """
+        self.validate_contest_field(data)
         self.validate_date_field(data)
         self.validate_type_field(data)
         self.validate_multiple_participations(data)
         return data
 
+    def validate_contest_field(self, data):
+        """
+            Check if it's possible to add/edit participation in contest depending of the open/close status.
+        """
+        if not data['contest'].is_open or data['contest'].show_winners:
+            raise serializers.ValidationError({"date": _("You can not longer add/edit participation to this contest")})
+
     def validate_date_field(self, data):
         """
-            Check is the participation date correspond to contest period.
+            Check if the participation date correspond to contest period.
         """
         if not (data['contest'].start_date <= data['date'] <= data['contest'].end_date and data['contest'].is_open):
             raise serializers.ValidationError({"date": _("The date does not match this Spiri-Move")})
 
     def validate_type_field(self, data):
         """
-            Check is the participation date correspond to type period.
+            Check if the participation date correspond to type period.
             If the type doesn't have a defined period, it won't run.
         """
         if (data['type'].from_date and data['type'].to_date) and not (

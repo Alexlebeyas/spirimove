@@ -57,7 +57,7 @@ const WinnersList: React.FC<WinnersListProps> = ({ winners }) => {
 
 export const WinnerPodium: React.FC<WinnerPodiumProps> = ({ contest, results }) => {
   const { t } = useTranslation();
-  if (contest?.show_winners && results) {
+  if (!contest?.is_open && contest?.show_winners && results) {
     return (
       <div>
         <p className="mb-4 ml-2 text-xl font-bold text-darkblue-800 antialiased">{contest?.name}</p>
