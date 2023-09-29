@@ -59,8 +59,9 @@ class AddParticipationModelSerializer(serializers.ModelSerializer):
             for the same day, and if the chosen type approves it.
         """
         user_part_with_same_type_for_a_day = ParticipationModel.objects.filter(user=self.context.get('user'),
-                                                                               type=data['type'], date=data['date']). \
-            exclude(pk=None if not self.instance else self.instance.pk)
+                                                                               type=data['type'], date=data['date'],
+                                                                               contest=data['contest']).exclude(
+            pk=None if not self.instance else self.instance.pk)
 
         if not data['type'].can_add_more_by_day and user_part_with_same_type_for_a_day:
             raise serializers.ValidationError(

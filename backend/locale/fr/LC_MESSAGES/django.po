@@ -60,20 +60,20 @@ msgid "Exportation réussie !"
 msgstr ""
 
 #: apps/participation/admin.py:90
-msgid "Participation en attente"
+msgid "Participation à revoir"
 msgstr ""
 
 #: apps/participation/admin.py:91
-msgid "Participations en attente"
+msgid "Participations à revoir"
+msgstr "Participations à revoir"
+
+#: apps/participation/admin.py:115
+msgid "Participation revue"
 msgstr ""
 
-#: apps/participation/admin.py:112
-msgid "Participation résolue"
-msgstr ""
-
-#: apps/participation/admin.py:113
-msgid "Participations résolues"
-msgstr ""
+#: apps/participation/admin.py:116
+msgid "Participations revues"
+msgstr "Participations revues"
 
 #: apps/participation/models.py:25
 msgid "Participation type"
