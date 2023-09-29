@@ -89,6 +89,8 @@ class ParticipationModelAdmin(ModerationPermissions, admin.ModelAdmin):
     is__intensive.short_description = _('High Intensity')
     is__organizer.short_description = _('Initiator')
     points_field.short_description = _('Pts')
+    is__organizer.boolean = True
+    is__intensive.boolean = True
 
 
 class PendingParticipation(ParticipationModel):
