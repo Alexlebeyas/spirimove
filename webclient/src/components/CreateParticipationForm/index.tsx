@@ -313,7 +313,6 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
           <div className="mb-6 md:flex md:items-center">
             <FormControl className="w-full" variant="outlined" error={!!typeError?.description}>
               <TextField
-                required={true}
                 className="mb-6 w-full"
                 id="outlined-basic"
                 label={t('Participation.ActivityDescription.Tooltip')}
