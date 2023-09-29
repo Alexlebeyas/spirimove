@@ -113,7 +113,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
       errors.description = t('Participation.Required');
     }
 
-    if (shouldSetImage && !participationData.image) {
+    if (shouldSetImage && !participationData.image && !(!!participationToEdit && fileUrl)) {
       errors.image = t('Participation.Required');
     }
 
