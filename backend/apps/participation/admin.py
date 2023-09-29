@@ -10,9 +10,10 @@ from spiri_move.admin_panel_permissions import ModerationPermissions, AdminPermi
 
 from .models import ParticipationModel, DrawModel, ParticipationTypeModel, LevelModel
 
-participation_list_display = ['date', 'user__display_name', 'status', 'type__name', 'is_intensive', 'is_organizer',
-                              'points', 'description', 'image_displayed']
-participation_list_to_export = participation_list_display[:-1]
+participation_list_to_export = ['date', 'user__display_name', 'status', 'type__name', 'is_intensive', 'is_organizer',
+                                'points', 'description', 'image_displayed']
+participation_list_header_to_export = ['DATE', 'USER', 'STATUS', 'TYPE', 'HIGH INTENSITY', 'INITIATOR',
+                                       'PTS', 'DESCRIPTON']
 
 
 @admin.action(description=_("Approuver les participations selectionnées"))
@@ -41,7 +42,7 @@ def export_participations_as_csv(modeladmin, request, queryset):
     response['Content-Disposition'] = 'attachment; filename=Participations.csv'
     writer = csv.writer(response)
 
-    writer.writerow(field_names)
+    writer.writerow(participation_list_header_to_export)
     for obj in queryset:
         writer.writerow([obj.get(field) for field in field_names])
 
@@ -51,7 +52,8 @@ def export_participations_as_csv(modeladmin, request, queryset):
 
 @admin.register(ParticipationModel)
 class ParticipationModelAdmin(ModerationPermissions, admin.ModelAdmin):
-    list_display = participation_list_display
+    list_display = ['date', 'user__display_name', 'status', 'type__name', 'is__intensive', 'is__organizer',
+                    'points_field', 'description', 'image_displayed']
     list_filter = ('date', 'status')
     search_fields = ('user__display_name', 'type__name', 'description', 'status')
     actions = [make_approve, make_rejected, make_unapprove, export_participations_as_csv]
@@ -73,18 +75,34 @@ class ParticipationModelAdmin(ModerationPermissions, admin.ModelAdmin):
                 obj.image.url)
         return "/"
 
+    def is__intensive(self, obj):
+        return obj.is_intensive
+
+    def is__organizer(self, obj):
+        return obj.is_organizer
+
+    def points_field(self, obj):
+        return obj.points
+
+    user__display_name.short_description = _('User')
+    type__name.short_description = _('Type')
+    is__intensive.short_description = _('High Intensity')
+    is__organizer.short_description = _('Initiator')
+    points_field.short_description = _('Pts')
+    is__organizer.boolean = True
+    is__intensive.boolean = True
+
 
 class PendingParticipation(ParticipationModel):
     class Meta:
         proxy = True
-        verbose_name = _('Participation en attente')
-        verbose_name_plural = _('Participations en attente')
+        verbose_name = _('Participation à revoir')
+        verbose_name_plural = _('Participations à revoir')
 
 
 @admin.register(PendingParticipation)
 class PendingParticipationAdmin(ParticipationModelAdmin):
     actions = [make_approve, make_rejected, export_participations_as_csv]
-    list_display = participation_list_display
 
     def get_queryset(self, request):
         return self.model.objects.filter(
@@ -96,14 +114,13 @@ class PendingParticipationAdmin(ParticipationModelAdmin):
 class ResolvedParticipation(ParticipationModel):
     class Meta:
         proxy = True
-        verbose_name = _('Participation résolue')
-        verbose_name_plural = _('Participations résolues')
+        verbose_name = _('Participation revue')
+        verbose_name_plural = _('Participations revues')
 
 
 @admin.register(ResolvedParticipation)
 class ResolvedParticipationAdmin(ParticipationModelAdmin):
     actions = [make_unapprove, export_participations_as_csv]
-    list_display = participation_list_display
 
     def get_queryset(self, request):
         return self.model.objects.filter(

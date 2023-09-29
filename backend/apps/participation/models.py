@@ -88,6 +88,7 @@ class ParticipationModel(models.Model):
             self.points += 1
         if self.is_organizer:
             self.points += 1
+        self.image = None if not self.type.should_set_image else self.image
         super().save(*args, **kwargs)
 
 

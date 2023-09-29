@@ -246,7 +246,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                   type="file"
                   onChange={handleImageFile}
                   style={{ display: 'none' }}
-                  required={shouldSetImage}
+                  required={shouldSetImage && !fileUrl}
                 />
                 <label htmlFor="raised-button-file">
                   <Button
