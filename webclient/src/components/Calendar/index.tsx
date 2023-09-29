@@ -13,7 +13,7 @@ interface CustomDayProps extends PickersDayProps<Moment> {
 
 const StyledBadge = styled(Badge)(() => ({
   '.MuiBadge-dot': {
-    backgroundColor: '#b11b24',
+    backgroundColor: '#708ef4',
     transform: 'scale(1) translate(-200%, 300%)',
   },
 }));
@@ -31,7 +31,7 @@ function CustomDay({ highlightedDates = [], day, ...other }: CustomDayProps) {
       invisible={!isHighlighted}
       color="primary"
     >
-      <PickersDay {...other} day={day} />
+      <PickersDay {...other} disableRipple day={day} />
     </StyledBadge>
   );
 }
@@ -54,17 +54,19 @@ export default function Calender() {
   }
 
   return (
-    <div className="mx-4 mb-6 max-w-full rounded-md bg-white shadow-md sm:mx-0 sm:max-w-[350px]">
-        <DateCalendar
-          reduceAnimations
-          defaultCalendarMonth={moment()}
-          disableFuture
-          readOnly
-          minDate={moment(start_date)}
-          slots={{
-            day: (dayProps) => <CustomDay {...dayProps} highlightedDates={allHighlightedDates} />,
-          }}
-        />
+    <div className="MuiCustomCalendarContainer mx-4 mb-5 max-h-[306px] min-h-min max-w-full overflow-clip rounded-md bg-white shadow-md sm:mx-0 sm:max-w-[350px]">
+      <DateCalendar
+        reduceAnimations
+        defaultCalendarMonth={moment()}
+        disableFuture
+        showDaysOutsideCurrentMonth
+        readOnly
+        minDate={moment(start_date)}
+        views={['day']}
+        slots={{
+          day: (dayProps) => <CustomDay {...dayProps} highlightedDates={allHighlightedDates} />,
+        }}
+      />
     </div>
   );
 }
