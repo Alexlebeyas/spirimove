@@ -1,7 +1,7 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import UniqueConstraint, Q
 from django.utils.translation import gettext_lazy as _
-from django.core.exceptions import ValidationError
 
 
 class CurrentContestManager(models.Manager):
@@ -41,4 +41,3 @@ class ContestsModel(models.Model):
                 'end_date': ValidationError(
                     _("The contest end date must be later than the start date")),
             })
-

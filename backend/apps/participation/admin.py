@@ -162,7 +162,6 @@ class ParticipationTypeModelAdmin(AdminPermissions, admin.ModelAdmin):
     exclude = ['description', ]
 
 
-
 @admin.register(LevelModel)
 class LevelModelAdmin(AdminPermissions, admin.ModelAdmin):
     list_display = ['pk', 'name', 'price', 'participation_day', 'order', 'is_active', 'date_created']
