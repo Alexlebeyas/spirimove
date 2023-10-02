@@ -325,6 +325,7 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
                     description: e.target.value,
                   })
                 }
+                inputProps={{ maxLength: 150 }}
               />
               <FormHelperText sx={errorTextStyles}>{typeError?.description}</FormHelperText>
             </FormControl>

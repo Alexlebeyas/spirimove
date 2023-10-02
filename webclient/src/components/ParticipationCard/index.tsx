@@ -94,7 +94,7 @@ export const ParticipationCard: React.FC<Props> = ({ participation }) => {
 
       <div className="p-3">
         <div className="mb-1 text-sm font-medium text-slate-600">{formatDate(participation.date)}</div>
-        <p className="font-medium">{participation.description}</p>
+        <p className="font-medium break-words">{participation.description}</p>
         <div className="mt-2 text-slate-600">
           {reactionsCounters?.length > 0 && (
             <ReactionCounter
