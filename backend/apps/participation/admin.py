@@ -11,7 +11,7 @@ from spiri_move.admin_panel_permissions import ModerationPermissions, AdminPermi
 from .models import ParticipationModel, DrawModel, ParticipationTypeModel, LevelModel
 
 participation_list_to_export = ['date', 'user__display_name', 'status', 'type__name', 'is_intensive', 'is_organizer',
-                                'points', 'description', 'image_displayed']
+                                'points', 'description']
 participation_list_header_to_export = ['DATE', 'USER', 'STATUS', 'TYPE', 'HIGH INTENSITY', 'INITIATOR',
                                        'PTS', 'DESCRIPTON']
 
@@ -148,12 +148,19 @@ class DrawModelAdmin(AdminPermissions, admin.ModelAdmin):
     def level_name(self, obj):
         return f"{obj.level.name}"
 
+    def has_change_permission(self, request, obj=None):
+        """
+            Edit permissions for moderator and admin
+        """
+        return False
+
 
 @admin.register(ParticipationTypeModel)
 class ParticipationTypeModelAdmin(AdminPermissions, admin.ModelAdmin):
     list_display = ['pk', 'name', 'name_fr', 'name_en', 'can_be_intensive', 'can_add_more_by_day', 'can_have_organizer',
                     'shoul_be_display_on_feed', 'should_set_image', 'points', 'date_created']
     exclude = ['description', ]
+
 
 
 @admin.register(LevelModel)
