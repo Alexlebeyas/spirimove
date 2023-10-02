@@ -108,7 +108,7 @@
 }
 
 .MuiCustomButton-error:hover {
-  color:  #e0303b !important;
+  color: #e0303b !important;
   border-color: #e0303b !important;
 }
 
@@ -125,6 +125,41 @@
 .MuiTooltip-arrow {
   color: #ffd233 !important;
 }
+.MuiPickersDay-today {
+  background-color: #2f3940 !important;
+  color: #ffffff !important;
+}
+
+.MuiCustomCalendarContainer .MuiDayCalendar-slideTransition {
+  min-height: fit-content !important;
+  padding-bottom: 20px !important;
+}
+
+.MuiCustomCalendarContainer .MuiPickersDay-root:focus {
+  background-color: transparent !important;
+}
+.MuiCustomCalendarContainer .MuiPickersDay-root:hover {
+  background-color: transparent !important;
+  cursor: default !important;
+}
+.MuiCustomCalendarContainer .MuiPickersDay-today:hover {
+  background-color: #2f3940 !important;
+  color: #ffffff !important;
+  cursor: default !important;
+}
+.MuiCustomCalendarContainer .MuiPickersDay-today:focus {
+  background-color: #2f3940 !important;
+  color: #ffffff !important;
+  cursor: default !important;
+}
+
+.MuiCustomCalendarContainer .MuiPickersCalendarHeader-labelContainer {
+  cursor: default !important;
+  font-family: 'inter' !important;
+  font-weight: 600 !important;
+  color: #2f3940 !important;
+}
+
 :root {
   --toastify-color-success: #31aa69;
   --toastify-color-error: #e0303b;
