@@ -45,6 +45,11 @@ const Profile = () => {
     setCurrentLanguage(e.target.value);
   };
 
+  const getOfficeLabel = (office: string) => {
+    const translatedOffice = t(`Office.${office}`);
+    return translatedOffice !== `Office.${office}` ? translatedOffice : office;
+  };
+ 
   return (
     <PageContainer>
       <div className="flex justify-center rounded-md bg-white p-4 shadow-md">
@@ -69,7 +74,7 @@ const Profile = () => {
             </div>
             <h3 className="mt-2">{user.display_name}</h3>
             <h4 className="mt-2 font-medium text-slate-500">
-              {t('Common.Office')} {user.office}
+              {t('Common.Office')} {getOfficeLabel(user.office)}
             </h4>
             <input
               className="hidden"
@@ -81,7 +86,7 @@ const Profile = () => {
             <br />
             <FormControl sx={{ m: 1, minWidth: 120, margin: 0 }} size="small">
               <InputLabel id="language-select-label">{t('Common.Language')}</InputLabel>
-              <Select labelId="language-select-label" value={language} label="Language" onChange={onLanguageChange}>
+              <Select labelId="language-select-label" value={language} label={t('Common.Language')} onChange={onLanguageChange}>
                 <MenuItem value={LANGUAGES.EN.name}>{t(`Common.${LANGUAGES.EN.key}`)}</MenuItem>
                 <MenuItem value={LANGUAGES.FR.name}>{t(`Common.${LANGUAGES.FR.key}`)}</MenuItem>
               </Select>
