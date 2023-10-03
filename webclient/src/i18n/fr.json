@@ -2,14 +2,14 @@
   "translation": {
     "Common": {
       "Save": "Sauvegarder",
-      "Actions": "Actions",
+      "Actions": "",
       "Cancel": "Annuler",
       "Delete": "Supprimer",
       "DeleteTitle": "Suppression",
       "KeepIt": "Conserver",
       "Office": "Bureau de ",
-      "Language": "Langage",
-      "English": "Anglais",
+      "Language": "Langue",
+      "English": "English",
       "French": "Français",
       "Yes": "Oui",
       "No": "Non"
@@ -18,7 +18,7 @@
       "Feed": "Flux",
       "Leaderboard": "Classement",
       "MySpiriMove": "Mon Spiri-Move",
-      "About": "À Propos",
+      "About": "À propos",
       "MyProfile": "Profil",
       "Logout": "Déconnexion"
     },
@@ -43,8 +43,8 @@
         "Title": "Concours",
         "CurrentDay": "Jour",
         "Stimulation": "Lâche pas!",
-        "ContestEnding_one": "Spiri-Move: plus que {{count}} jour.",
-        "ContestEnding_other": "Spiri-Move: plus que {{count}} jours.",
+        "ContestEnding_one": "Spiri-Move fini dans {{count}} jour.",
+        "ContestEnding_other": "Spiri-Move fini dans {{count}} jours.",
         "Congratulations": "Félicitations!",
         "ContestFinished": "Spiri-Move est terminé."
       },
@@ -71,16 +71,16 @@
       "Date": "Date",
       "ParticipationType": "Type",
       "Description": "Description",
-      "Intensity": "Haute Intensité",
+      "Intensity": "Haute intensité",
       "Status": "Statut",
-      "Score": "Score",
+      "Score": "Pts",
       "Initiator": "Initiateur",
       "NoData": "Aucune activité pour cette date.",
       "Image": "Image"
     },
     "MySpiriMove": {
       "Stats": {
-        "Title": "Mon Classement",
+        "Title": "Mon classement",
         "Days_one": "Jour",
         "Days_other": "Jours",
         "Points_one": "Pt",
@@ -99,7 +99,7 @@
       "Submit": "Envoyer"
     },
     "Request": {
-      "Success": "Opération effectuée avec succès",
+      "Success": "Opération effectuée avec succès.",
       "SubmitActivitySuccess": "Activité envoyée avec succès.",
       "SubmitActivityError": "L'activité n'a pas pu être envoyée.",
       "DeleteActivitySuccess": "L'activité a été supprimé avec succès.",
@@ -121,7 +121,7 @@
         "Label": "Type *",
         "Tooltip": {
           "Standard": " Ton activité quotidienne.",
-          "KingOfHill": "Lorsque vous rassemblez au moins 2 autre Spiriens à votre initiative sportive.",
+          "KingOfHill": "Lorsque vous rassemblez au moins 2 autres Spiriens à votre initiative sportive.",
           "PopUpChallenge": "Courte session en ligne organisée par un modérateur."
         }
       },
@@ -131,8 +131,8 @@
       },
       "DeleteMessageConfirm": "Voulez-vous vraiment supprimer l'activité suivante?",
       "HighIntensity": {
-        "Label": "Haute Intensité",
-        "Tooltip": "Ex. entraînement à haute intensité, course à pied, vélo, boxe, sports d'équipes (hockey, soccer, etc...) ou plus de 10 000 pas par jour."
+        "Label": "Haute intensité",
+        "Tooltip": "Ex. entraînement à haute intensité, course à pied, vélo, boxe, sports d'équipe (hockey, soccer, etc.) ou plus de 10 000 pas par jour."
       },
       "Organizer": {
         "Label": "J'étais l'organisateur",
@@ -149,8 +149,8 @@
       "Approved": "Approuvée",
       "NotApproved": "Non Approuvée",
       "SelectImage": "Choisir une image",
-      "NewTitle": "Nouvelle Activité",
-      "EditTitle": "Modifier la Activité",
+      "NewTitle": "Nouvelle activité",
+      "EditTitle": "Modifier l'activité",
       "Required": "Obligatoire."
     },
     "ParticipationType": {

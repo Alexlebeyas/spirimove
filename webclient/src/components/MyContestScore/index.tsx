@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
-import { useContest } from '@/hooks';
-import { useMyStats } from '@/hooks/useMyStats';
 import { CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import useLevelStore from '@/stores/useLevelStore';
+import { IMyStats } from '@/interfaces/IMyStats';
 
-const MyContestScore = () => {
-  const { contest } = useContest();
+interface MyContestScoreProps {
+  stats: IMyStats
+}
+
+const MyContestScore = ({stats}: MyContestScoreProps) => {
   const { t } = useTranslation();
-  const stats = useMyStats(contest);
-  const { levels, fetchLevel } = useLevelStore((state) => state);
+  const { levels, fetchLevel } = useLevelStore();
 
   useEffect(() => {
     fetchLevel();

@@ -2,7 +2,7 @@
   "translation": {
     "Common": {
       "Save": "Save",
-      "Actions": "Actions",
+      "Actions": "",
       "Cancel": "Cancel",
       "Delete": "Delete",
       "DeleteTitle": "Deletion",
@@ -10,7 +10,7 @@
       "Office": "Office of ",
       "Language": "Language",
       "English": "English",
-      "French": "French",
+      "French": "Français",
       "Yes": "Yes",
       "No": "No"
     },
@@ -58,7 +58,7 @@
     },
     "Office": {
       "Global": "Global",
-      "Montreal": "Montreal",
+      "Montreal": "Montréal",
       "Gatineau": "Gatineau",
       "Toronto": "Toronto"
     },
@@ -71,16 +71,16 @@
       "Date": "Date",
       "ParticipationType": "Type",
       "Description": "Description",
-      "Intensity": "High Intensity",
+      "Intensity": "High intensity",
       "Status": "Status",
-      "Score": "Score",
+      "Score": "Pts",
       "Initiator": "Initiator",
       "NoData": "No activity yet for this date.",
       "Image": "Image"
     },
     "MySpiriMove": {
       "Stats": {
-        "Title": "My Stats",
+        "Title": "My stats",
         "Days_one": "Day",
         "Days_other": "Days",
         "Points_one": "Pt",
@@ -99,11 +99,11 @@
       "Submit": "Submit"
     },
     "Request": {
-      "Success": "Operation performed successfully",
-      "SubmitActivitySuccess": "Activity submitted successfully",
-      "SubmitActivityError": "The activity couldn't be submitted",
-      "DeleteActivitySuccess": "Activity deleted successfully",
-      "DeleteActivityError": "The activity couldn't be deleted"
+      "Success": "Operation performed successfully.",
+      "SubmitActivitySuccess": "Activity submitted successfully.",
+      "SubmitActivityError": "The activity couldn't be submitted.",
+      "DeleteActivitySuccess": "Activity deleted successfully.",
+      "DeleteActivityError": "The activity couldn't be deleted."
     },
     "Participation": {
       "ValidationState": {
@@ -127,19 +127,19 @@
       },
       "ActivityDescription": {
         "Label": "Description",
-        "Tooltip": "Activity Description"
+        "Tooltip": "Activity description"
       },
       "DeleteMessageConfirm": "Are you sure you want to delete the following activity?",
       "HighIntensity": {
-        "Label": "High Intensity",
+        "Label": "High intensity",
         "Tooltip": "E.g. High-intensity training, running, cycling, boxing, team sports (hockey, soccer, etc...) or more than 10,000 steps a day."
       },
       "Organizer": {
-        "Label": "I was the Organizer",
+        "Label": "I was the organizer.",
         "Tooltip": "The organizer is the one who initiated the group activity."
       },
       "Facilitator": {
-        "Label": "I was the facilitator",
+        "Label": "I was the facilitator.",
         "Tooltip": "The facilitator is the one who facilitated the group activity."
       },
       "Initiator": {
@@ -148,10 +148,10 @@
       },
       "Approved": "Approved",
       "NotApproved": "Not Approved",
-      "SelectImage": "Select Image",
+      "SelectImage": "Select image",
       "NewTitle": "New Activity",
       "EditTitle": "Edit Activity",
-      "Required": "Required"
+      "Required": "Required."
     },
     "ParticipationType": {
       "Normal": "Normal"

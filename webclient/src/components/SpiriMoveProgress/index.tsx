@@ -9,8 +9,11 @@ import { ConfirmBox, ParticipateModal } from '@/components';
 import { useContestParticipations } from '@/hooks/useContestParticipations';
 import MobileView from './MobileView';
 import DesktopView from './DesktopView';
+interface SpiriMoveProgressProps {
+  refreshStats: () => Promise<void>;
+}
 
-export const SpiriMoveProgress = () => {
+export const SpiriMoveProgress = ({ refreshStats }: SpiriMoveProgressProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { isLoading, contestParticipations, contestId, start_date } = useContestParticipations();
@@ -35,6 +38,7 @@ export const SpiriMoveProgress = () => {
       await ParticipationService.deleteParticipation(participationToHandle);
       await Promise.all([getMyParticipations(), getAllParticipations()]);
       setParticipationToHandle(null);
+      refreshStats();
     } catch (error) {
       console.error('There was an error deleting the participation:', error); // TODO: use an error notification service
     }
