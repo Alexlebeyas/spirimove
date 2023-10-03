@@ -12,6 +12,12 @@ import FormControl from '@mui/material/FormControl';
 import { InputLabel } from '@mui/material';
 import { getCurrentLanguage, setCurrentLanguage, LANGUAGES } from '@/utils/languages';
 
+const getLanguageOrder = (currentLanguage: string) => {
+  return currentLanguage === LANGUAGES.FR.name
+      ? [LANGUAGES.FR, LANGUAGES.EN]
+      : [LANGUAGES.EN, LANGUAGES.FR];
+};
+
 const Profile = () => {
   const { t } = useTranslation();
 
@@ -19,6 +25,8 @@ const Profile = () => {
   const refreshUser = useUserStore((state) => state.refreshUser);
 
   const [language, setLanguage] = useState(getCurrentLanguage());
+  const [preferredLanguage, secondaryLanguage] = getLanguageOrder(language);
+
 
   const hiddenFileInput = useRef<HTMLInputElement>(null);
 
@@ -87,8 +95,8 @@ const Profile = () => {
             <FormControl sx={{ m: 1, minWidth: 120, margin: 0 }} size="small">
               <InputLabel id="language-select-label">{t('Common.Language')}</InputLabel>
               <Select labelId="language-select-label" value={language} label={t('Common.Language')} onChange={onLanguageChange}>
-                <MenuItem value={LANGUAGES.EN.name}>{t(`Common.${LANGUAGES.EN.key}`)}</MenuItem>
-                <MenuItem value={LANGUAGES.FR.name}>{t(`Common.${LANGUAGES.FR.key}`)}</MenuItem>
+              <MenuItem value={preferredLanguage.name}>{t(`Common.${preferredLanguage.key}`)}</MenuItem>
+              <MenuItem value={secondaryLanguage.name}>{t(`Common.${secondaryLanguage.key}`)}</MenuItem>
               </Select>
             </FormControl>
           </div>
