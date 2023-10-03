@@ -1,20 +1,18 @@
 import CreateParticipationForm from '@/components/CreateParticipationForm';
-import moment from 'moment';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import { Dispatch, SetStateAction } from 'react';
-import { DATE_FORMAT } from '@/constants/formats';
 import { IParticipation } from '@/interfaces';
 interface Props {
   contestId: number;
   startDate: string;
+  endDate: string;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   participationToEdit?: IParticipation | null;
 }
 
-export const ParticipateModal: React.FC<Props> = ({ contestId, startDate, open, setOpen, participationToEdit }) => {
-  const endDate = moment().format(DATE_FORMAT);
+export const ParticipateModal: React.FC<Props> = ({ contestId, startDate, endDate, open, setOpen, participationToEdit }) => {
 
   return (
     <div>

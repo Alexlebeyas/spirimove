@@ -49,7 +49,7 @@ export const ConfirmBox: React.FC<Props> = ({ open, setOpen, participation, hand
             sx={{ color: '#2F3940', fontWeight: '600', WebkitFontSmoothing: 'antialiased' }}
           >
             {t('Participation.DeleteMessageConfirm')} <br />
-            {t('Participation.ActivityDescription.Label')} : <strong>{participation?.description}</strong> <br />
+            {t('Participation.ActivityDescription.Label')} : <strong className='break-words'>{participation?.description}</strong> <br />
             {t('Participation.DateWithoutAsterisk')} : <strong>{formatDate(participation?.date)}</strong>
           </DialogContentText>
         </DialogContent>

@@ -102,7 +102,7 @@ const Home = () => {
             )}
             {!next && <p>{t('Participation.NoMoreToLoad')}</p>}
           </div>
-          <ParticipateModal contestId={contest.id} startDate={contest.start_date} open={isOpen} setOpen={setIsOpen} />
+          <ParticipateModal contestId={contest.id} endDate={contest.end_date} startDate={contest.start_date} open={isOpen} setOpen={setIsOpen} />
         </>
       ) : (
         <></>
