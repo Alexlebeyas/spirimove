@@ -23,7 +23,7 @@ class ModerationPermissions:
         """
             Edit permissions for moderator and admin
         """
-        return (request.user.is_moderator() or request.user.is_admin()) if request.user.is_authenticated else False
+        return False
 
     # pylint: disable=unused-argument
     def has_module_permission(self, request, obj=None):

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-26 15:21+0000\n"
+"POT-Creation-Date: 2023-10-02 14:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,60 +18,84 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps/contest/models.py:14
+#: apps/contest/models.py:15
 msgid "Contest"
 msgstr ""
 
-#: apps/contest/models.py:15
+#: apps/contest/models.py:16
 msgid "Contests"
 msgstr ""
 
-#: apps/participation/admin.py:17
+#: apps/contest/models.py:42
+msgid "The contest end date must be later than the start date"
+msgstr ""
+
+#: apps/participation/admin.py:19
 msgid "Approuver les participations selectionnées"
 msgstr "Approve selected participations"
 
-#: apps/participation/admin.py:20
+#: apps/participation/admin.py:22
 msgid ""
 "Participation(s) sélectionnée(s) Marqué(s) comme approuvé(s) avec succès !!"
 msgstr "Selected participation(s) Marked as successfully approved !!"
 
-#: apps/participation/admin.py:23
+#: apps/participation/admin.py:25
 msgid "Rejeter les participations selectionnées"
 msgstr "Reject selected participations"
 
-#: apps/participation/admin.py:26
+#: apps/participation/admin.py:28
 msgid "Participation(s) sélectionnée(s) Marquée(s) comme rejetée(s) !!"
 msgstr "Selected participation(s) Marked as rejected!!"
 
-#: apps/participation/admin.py:29
+#: apps/participation/admin.py:31
 msgid "Réinitialiser la décision des participations selectionnées"
 msgstr "Reset the decision of selected participations"
 
-#: apps/participation/admin.py:32
+#: apps/participation/admin.py:34
 msgid "Participation(s) sélectionnée(s) Marquée(s) comme non approuvée(s) !!"
 msgstr "Selected participation(s) Marked as not approved!!"
 
-#: apps/participation/admin.py:35
+#: apps/participation/admin.py:37
 msgid "Exporter les participations selectionnées en CSV"
 msgstr "Export selected participations in CSV"
 
-#: apps/participation/admin.py:47
+#: apps/participation/admin.py:49
 msgid "Exportation réussie !"
 msgstr ""
 
+#: apps/participation/admin.py:87
+msgid "User"
+msgstr ""
+
+#: apps/participation/admin.py:88
+msgid "Type"
+msgstr ""
+
+#: apps/participation/admin.py:89
+msgid "High Intensity"
+msgstr ""
+
 #: apps/participation/admin.py:90
+msgid "Initiator"
+msgstr ""
+
+#: apps/participation/admin.py:91
+msgid "Pts"
+msgstr ""
+
+#: apps/participation/admin.py:99
 msgid "Participation à revoir"
 msgstr "Participation to review"
 
-#: apps/participation/admin.py:91
+#: apps/participation/admin.py:100
 msgid "Participations à revoir"
 msgstr "Participations to review"
 
-#: apps/participation/admin.py:115
+#: apps/participation/admin.py:117
 msgid "Participation revue"
 msgstr "Reviewed participation"
 
-#: apps/participation/admin.py:116
+#: apps/participation/admin.py:118
 msgid "Participations revues"
 msgstr "Reviewed participations"
 
@@ -107,23 +131,23 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: apps/participation/models.py:96
+#: apps/participation/models.py:97
 msgid "Reaction"
 msgstr ""
 
-#: apps/participation/models.py:97 apps/participation/models.py:103
+#: apps/participation/models.py:98 apps/participation/models.py:104
 msgid "Reactions"
 msgstr ""
 
-#: apps/participation/models.py:112
+#: apps/participation/models.py:113
 msgid "Level"
 msgstr ""
 
-#: apps/participation/models.py:113
+#: apps/participation/models.py:114
 msgid "Levels"
 msgstr ""
 
-#: apps/participation/models.py:128 apps/participation/models.py:129
+#: apps/participation/models.py:129 apps/participation/models.py:130
 msgid "Draw"
 msgstr ""
 
@@ -139,19 +163,19 @@ msgstr ""
 msgid "The type of participation chosen is not active on this date"
 msgstr ""
 
-#: apps/participation/serializers.py:67
+#: apps/participation/serializers.py:68
 msgid "You have already entered a participation with type {} for this day."
 msgstr ""
 
-#: apps/users/admin.py:16
+#: apps/users/admin.py:17
 msgid "Personal info"
 msgstr ""
 
-#: apps/users/admin.py:17
+#: apps/users/admin.py:18
 msgid "Permissions"
 msgstr ""
 
-#: apps/users/admin.py:18
+#: apps/users/admin.py:19
 msgid "Important dates"
 msgstr ""
 
@@ -163,7 +187,7 @@ msgstr ""
 msgid "Invalid basic header. Credentials string should not contain spaces."
 msgstr ""
 
-#: apps/users/auth.py:60 apps/users/auth.py:77
+#: apps/users/auth.py:60 apps/users/auth.py:74
 msgid "No such user"
 msgstr ""
 

@@ -93,13 +93,14 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
     participationsTypes.find((p) => p.id === participationData.type)?.can_have_organizer
   );
   const [shouldSetImage, setShouldSetImage] = useState(
-    participationsTypes.find((p) => p.id === participationData.type)?.should_set_image
+    participationToEdit ? participationToEdit.type?.should_set_image : participationsTypes.find((p) => p.id === participationData.type)?.should_set_image
   );
 
   const { t } = useTranslation();
 
   const validateForm = (): FieldErrors | undefined => {
     const errors: Partial<FieldErrors> = {};
+    
 
     if (participationData.date) {
       const isDateInRange = isDateWithinRange(participationData.date, startDate, endDate);
