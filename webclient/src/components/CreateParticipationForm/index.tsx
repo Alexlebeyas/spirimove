@@ -168,14 +168,17 @@ const CreateParticipationForm: React.FC<Props> = ({ contestId, startDate, endDat
 
   const handleImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    const file = e.target?.files != undefined ? e.target.files[0] : undefined;
-    const filePath = file != undefined ? URL.createObjectURL(file) : '';
-    setfileUrl(filePath);
+      // Only update if there's a file selected
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      const filePath = URL.createObjectURL(file);
+      setfileUrl(filePath);
 
-    setParticipationData({
-      ...participationData,
-      image: file,
-    });
+      setParticipationData({
+        ...participationData,
+        image: file,
+      });
+    }
   };
 
   const onParticipationTypeChange = (e: SelectChangeEvent<number | string>) => {
