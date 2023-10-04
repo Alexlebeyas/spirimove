@@ -154,6 +154,10 @@ class DrawModelAdmin(AdminPermissions, admin.ModelAdmin):
         """
         return False
 
+    contest_name.short_description = _('Contest')
+    winner_name.short_description = _('Winner')
+    level_name.short_description = _('Level')
+
 
 @admin.register(ParticipationTypeModel)
 class ParticipationTypeModelAdmin(AdminPermissions, admin.ModelAdmin):
@@ -161,8 +165,20 @@ class ParticipationTypeModelAdmin(AdminPermissions, admin.ModelAdmin):
                     'shoul_be_display_on_feed', 'should_set_image', 'points', 'date_created']
     exclude = ['description', ]
 
+    def has_add_permission(self, request, obj=None):
+        """
+            Add permissions
+        """
+        return True
+
 
 @admin.register(LevelModel)
 class LevelModelAdmin(AdminPermissions, admin.ModelAdmin):
-    list_display = ['pk', 'name', 'price', 'participation_day', 'order', 'is_active', 'date_created']
-    exclude = ['last_modified', ]
+    list_display = ['pk', 'name', 'price', 'participation_day', 'order', 'is_active']
+    exclude = ['last_modified', 'date_created']
+
+    def has_add_permission(self, request, obj=None):
+        """
+            Add permissions
+        """
+        return True

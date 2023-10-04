@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-02 14:35+0000\n"
+"POT-Creation-Date: 2023-10-04 15:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +17,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps/contest/models.py:15
+#: apps/contest/admin.py:53
+msgid "Random draw carried out successfully."
+msgstr ""
+
+#: apps/contest/admin.py:55
+msgid "It is possible that no participants have been drawn."
+msgstr ""
+
+#: apps/contest/admin.py:122
+msgid "Perform the draw"
+msgstr ""
+
+#: apps/contest/apps.py:6 apps/contest/models.py:15
+#: apps/participation/admin.py:157 apps/participation/models.py:69
+#: apps/participation/models.py:133
 msgid "Contest"
 msgstr ""
 
@@ -26,7 +39,39 @@ msgstr ""
 msgid "Contests"
 msgstr ""
 
-#: apps/contest/models.py:42
+#: apps/contest/models.py:23
+msgid "Contest name"
+msgstr ""
+
+#: apps/contest/models.py:24
+msgid "Start date"
+msgstr ""
+
+#: apps/contest/models.py:25
+msgid "End date"
+msgstr ""
+
+#: apps/contest/models.py:26
+msgid "Show winners"
+msgstr ""
+
+#: apps/contest/models.py:27
+msgid "Open ?"
+msgstr ""
+
+#: apps/contest/models.py:28 apps/participation/models.py:39
+#: apps/participation/models.py:73 apps/participation/models.py:123
+#: apps/participation/models.py:138
+msgid "Date created"
+msgstr ""
+
+#: apps/contest/models.py:29 apps/participation/models.py:40
+#: apps/participation/models.py:74 apps/participation/models.py:124
+#: apps/participation/models.py:139
+msgid "Last modified"
+msgstr ""
+
+#: apps/contest/models.py:41
 msgid "The contest end date must be later than the start date"
 msgstr ""
 
@@ -63,7 +108,8 @@ msgstr "Export selected participations in CSV"
 msgid "Exportation réussie !"
 msgstr ""
 
-#: apps/participation/admin.py:87
+#: apps/participation/admin.py:87 apps/participation/models.py:61
+#: apps/users/apps.py:7 apps/users/models.py:88
 msgid "User"
 msgstr ""
 
@@ -71,15 +117,15 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: apps/participation/admin.py:89
+#: apps/participation/admin.py:89 apps/participation/models.py:70
 msgid "High Intensity"
 msgstr ""
 
-#: apps/participation/admin.py:90
+#: apps/participation/admin.py:90 apps/participation/models.py:71
 msgid "Initiator"
 msgstr ""
 
-#: apps/participation/admin.py:91
+#: apps/participation/admin.py:91 apps/participation/models.py:65
 msgid "Pts"
 msgstr ""
 
@@ -99,12 +145,54 @@ msgstr "Reviewed participation"
 msgid "Participations revues"
 msgstr "Reviewed participations"
 
-#: apps/participation/models.py:25
+#: apps/participation/admin.py:158 apps/participation/models.py:134
+msgid "Winner"
+msgstr ""
+
+#: apps/participation/admin.py:159 apps/participation/models.py:113
+#: apps/participation/models.py:135
+msgid "Level"
+msgstr ""
+
+#: apps/participation/models.py:25 apps/participation/models.py:63
 msgid "Participation type"
 msgstr ""
 
 #: apps/participation/models.py:26
 msgid "Participations type"
+msgstr ""
+
+#: apps/participation/models.py:29 apps/participation/models.py:30
+#: apps/participation/models.py:31 apps/participation/models.py:117
+msgid "Level name"
+msgstr ""
+
+#: apps/participation/models.py:32
+msgid "From date"
+msgstr ""
+
+#: apps/participation/models.py:33
+msgid "To date"
+msgstr ""
+
+#: apps/participation/models.py:34
+msgid "Can be intensive ?"
+msgstr ""
+
+#: apps/participation/models.py:35
+msgid "Can add more by day ?"
+msgstr ""
+
+#: apps/participation/models.py:36
+msgid "Can have initiator ?"
+msgstr ""
+
+#: apps/participation/models.py:37
+msgid "Shoul be display on feed ?"
+msgstr ""
+
+#: apps/participation/models.py:38
+msgid "Should set image ?"
 msgstr ""
 
 #: apps/participation/models.py:48
@@ -127,6 +215,14 @@ msgstr ""
 msgid "Approved"
 msgstr ""
 
+#: apps/participation/models.py:64
+msgid "Description"
+msgstr ""
+
+#: apps/participation/models.py:68 apps/users/admin.py:50
+msgid "Image"
+msgstr ""
+
 #: apps/participation/models.py:72
 msgid "Status"
 msgstr ""
@@ -139,16 +235,40 @@ msgstr ""
 msgid "Reactions"
 msgstr ""
 
-#: apps/participation/models.py:113
-msgid "Level"
-msgstr ""
-
 #: apps/participation/models.py:114
 msgid "Levels"
 msgstr ""
 
+#: apps/participation/models.py:118
+msgid "Price"
+msgstr ""
+
+#: apps/participation/models.py:119
+msgid "Participation days"
+msgstr "Reviewed participation"
+
+#: apps/participation/models.py:120
+msgid "Order"
+msgstr ""
+
+#: apps/participation/models.py:121
+msgid "For office ?"
+msgstr ""
+
+#: apps/participation/models.py:122
+msgid "Active ?"
+msgstr ""
+
 #: apps/participation/models.py:129 apps/participation/models.py:130
 msgid "Draw"
+msgstr ""
+
+#: apps/participation/models.py:136
+msgid "Days completed"
+msgstr ""
+
+#: apps/participation/models.py:137 apps/users/models.py:95
+msgid "Office"
 msgstr ""
 
 #: apps/participation/serializers.py:37
@@ -220,22 +340,22 @@ msgid "Moderator"
 msgstr ""
 
 #: apps/users/models.py:66
-msgid "Partcipant"
+msgid "Participant"
+msgstr "Reviewed participation"
+
+#: apps/users/models.py:89
+msgid "Users"
 msgstr ""
 
-#: apps/users/models.py:87
+#: apps/users/models.py:93
 msgid "email address"
 msgstr ""
 
-#: apps/users/models.py:88
+#: apps/users/models.py:94
 msgid "Phone"
 msgstr ""
 
-#: apps/users/models.py:89
-msgid "Office"
-msgstr ""
-
-#: apps/users/models.py:90
+#: apps/users/models.py:96
 msgid "Display Name"
 msgstr ""
 

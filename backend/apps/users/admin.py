@@ -41,6 +41,14 @@ class UserAdmin(AdminPermissions, DjangoUserAdmin):
     def group_list(self, obj):
         return ' / '.join([group.name for group in obj.groups.all()])
 
+    def has_add_permission(self, request, obj=None):
+        """
+            Add permissions
+        """
+        return True
+
+    image_displayed.short_description = _('Image')
+
 
 admin.site.unregister(Group)
 admin.site.unregister(TokenProxy)

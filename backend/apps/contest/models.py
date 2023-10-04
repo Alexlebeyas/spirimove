@@ -20,14 +20,13 @@ class ContestsModel(models.Model):
                              name="unique_is_open_true"),
         ]
 
-    name = models.CharField(max_length=200, null=False, blank=False)
-    nb_element_leaderboard = models.PositiveSmallIntegerField(null=True, blank=True)
-    start_date = models.DateField(null=False, blank=False)
-    end_date = models.DateField(null=False, blank=False)
-    show_winners = models.BooleanField(default=False)
-    is_open = models.BooleanField(default=True)
-    date_created = models.DateField(auto_now_add=True)
-    last_modified = models.DateField(auto_now=True)
+    name = models.CharField(max_length=200, null=False, blank=False, verbose_name=_("Contest name"))
+    start_date = models.DateField(null=False, blank=False, verbose_name=_("Start date"))
+    end_date = models.DateField(null=False, blank=False, verbose_name=_("End date"))
+    show_winners = models.BooleanField(default=False, verbose_name=_("Show winners"))
+    is_open = models.BooleanField(default=True, verbose_name=_("Open ?"))
+    date_created = models.DateField(auto_now_add=True, verbose_name=_("Date created"))
+    last_modified = models.DateField(auto_now=True, verbose_name=_("Last modified"))
 
     objects = models.Manager()  # The default manager.
     current_contest = CurrentContestManager()  # The current Contest Manager.
