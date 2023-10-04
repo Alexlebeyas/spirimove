@@ -63,7 +63,7 @@ class Role(models.Model):
     ROLE_CHOICES = [
         (ADMIN, _('Admin')),
         (MODERATOR, _('Moderator')),
-        (PARTICIPANT, _('Partcipant'))
+        (PARTICIPANT, _('Participant'))
     ]
 
     def __str__(self):
@@ -83,6 +83,12 @@ class User(AbstractUser):
     """
       Custom user class inheriting AbstractBaseUser class
     """
+
+    class Meta:
+        verbose_name = _('User')
+        verbose_name_plural = _('Users')
+        ordering = ['display_name']
+
     username = None
     email = models.EmailField(_('email address'), max_length=60, unique=True)
     phone = models.CharField(_('Phone'), max_length=256, null=True, blank=True)

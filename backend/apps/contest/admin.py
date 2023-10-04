@@ -5,27 +5,32 @@ from apps.participation.views import get_list_stats
 from apps.users.models import User
 from apps.users.views import list_all_office
 from django.contrib import admin
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import path, reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
+from spiri_move.admin_panel_permissions import AdminPermissions
 
 from .models import ContestsModel
 
 
 @admin.register(ContestsModel)
-class ActivitiesModelAdmin(admin.ModelAdmin):
+class ContestsModelAdmin(AdminPermissions, admin.ModelAdmin):
     list_display = ['name', 'name_en', 'name_fr', 'start_date', 'end_date', 'is_open', 'date_created', 'last_modified',
                     'draw_action']
     exclude = ['date_created', 'last_modified', ]
 
-    def has_module_permission(self, request):
+    def has_add_permission(self, request, obj=None):
+        """
+            Add permissions
+        """
         return request.user.is_admin() if request.user.is_authenticated else False
 
     def draw_action(self, obj):
-        return format_html(
-            f"<a type='button' href='{reverse('admin:run_draw', args=[obj.id])}' > {_('Run Drawn')} </a>")
+        return format_html(f"<a type='button' href='{reverse('admin:run_draw', args=[obj.id])}' > "
+                           f"{_('Random Drawn')} </a>")
 
     def get_urls(self):
         urls = super().get_urls()
@@ -45,6 +50,10 @@ class ActivitiesModelAdmin(admin.ModelAdmin):
         contest.is_open = False
         contest.show_winners = True
         contest.save()
+        if winner_list:
+            messages.success(request, _('Random draw carried out successfully.'))
+        else:
+            messages.warning(request, _('It is possible that no participants have been drawn.'))
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     def run_global_draw_function(self, contest, list_element_for_draw):
@@ -110,3 +119,5 @@ class ActivitiesModelAdmin(admin.ModelAdmin):
                     draw_element.winner = User.objects.get(pk=winner['user_id'])
                     draw_element.total_days = winner['nb_days']
                     draw_element.save()
+
+    draw_action.short_description = _('Perform the draw')

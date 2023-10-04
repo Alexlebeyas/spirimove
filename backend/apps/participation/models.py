@@ -26,18 +26,18 @@ class ParticipationTypeModel(models.Model):
         verbose_name_plural = _('Participations type')
         ordering = ['pk']
 
-    name = models.CharField(max_length=200, null=False, blank=False)
-    description = models.TextField(null=True, blank=True)
-    points = models.PositiveSmallIntegerField(null=False, blank=False, default=1)
-    from_date = models.DateField(null=True, blank=True)
-    to_date = models.DateField(null=True, blank=True)
-    can_be_intensive = models.BooleanField(default=False)
-    can_add_more_by_day = models.BooleanField(default=False)
-    can_have_organizer = models.BooleanField(default=False)
-    shoul_be_display_on_feed = models.BooleanField(default=True)
-    should_set_image = models.BooleanField(default=True)
-    date_created = models.DateField(auto_now_add=True)
-    last_modified = models.DateField(auto_now=True)
+    name = models.CharField(max_length=200, null=False, blank=False, verbose_name=_("Level name"))
+    description = models.TextField(null=True, blank=True, verbose_name=_("Level name"))
+    points = models.PositiveSmallIntegerField(null=False, blank=False, default=1, verbose_name=_("Level name"))
+    from_date = models.DateField(null=True, blank=True, verbose_name=_("From date"))
+    to_date = models.DateField(null=True, blank=True, verbose_name=_("To date"))
+    can_be_intensive = models.BooleanField(default=False, verbose_name=_("Can be intensive ?"))
+    can_add_more_by_day = models.BooleanField(default=False, verbose_name=_("Can add more by day ?"))
+    can_have_organizer = models.BooleanField(default=False, verbose_name=_("Can have initiator ?"))
+    shoul_be_display_on_feed = models.BooleanField(default=True, verbose_name=_("Shoul be display on feed ?"))
+    should_set_image = models.BooleanField(default=True, verbose_name=_("Should set image ?"))
+    date_created = models.DateField(auto_now_add=True, verbose_name=_("Date created"))
+    last_modified = models.DateField(auto_now=True, verbose_name=_("Last modified"))
 
     def __str___(self):
         return self.name
@@ -58,20 +58,21 @@ class ParticipationModel(models.Model):
         (APPROVED, _('Approved'))
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_("User"))
     # This field could be use to check if it's extra activity
-    type = models.ForeignKey(ParticipationTypeModel, on_delete=models.CASCADE, null=False, blank=False)
-    description = models.TextField(null=False, blank=False)
-    points = models.PositiveSmallIntegerField(null=False, blank=False, default=1)
+    type = models.ForeignKey(ParticipationTypeModel, on_delete=models.CASCADE, null=False, blank=False,
+                             verbose_name=_("Participation type"))
+    description = models.TextField(null=False, blank=False, verbose_name=_("Description"))
+    points = models.PositiveSmallIntegerField(null=False, blank=False, default=1, verbose_name=_("Pts"))
     date = models.DateField(null=False, blank=False)
     image = models.ImageField(upload_to=participation_picture_path, storage=get_storage(private=True), null=True,
-                              blank=True)
-    contest = models.ForeignKey(ContestsModel, on_delete=models.CASCADE)
-    is_intensive = models.BooleanField(default=False)
-    is_organizer = models.BooleanField(default=False)
-    status = models.CharField(_('Status'), choices=STATUS_CHOICES, default=IN_VERIFICATION, max_length=50)
-    date_created = models.DateTimeField(editable=False)
-    last_modified = models.DateTimeField()
+                              blank=True, verbose_name=_("Image"))
+    contest = models.ForeignKey(ContestsModel, on_delete=models.CASCADE, verbose_name=_("Contest"))
+    is_intensive = models.BooleanField(default=False, verbose_name=_("High Intensity"))
+    is_organizer = models.BooleanField(default=False, verbose_name=_("Initiator"))
+    status = models.CharField(choices=STATUS_CHOICES, default=IN_VERIFICATION, max_length=50, verbose_name=_("Status"))
+    date_created = models.DateTimeField(editable=False, verbose_name=_("Date created"))
+    last_modified = models.DateTimeField(verbose_name=_("Last modified"))
 
     def __str___(self):
         return self.pk
@@ -114,28 +115,31 @@ class LevelModel(models.Model):
         verbose_name_plural = _('Levels')
         ordering = ['order']
 
-    name = models.CharField(max_length=200, null=False, blank=False)
-    price = models.CharField(max_length=200, null=False, blank=False, default=1)
-    participation_day = models.PositiveSmallIntegerField(null=False, blank=False, default=1)
-    order = models.PositiveSmallIntegerField(null=False, blank=False, default=1)
-    is_for_office = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    date_created = models.DateTimeField(editable=False, null=True, blank=True)
-    last_modified = models.DateTimeField(null=True, blank=True)
+    name = models.CharField(max_length=200, null=False, blank=False, verbose_name=_("Level name"))
+    price = models.CharField(max_length=200, null=False, blank=False, default=1, verbose_name=_("Price"))
+    participation_day = models.PositiveSmallIntegerField(null=False, blank=False, default=1,
+                                                         verbose_name=_("Participation days"))
+    order = models.PositiveSmallIntegerField(null=False, blank=False, default=1, verbose_name=_("Order"))
+    is_for_office = models.BooleanField(default=False, verbose_name=_("For office ?"))
+    is_active = models.BooleanField(default=True, verbose_name=_("Active ?"))
+    date_created = models.DateTimeField(editable=False, null=True, blank=True, verbose_name=_("Date created"))
+    last_modified = models.DateTimeField(null=True, blank=True, verbose_name=_("Last modified"))
 
 
 class DrawModel(models.Model):
     class Meta:
         verbose_name = _('Draw')
         verbose_name_plural = _('Draw')
+        ordering = ['contest', 'level']
 
-    contest = models.ForeignKey(ContestsModel, on_delete=models.CASCADE, null=True, blank=True)
-    winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    level = models.ForeignKey(LevelModel, on_delete=models.CASCADE, null=True, blank=True)
-    total_days = models.PositiveSmallIntegerField(null=True, blank=True)
-    office = models.CharField(max_length=200, null=True, blank=True, default="")
-    date_created = models.DateTimeField(editable=False, null=True, blank=True)
-    last_modified = models.DateTimeField(null=True, blank=True)
+    contest = models.ForeignKey(ContestsModel, on_delete=models.CASCADE, null=True, blank=True,
+                                verbose_name=_("Contest"))
+    winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("Winner"))
+    level = models.ForeignKey(LevelModel, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("Level"))
+    total_days = models.PositiveSmallIntegerField(null=True, blank=True, verbose_name=_("Days completed"))
+    office = models.CharField(max_length=200, null=True, blank=True, default="", verbose_name=_("Office"))
+    date_created = models.DateTimeField(editable=False, null=True, blank=True, verbose_name=_("Date created"))
+    last_modified = models.DateTimeField(null=True, blank=True, verbose_name=_("Last modified"))
 
     def save(self, *args, **kwargs):
         if not self.pk:
