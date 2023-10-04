@@ -127,7 +127,7 @@
       },
       "ActivityDescription": {
         "Label": "Description",
-        "Tooltip": "Description de l'activité"
+        "Tooltip": "Description de l'activité *"
       },
       "DeleteMessageConfirm": "Voulez-vous vraiment supprimer l'activité suivante?",
       "HighIntensity": {
