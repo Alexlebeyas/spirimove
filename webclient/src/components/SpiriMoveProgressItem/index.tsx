@@ -156,7 +156,7 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
         </div>
       )}
 
-      <div className="mt-4 text-sm font-medium">{description}</div>
+      <div className="mt-4 text-sm font-medium break-words">{description}</div>
       <div className="mt-1 text-sm font-medium">
         {t('ContestCalendar.ParticipationType')}: {type}
       </div>
@@ -198,7 +198,7 @@ const SpiriMoveProgressItem: React.FC<Props> = ({
       <td className="px-3 py-2">{type}</td>
       <td className="px-3 py-2">{type === 'Standard' ? is_intensive : '-'}</td>
       <td className="px-3 py-2">{type !== 'Standard' ? is_organizer : '-'}</td>
-      <td className="px-3 py-2">{description}</td>
+      <td className="px-3 py-2 break-words max-w-[180px]">{description}</td>
       <td className="px-3 py-2">{renderStatus(t, status)}</td>
       <td className="px-3 py-2">{score}</td>
       <td className="px-3 py-2">

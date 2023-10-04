@@ -132,7 +132,7 @@
       "DeleteMessageConfirm": "Are you sure you want to delete the following activity?",
       "HighIntensity": {
         "Label": "High intensity",
-        "Tooltip": "E.g. High-intensity training, running, cycling, boxing, team sports (hockey, soccer, etc...) or more than 10,000 steps a day."
+        "Tooltip": "E.g. High-intensity training, running, cycling, boxing, team sports (hockey, soccer, etc.) or more than 10,000 steps a day."
       },
       "Organizer": {
         "Label": "I was the organizer.",

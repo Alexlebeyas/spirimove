@@ -37,7 +37,7 @@ function CustomDay({ highlightedDates = [], day, ...other }: CustomDayProps) {
 }
 
 export default function Calender() {
-  const { isLoading, contestParticipations, start_date } = useContestParticipations();
+  const { isLoading, contestParticipations, start_date, end_date } = useContestParticipations();
 
   const allHighlightedDates = useMemo(() => {
     return contestParticipations
@@ -62,6 +62,7 @@ export default function Calender() {
         showDaysOutsideCurrentMonth
         readOnly
         minDate={moment(start_date)}
+        maxDate={moment(end_date)}
         views={['day']}
         slots={{
           day: (dayProps) => <CustomDay {...dayProps} highlightedDates={allHighlightedDates} />,

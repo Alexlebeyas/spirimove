@@ -31,6 +31,7 @@ export const useContestParticipations = () => {
   return {
     contestId,
     start_date,
+    end_date,
     contestParticipations,
     isLoading
   };

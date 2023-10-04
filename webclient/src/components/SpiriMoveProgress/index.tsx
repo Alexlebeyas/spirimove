@@ -16,7 +16,7 @@ interface SpiriMoveProgressProps {
 export const SpiriMoveProgress = ({ refreshStats }: SpiriMoveProgressProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const { isLoading, contestParticipations, contestId, start_date } = useContestParticipations();
+  const { isLoading, contestParticipations, contestId, start_date, end_date } = useContestParticipations();
   const { getParticipations: getMyParticipations } = fetchMyParticipations();
   const { getParticipations: getAllParticipations } = fetchAllParticipations();
 
@@ -64,6 +64,7 @@ export const SpiriMoveProgress = ({ refreshStats }: SpiriMoveProgressProps) => {
       <ParticipateModal
         contestId={contestId}
         startDate={start_date}
+        endDate={end_date}
         open={isEditParticipationModalOpen}
         setOpen={setIsEditParticipationModalOpen}
         participationToEdit={participationToHandle}
