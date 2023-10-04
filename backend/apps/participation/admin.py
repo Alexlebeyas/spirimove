@@ -169,7 +169,7 @@ class ParticipationTypeModelAdmin(AdminPermissions, admin.ModelAdmin):
         """
             Add permissions
         """
-        return True
+        return request.user.is_admin() if request.user.is_authenticated else False
 
 
 @admin.register(LevelModel)
@@ -181,4 +181,4 @@ class LevelModelAdmin(AdminPermissions, admin.ModelAdmin):
         """
             Add permissions
         """
-        return True
+        return request.user.is_admin() if request.user.is_authenticated else False

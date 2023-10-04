@@ -26,7 +26,7 @@ class ContestsModelAdmin(AdminPermissions, admin.ModelAdmin):
         """
             Add permissions
         """
-        return True
+        return request.user.is_admin() if request.user.is_authenticated else False
 
     def draw_action(self, obj):
         return format_html(f"<a type='button' href='{reverse('admin:run_draw', args=[obj.id])}' > "
