@@ -73,7 +73,7 @@ export const LeaderboardTable = ({ stats, mode }: Props) => {
 function filterAndSort(stats: ILeaderboardStats[], mode: SortingMode, top: number): ILeaderboardStats[] {
   const compareFn = {
     pts: (a: ILeaderboardStats, b: ILeaderboardStats) => Number(b.total_points) - Number(a.total_points),
-    days: (a: ILeaderboardStats, b: ILeaderboardStats) => Number(b.total_days) - Number(a.total_days),
+    days: (a: ILeaderboardStats, b: ILeaderboardStats) => Number(b.max_consecutive_days) - Number(a.max_consecutive_days),
   }[mode];
 
   return stats.sort(compareFn).slice(0, top);
