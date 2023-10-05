@@ -15,6 +15,12 @@ participation_list_to_export = ['date', 'user__display_name', 'status', 'type__n
 participation_list_header_to_export = ['DATE', 'USER', 'STATUS', 'TYPE', 'HIGH INTENSITY', 'INITIATOR',
                                        'PTS', 'DESCRIPTON']
 
+STATUS_CHOICES = {
+    ParticipationModel.IN_VERIFICATION: _('In verification'),
+    ParticipationModel.REJECTED: _('Rejected'),
+    ParticipationModel.APPROVED: _('Approved')
+}
+
 
 @admin.action(description=_("Approuver les participations selectionnées"))
 def make_approve(modeladmin, request, queryset):
@@ -52,9 +58,9 @@ def export_participations_as_csv(modeladmin, request, queryset):
 
 @admin.register(ParticipationModel)
 class ParticipationModelAdmin(ModerationPermissions, admin.ModelAdmin):
-    list_display = ['date', 'user__display_name', 'status', 'type__name', 'is__intensive', 'is__organizer',
-                    'points_field', 'description', 'image_displayed']
-    list_filter = ('date', 'status')
+    list_display = ['date', 'user__display_name', 'status_display', 'type__name', 'is__intensive', 'is__organizer',
+                    'points_field', 'description_display', 'image_displayed']
+    list_filter = ('date',)
     search_fields = ('user__display_name', 'type__name', 'description', 'status')
     actions = [make_approve, make_rejected, make_unapprove, export_participations_as_csv]
 
@@ -67,6 +73,9 @@ class ParticipationModelAdmin(ModerationPermissions, admin.ModelAdmin):
     def type__name(self, obj):
         return obj.type.name if obj.type else "/"
 
+    def status_display(self, obj):
+        return STATUS_CHOICES.get(obj.status)
+
     def image_displayed(self, obj):
         if obj.image:
             return format_html(
@@ -74,6 +83,11 @@ class ParticipationModelAdmin(ModerationPermissions, admin.ModelAdmin):
                 obj.image.url,
                 obj.image.url)
         return "/"
+
+    def description_display(self, obj):
+        return format_html(
+            f"<p style = 'white-space: pre-wrap; word-break: break-word; "
+            f"overflow-wrap: break-word;'> {obj.description}</p>")
 
     def is__intensive(self, obj):
         return obj.is_intensive
@@ -84,6 +98,7 @@ class ParticipationModelAdmin(ModerationPermissions, admin.ModelAdmin):
     def points_field(self, obj):
         return obj.points
 
+    description_display.short_description = _('User')
     user__display_name.short_description = _('User')
     type__name.short_description = _('Type')
     is__intensive.short_description = _('High Intensity')
