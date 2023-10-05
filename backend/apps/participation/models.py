@@ -53,9 +53,9 @@ class ParticipationModel(models.Model):
     REJECTED = 'REJECTED'
     APPROVED = 'APPROVED'
     STATUS_CHOICES = [
-        (IN_VERIFICATION, _('In verification')),
-        (REJECTED, _('Rejected')),
-        (APPROVED, _('Approved'))
+        (IN_VERIFICATION, 'In verification'),
+        (REJECTED, 'Rejected'),
+        (APPROVED, 'Approved')
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_("User"))

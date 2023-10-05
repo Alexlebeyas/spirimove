@@ -205,15 +205,15 @@ msgstr ""
 
 #: apps/participation/models.py:56
 msgid "In verification"
-msgstr ""
+msgstr "En vérification"
 
 #: apps/participation/models.py:57
 msgid "Rejected"
-msgstr ""
+msgstr "Rejetée"
 
 #: apps/participation/models.py:58
 msgid "Approved"
-msgstr ""
+msgstr "Approuvée"
 
 #: apps/participation/models.py:64
 msgid "Description"
