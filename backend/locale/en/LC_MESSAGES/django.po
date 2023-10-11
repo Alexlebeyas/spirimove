@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-04 15:46+0000\n"
+"POT-Creation-Date: 2023-10-10 14:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,21 +17,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps/contest/admin.py:53
+#: apps/contest/admin.py:54
 msgid "Random draw carried out successfully."
 msgstr ""
 
-#: apps/contest/admin.py:55
+#: apps/contest/admin.py:56
 msgid "It is possible that no participants have been drawn."
 msgstr ""
 
-#: apps/contest/admin.py:122
+#: apps/contest/admin.py:123
 msgid "Perform the draw"
 msgstr ""
 
-#: apps/contest/apps.py:6 apps/contest/models.py:15
-#: apps/participation/admin.py:157 apps/participation/models.py:69
-#: apps/participation/models.py:133
+#: apps/contest/apps.py:7 apps/contest/models.py:15
+#: apps/participation/admin.py:172 apps/participation/models.py:70
+#: apps/participation/models.py:136
 msgid "Contest"
 msgstr ""
 
@@ -60,14 +60,14 @@ msgid "Open ?"
 msgstr ""
 
 #: apps/contest/models.py:28 apps/participation/models.py:39
-#: apps/participation/models.py:73 apps/participation/models.py:123
-#: apps/participation/models.py:138
+#: apps/participation/models.py:74 apps/participation/models.py:125
+#: apps/participation/models.py:141
 msgid "Date created"
 msgstr ""
 
 #: apps/contest/models.py:29 apps/participation/models.py:40
-#: apps/participation/models.py:74 apps/participation/models.py:124
-#: apps/participation/models.py:139
+#: apps/participation/models.py:75 apps/participation/models.py:126
+#: apps/participation/models.py:142
 msgid "Last modified"
 msgstr ""
 
@@ -75,86 +75,130 @@ msgstr ""
 msgid "The contest end date must be later than the start date"
 msgstr ""
 
+#: apps/participation/admin.py:15
+msgid "DATE"
+msgstr ""
+
+#: apps/participation/admin.py:15
+msgid "USER"
+msgstr ""
+
+#: apps/participation/admin.py:15
+msgid "STATUS"
+msgstr ""
+
+#: apps/participation/admin.py:15
+msgid "TYPE"
+msgstr ""
+
+#: apps/participation/admin.py:15
+msgid "HIGH INTENSITY"
+msgstr ""
+
+#: apps/participation/admin.py:15
+msgid "INITIATOR"
+msgstr ""
+
+#: apps/participation/admin.py:16
+msgid "PTS"
+msgstr ""
+
+#: apps/participation/admin.py:16
+msgid "DESCRIPTION"
+msgstr ""
+
 #: apps/participation/admin.py:19
+msgid "In verification"
+msgstr ""
+
+#: apps/participation/admin.py:20
+msgid "Rejected"
+msgstr ""
+
+#: apps/participation/admin.py:21
+msgid "Approved"
+msgstr ""
+
+#: apps/participation/admin.py:25
 msgid "Approuver les participations selectionnées"
 msgstr "Approve selected participations"
 
-#: apps/participation/admin.py:22
+#: apps/participation/admin.py:28
 msgid ""
 "Participation(s) sélectionnée(s) Marqué(s) comme approuvé(s) avec succès !!"
 msgstr "Selected participation(s) Marked as successfully approved !!"
 
-#: apps/participation/admin.py:25
+#: apps/participation/admin.py:31
 msgid "Rejeter les participations selectionnées"
 msgstr "Reject selected participations"
 
-#: apps/participation/admin.py:28
+#: apps/participation/admin.py:34
 msgid "Participation(s) sélectionnée(s) Marquée(s) comme rejetée(s) !!"
 msgstr "Selected participation(s) Marked as rejected!!"
 
-#: apps/participation/admin.py:31
+#: apps/participation/admin.py:37
 msgid "Réinitialiser la décision des participations selectionnées"
 msgstr "Reset the decision of selected participations"
 
-#: apps/participation/admin.py:34
+#: apps/participation/admin.py:40
 msgid "Participation(s) sélectionnée(s) Marquée(s) comme non approuvée(s) !!"
 msgstr "Selected participation(s) Marked as not approved!!"
 
-#: apps/participation/admin.py:37
+#: apps/participation/admin.py:43
 msgid "Exporter les participations selectionnées en CSV"
 msgstr "Export selected participations in CSV"
 
-#: apps/participation/admin.py:49
+#: apps/participation/admin.py:55
 msgid "Exportation réussie !"
 msgstr ""
 
-#: apps/participation/admin.py:87 apps/participation/models.py:61
-#: apps/users/apps.py:7 apps/users/models.py:88
+#: apps/participation/admin.py:101 apps/participation/admin.py:102
+#: apps/participation/models.py:61 apps/users/models.py:88
 msgid "User"
 msgstr ""
 
-#: apps/participation/admin.py:88
+#: apps/participation/admin.py:103
 msgid "Type"
 msgstr ""
 
-#: apps/participation/admin.py:89 apps/participation/models.py:70
+#: apps/participation/admin.py:104 apps/participation/models.py:71
 msgid "High Intensity"
 msgstr ""
 
-#: apps/participation/admin.py:90 apps/participation/models.py:71
+#: apps/participation/admin.py:105 apps/participation/models.py:72
 msgid "Initiator"
 msgstr ""
 
-#: apps/participation/admin.py:91 apps/participation/models.py:65
+#: apps/participation/admin.py:106 apps/participation/models.py:66
 msgid "Pts"
 msgstr ""
 
-#: apps/participation/admin.py:99
+#: apps/participation/admin.py:114
 msgid "Participation à revoir"
 msgstr "Participation to review"
 
-#: apps/participation/admin.py:100
+#: apps/participation/admin.py:115
 msgid "Participations à revoir"
 msgstr "Participations to review"
 
-#: apps/participation/admin.py:117
+#: apps/participation/admin.py:132
 msgid "Participation revue"
 msgstr "Reviewed participation"
 
-#: apps/participation/admin.py:118
+#: apps/participation/admin.py:133
 msgid "Participations revues"
 msgstr "Reviewed participations"
 
-#: apps/participation/admin.py:158 apps/participation/models.py:134
+#: apps/participation/admin.py:173 apps/participation/models.py:137
 msgid "Winner"
 msgstr ""
 
-#: apps/participation/admin.py:159 apps/participation/models.py:113
-#: apps/participation/models.py:135
+#: apps/participation/admin.py:174 apps/participation/models.py:114
+#: apps/participation/models.py:138
 msgid "Level"
 msgstr ""
 
-#: apps/participation/models.py:25 apps/participation/models.py:63
+#: apps/participation/models.py:25 apps/participation/models.py:64
 msgid "Participation type"
 msgstr ""
 
@@ -163,7 +207,7 @@ msgid "Participations type"
 msgstr ""
 
 #: apps/participation/models.py:29 apps/participation/models.py:30
-#: apps/participation/models.py:31 apps/participation/models.py:117
+#: apps/participation/models.py:31 apps/participation/models.py:118
 msgid "Level name"
 msgstr ""
 
@@ -203,71 +247,59 @@ msgstr ""
 msgid "Participations"
 msgstr ""
 
-#: apps/participation/models.py:56
-msgid "In verification"
-msgstr ""
-
-#: apps/participation/models.py:57
-msgid "Rejected"
-msgstr ""
-
-#: apps/participation/models.py:58
-msgid "Approved"
-msgstr ""
-
-#: apps/participation/models.py:64
+#: apps/participation/models.py:65
 msgid "Description"
 msgstr ""
 
-#: apps/participation/models.py:68 apps/users/admin.py:50
+#: apps/participation/models.py:69 apps/users/admin.py:50
 msgid "Image"
 msgstr ""
 
-#: apps/participation/models.py:72
+#: apps/participation/models.py:73
 msgid "Status"
 msgstr ""
 
-#: apps/participation/models.py:97
+#: apps/participation/models.py:98
 msgid "Reaction"
 msgstr ""
 
-#: apps/participation/models.py:98 apps/participation/models.py:104
+#: apps/participation/models.py:99 apps/participation/models.py:105
 msgid "Reactions"
 msgstr ""
 
-#: apps/participation/models.py:114
+#: apps/participation/models.py:115
 msgid "Levels"
 msgstr ""
 
-#: apps/participation/models.py:118
+#: apps/participation/models.py:119
 msgid "Price"
 msgstr ""
 
-#: apps/participation/models.py:119
+#: apps/participation/models.py:121
 msgid "Participation days"
 msgstr "Reviewed participation"
 
-#: apps/participation/models.py:120
+#: apps/participation/models.py:122
 msgid "Order"
 msgstr ""
 
-#: apps/participation/models.py:121
+#: apps/participation/models.py:123
 msgid "For office ?"
 msgstr ""
 
-#: apps/participation/models.py:122
+#: apps/participation/models.py:124
 msgid "Active ?"
 msgstr ""
 
-#: apps/participation/models.py:129 apps/participation/models.py:130
+#: apps/participation/models.py:131 apps/participation/models.py:132
 msgid "Draw"
 msgstr ""
 
-#: apps/participation/models.py:136
+#: apps/participation/models.py:139
 msgid "Days completed"
 msgstr ""
 
-#: apps/participation/models.py:137 apps/users/models.py:95
+#: apps/participation/models.py:140 apps/users/models.py:95
 msgid "Office"
 msgstr ""
 
@@ -297,6 +329,10 @@ msgstr ""
 
 #: apps/users/admin.py:19
 msgid "Important dates"
+msgstr ""
+
+#: apps/users/apps.py:7 apps/users/models.py:89
+msgid "Users"
 msgstr ""
 
 #: apps/users/auth.py:46
@@ -342,10 +378,6 @@ msgstr ""
 #: apps/users/models.py:66
 msgid "Participant"
 msgstr "Reviewed participation"
-
-#: apps/users/models.py:89
-msgid "Users"
-msgstr ""
 
 #: apps/users/models.py:93
 msgid "email address"

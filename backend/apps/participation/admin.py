@@ -12,8 +12,8 @@ from .models import ParticipationModel, DrawModel, ParticipationTypeModel, Level
 
 participation_list_to_export = ['date', 'user__display_name', 'status', 'type__name', 'is_intensive', 'is_organizer',
                                 'points', 'description']
-participation_list_header_to_export = ['DATE', 'USER', 'STATUS', 'TYPE', 'HIGH INTENSITY', 'INITIATOR',
-                                       'PTS', 'DESCRIPTON']
+participation_list_header_to_export = [_('DATE'), _('USER'), _('STATUS'), _('TYPE'), _('HIGH INTENSITY'), _('INITIATOR'),
+                                       _('PTS'), _('DESCRIPTION')]
 
 STATUS_CHOICES = {
     ParticipationModel.IN_VERIFICATION: _('In verification'),
@@ -98,7 +98,7 @@ class ParticipationModelAdmin(ModerationPermissions, admin.ModelAdmin):
     def points_field(self, obj):
         return obj.points
 
-    description_display.short_description = _('User')
+    description_display.short_description = _('Description')
     user__display_name.short_description = _('User')
     type__name.short_description = _('Type')
     is__intensive.short_description = _('High Intensity')
